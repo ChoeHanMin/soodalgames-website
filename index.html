@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soodal Games — 최한민 (Choi Hanmin)</title>
+<meta name="description" content="Soodal Games — 최한민(Choi Hanmin)이 만드는 1인 인디 게임 스튜디오. Google Play·Steam에 출시한 게임들과 개발 & 커밋 타임라인.">
+<meta name="keywords" content="Soodal Games, 수달게임즈, 최한민, Choi Hanmin, 인디 게임, 미니법정, Mini Court, Stealth Ops, Time Heist 24, 인디게임 개발">
+<meta name="author" content="최한민 (Choi Hanmin)">
+<link rel="canonical" href="https://www.soodalgames.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Soodal Games">
+<meta property="og:description" content="최한민(Choi Hanmin)이 만드는 1인 인디 게임 스튜디오. Google Play·Steam 게임 출시작과 개발 타임라인.">
+<meta property="og:url" content="https://www.soodalgames.com/">
+<meta property="og:image" content="https://www.soodalgames.com/images/games/web/minicourt.jpg">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Soodal Games">
+<meta name="twitter:description" content="최한민(Choi Hanmin)이 만드는 1인 인디 게임 스튜디오. Google Play·Steam 게임 출시작과 개발 타임라인.">
+<meta name="twitter:image" content="https://www.soodalgames.com/images/games/web/minicourt.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Soodal Games",
+  "url": "https://www.soodalgames.com/",
+  "founder": { "@type": "Person", "name": "최한민", "alternateName": "Choi Hanmin", "url": "https://www.choihanmin.com/" },
+  "sameAs": [ "https://github.com/ChoeHanMin", "https://www.choihanmin.com/" ]
+}
+</script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0A0D;
+    --ink-2:#151620;
+    --ink-3:#1C1D28;
+    --paper:#EEEBE3;
+    --paper-dim:#9A968D;
+    --amber:#CDA968;
+    --amber-soft:#E4C88A;
+    --teal:#6FA090;
+    --rose:#BC8370;
+    --amber-rgb:205,169,104;
+    --teal-rgb:111,160,144;
+    --rose-rgb:188,131,112;
+    --line: rgba(238,235,227,0.09);
+    --line-strong: rgba(238,235,227,0.16);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Pretendard', -apple-system, sans-serif;
+    --serif: 'Noto Serif KR', serif;
+    --r-sm:10px;
+    --r-md:16px;
+    --r-lg:22px;
+    --ease: cubic-bezier(.16,1,.3,1);
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset, 0 18px 40px -22px rgba(0,0,0,0.55);
+    --shadow-lift: 0 26px 60px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(var(--amber-rgb),0.22);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; overflow-x:hidden; width:100%;}
+  body{
+    background:var(--ink); color:var(--paper); font-family:var(--sans);
+    line-height:1.65; overflow-x:hidden; width:100%;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; letter-spacing:-0.003em;
+  }
+  ::selection{background:var(--amber); color:var(--ink);}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+  @media(max-width:560px){ .wrap{padding:0 20px;} }
+  img{max-width:100%;}
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:30;
+    background:rgba(10,10,13,0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:920px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  @media(max-width:560px){ .topbar-inner{padding:14px 20px;} }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--serif); font-weight:700; font-size:18px;}
+  .brand .ic{font-size:20px;}
+  .backlink{
+    font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
+    border:1px solid var(--line); border-radius:999px; padding:7px 14px;
+    transition:border-color .2s, color .2s;
+  }
+  .backlink:hover{ border-color:var(--amber); color:var(--amber); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:88px 0 64px; position:relative; }
+  @media(max-width:700px){ .hero{padding:64px 0 48px;} }
+  .hero .tag{
+    font-family:var(--mono); font-size:11px; color:var(--amber);
+    letter-spacing:0.14em; font-weight:600; position:relative; padding-left:16px;
+    display:inline-block; margin-bottom:18px;
+  }
+  .hero .tag::before{
+    content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:9px; height:1px; background:var(--amber);
+    box-shadow:0 0 8px 1px rgba(var(--amber-rgb),0.6);
+  }
+  .hero h1{
+    font-family:var(--serif); font-weight:700; letter-spacing:-0.01em;
+    font-size:clamp(34px,6vw,54px); line-height:1.15; margin-bottom:18px;
+  }
+  .hero h1 .amber{ color:var(--amber); }
+  .hero p.lede{ color:var(--paper-dim); font-size:16px; max-width:600px; margin-bottom:28px; }
+  .hero-links{ display:flex; gap:14px; flex-wrap:wrap; }
+  .hero-links a{
+    font-family:var(--mono); font-size:13px; padding:10px 20px; border-radius:999px;
+    border:1px solid var(--line-strong); transition:transform .15s, border-color .2s, background .2s, color .2s;
+  }
+  .hero-links a.primary{ background:var(--amber); color:var(--ink); border-color:var(--amber); }
+  .hero-links a.primary:hover{ filter:brightness(1.08); }
+  .hero-links a:not(.primary):hover{ border-color:var(--amber); color:var(--amber); }
+  .hero-links a:active{ transform:scale(.97); }
+  .hero-stats{ display:flex; gap:36px; margin-top:38px; flex-wrap:wrap; }
+  .hero-stats .stat b{ display:block; font-family:var(--serif); font-size:28px; color:var(--amber); }
+  .hero-stats .stat span{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); }
+
+  .divider{max-width:920px; margin:0 auto; padding:0 28px;}
+  @media(max-width:560px){ .divider{padding:0 20px;} }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:76px 0;}
+  @media(max-width:700px){ section{padding:56px 0;} }
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:36px;}
+  .sec-head .tag{
+    font-family:var(--mono); font-size:11px; color:var(--amber);
+    letter-spacing:0.14em; font-weight:600; position:relative; padding-left:16px;
+  }
+  .sec-head .tag::before{
+    content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:9px; height:1px; background:var(--amber);
+    box-shadow:0 0 8px 1px rgba(var(--amber-rgb),0.6);
+  }
+  .sec-head h2{font-family:var(--serif); font-size:clamp(24px,3.4vw,30px); font-weight:700; letter-spacing:-0.01em;}
+  .sec-sub{color:var(--paper-dim); font-size:14px; margin:-22px 0 36px; font-family:var(--mono); opacity:.85;}
+
+  /* ---------- GAME FILTER ---------- */
+  .game-filters{ display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
+  .game-filters button{
+    font-family:var(--mono); font-size:11px;
+    background:transparent; color:var(--paper-dim);
+    border:1px solid var(--line); border-radius:999px;
+    padding:7px 16px; cursor:pointer;
+    transition:color .2s, border-color .2s, background .2s, transform .15s;
+  }
+  .game-filters button:hover{ border-color:var(--line-strong); color:var(--paper); }
+  .game-filters button.active{ color:var(--ink); background:var(--amber); border-color:var(--amber); }
+  .game-filters button:active{ transform:scale(.96); }
+  .game.filtered-out{ display:none; }
+
+  /* ---------- GAMES (release cards) ---------- */
+  .games{display:flex; flex-direction:column; gap:16px;}
+  .game{
+    position:relative;
+    border:1px solid var(--line); border-radius:var(--r-md); padding:24px 26px;
+    background:linear-gradient(165deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 55%);
+    box-shadow:var(--shadow-card);
+    transition:border-color .3s var(--ease), box-shadow .35s var(--ease), transform .1s, opacity .3s;
+  }
+  .game:hover{ border-color:rgba(var(--amber-rgb),0.45); }
+  .game.featured{
+    border-color:rgba(var(--amber-rgb),0.35);
+    background:linear-gradient(165deg, rgba(var(--amber-rgb),0.07), rgba(255,255,255,0) 60%);
+    padding-top:30px;
+  }
+  .featured-ribbon{
+    position:absolute; top:14px; right:18px;
+    font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:0.08em;
+    color:var(--ink); background:linear-gradient(100deg, var(--amber), var(--amber-soft));
+    padding:5px 12px; border-radius:999px;
+    box-shadow:0 8px 18px -8px rgba(var(--amber-rgb),0.6);
+  }
+  @media(max-width:520px){ .featured-ribbon{ top:10px; right:12px; font-size:9.5px; padding:4px 9px; } }
+  .game-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+  .game-title{font-size:18.5px; font-weight:700; letter-spacing:-0.01em;}
+  .game-ver{font-family:var(--mono); font-size:12px; color:var(--teal);}
+  .game-desc{color:var(--paper-dim); font-size:14.5px; line-height:1.7; margin:9px 0 12px; max-width:600px;}
+  .game-behind{ font-family:var(--serif); font-style:italic; font-size:13px; color:var(--amber); opacity:.85; margin:-2px 0 14px; }
+  .game.has-shot{display:flex; gap:22px; align-items:stretch;}
+  .game-thumb{
+    flex:0 0 138px; width:138px; height:138px; border-radius:var(--r-sm); overflow:hidden;
+    border:1px solid var(--line); box-shadow:0 12px 26px -14px rgba(0,0,0,0.5);
+  }
+  .game-thumb img{width:100%; height:100%; object-fit:cover; display:block; cursor:zoom-in; opacity:0; transition:opacity .5s var(--ease);}
+  .game-thumb img.loaded{opacity:1;}
+  .game-body{flex:1; min-width:0;}
+  .game.featured .game-thumb{ flex-basis:164px; width:164px; height:164px; }
+  .game.featured .game-title{ font-size:20.5px; }
+  @media(max-width:520px){
+    .game.has-shot{flex-direction:column;}
+    .game-thumb{width:100%; height:190px;}
+    .game.featured .game-thumb{ width:100%; height:200px; }
+  }
+  .badges{display:flex; gap:8px; flex-wrap:wrap;}
+  .badge{
+    font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:999px;
+    border:1px solid var(--line); color:var(--paper-dim); letter-spacing:0.01em;
+  }
+  .badge.play{border-color:rgba(var(--teal-rgb),0.4); color:var(--teal);}
+  .badge.steam{border-color:rgba(var(--rose-rgb),0.4); color:var(--rose);}
+  .game-links{margin-top:14px; display:flex; gap:18px; font-family:var(--mono); font-size:12px;}
+  .game-links a{color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s, opacity .2s;}
+  .game-links a:hover{border-color:var(--amber);}
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+  @keyframes cardSettle{ 0%{opacity:0; transform:translateY(10px) scale(.98);} 100%{opacity:1; transform:translateY(0) scale(1);} }
+  .reveal.in-view .game{ animation:cardSettle .55s var(--ease) both; }
+  .reveal.in-view .game:nth-child(1){ animation-delay:.04s; }
+  .reveal.in-view .game:nth-child(2){ animation-delay:.1s; }
+  .reveal.in-view .game:nth-child(3){ animation-delay:.16s; }
+  .reveal.in-view .game:nth-child(4){ animation-delay:.22s; }
+  .reveal.in-view .game:nth-child(5){ animation-delay:.28s; }
+  .reveal.in-view .game:nth-child(n+6){ animation-delay:.32s; }
+  .games.shuffling .game:not(.filtered-out){ animation:cardSettle .4s ease both; }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline-list{display:flex; flex-direction:column; gap:4px;}
+  .commit-loading{color:var(--paper-dim); font-family:var(--mono); font-size:13px;}
+  .timeline-row{
+    display:flex; gap:14px; align-items:baseline;
+    border-bottom:1px solid var(--line); padding:11px 10px; font-size:13px;
+    margin:0 -10px; border-radius:8px; transition:background .2s, border-color .2s;
+  }
+  .timeline-row:hover{ background:rgba(255,255,255,0.02); border-color:transparent; }
+  .timeline-row .t-icon{flex-shrink:0; font-size:13px;}
+  .timeline-row .t-date{font-family:var(--mono); color:var(--amber); flex-shrink:0; font-size:12px; min-width:64px;}
+  .timeline-row .t-msg{color:var(--paper); flex:1; min-width:0; overflow-wrap:break-word;}
+  .timeline-row .t-tag{font-family:var(--mono); color:var(--paper-dim); font-size:11px; flex-shrink:0;}
+  @media(max-width:480px){
+    .timeline-row{ flex-wrap:wrap; margin:0 -6px; padding:11px 6px; }
+    .timeline-row .t-tag{ flex-basis:100%; padding-left:27px; margin-top:-2px; }
+  }
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    display:none; position:fixed; inset:0; z-index:60;
+    background:rgba(6,6,9,0.86); backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:32px;
+  }
+  .lightbox.show{ display:flex; }
+  .lightbox img{ max-width:min(90vw,900px); max-height:80vh; border-radius:var(--r-sm); box-shadow:var(--shadow-lift); }
+  .lightbox-close{ position:absolute; top:22px; right:28px; font-size:22px; cursor:pointer; color:var(--paper); }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
+  footer .footer-title{ font-family:var(--serif); font-size:18px; margin-bottom:16px; }
+  footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; font-family:var(--mono); font-size:13px; margin-bottom:24px; }
+  footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
+  footer .links a:hover{ border-color:var(--amber); }
+  .copyright{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); opacity:.75; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="ic">🎮</span> Soodal Games</div>
+    <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">← choihanmin.com</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="hero reveal in-view">
+    <span class="tag">SOODAL GAMES</span>
+    <h1>최한민이 밤마다 만드는<br><span class="amber">1인 인디 게임 스튜디오</span></h1>
+    <p class="lede">단일 HTML/CSS/JS PWA → TWA 빌드 파이프라인으로 Google Play와 Steam에 게임을 출시합니다. 아래에서 출시작과 개발 타임라인을 확인하세요.</p>
+    <div class="hero-links">
+      <a class="primary" href="#games">출시한 게임들 →</a>
+      <a href="#timeline">개발 타임라인 →</a>
+      <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>7</b><span>출시 게임 (Play / Steam)</span></div>
+      <div class="stat"><b>2</b><span>Steam 빌드 (Electron)</span></div>
+      <div class="stat"><b>1</b><span>운영자 — 최한민</span></div>
+    </div>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
+  <!-- GAMES -->
+  <section id="games" class="reveal">
+    <div class="sec-head"><span class="tag">RELEASES</span><h2>출시한 게임들</h2></div>
+    <p class="sec-sub">Soodal Games (Choi Hanmin) · 단일 HTML/CSS/JS PWA → TWA 빌드 파이프라인</p>
+    <div class="game-filters">
+      <button class="active" data-filter="all">전체</button>
+      <button data-filter="play">Google Play만</button>
+      <button data-filter="steam">Steam만</button>
+    </div>
+    <div class="games">
+
+      <div class="game has-shot featured" data-platforms="play steam">
+        <span class="featured-ribbon">★ FEATURED</span>
+        <div class="game-thumb" data-shots="images/games/web/minicourt.jpg,images/games/web/minicourt2.jpg,images/games/web/minicourt3.jpg,images/games/web/minicourt4.jpg"><img src="images/games/web/minicourt.jpg" loading="lazy" alt="미니법정 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top">
+            <div><span class="game-title">미니법정 (Mini Court)</span> <span class="game-ver">v2.x — bilingual</span></div>
+          </div>
+          <p class="game-desc">55개 사건, 한/영 지원, 항소심 모드와 데일리 챌린지, 경력 XP 시스템까지 갖춘 법정 시뮬레이션. Electron으로 패키징해 Steam에도 올렸습니다.</p>
+          <p class="game-behind">비하인드: 55번째 사건 쓰다가 판사 이름 짓는 데 제일 오래 걸렸음.</p>
+          <div class="badges">
+            <span class="badge play">Google Play</span>
+            <span class="badge steam">Steam · App ID 5113110</span>
+          </div>
+          <div class="game-links">
+            <a href="https://store.steampowered.com/app/5113110" target="_blank" rel="noopener">Steam →</a>
+            <a href="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" target="_blank" rel="noopener">Google Play →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play steam">
+        <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" alt="Stealth Ops 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top">
+            <div><span class="game-title">Stealth Ops</span> <span class="game-ver">v4.3.0.0</span></div>
+          </div>
+          <p class="game-desc">9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션. Electron/Steam 빌드로도 제공.</p>
+          <p class="game-behind">비하인드: 무기 밸런싱한다고 새벽 4시까지 잡혀있었음.</p>
+          <div class="badges"><span class="badge play">Google Play</span><span class="badge steam">Steam</span></div>
+          <div class="game-links">
+            <a href="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" target="_blank" rel="noopener">Google Play →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play">
+        <div class="game-thumb" data-shots="images/games/web/timeheist24.jpg,images/games/web/timeheist24_2.jpg,images/games/web/timeheist24_3.jpg"><img src="images/games/web/timeheist24.jpg" loading="lazy" alt="Time Heist 24 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top">
+            <div><span class="game-title">Time Heist 24</span> <span class="game-ver">GitHub: time-heist</span></div>
+          </div>
+          <p class="game-desc">시간이 곧 체력이자 행동력이자 점수가 되는 턴제 전략 게임.</p>
+          <p class="game-behind">비하인드: 턴제 규칙 짜다가 정작 내 턴을 다 써버림.</p>
+          <div class="badges"><span class="badge play">Google Play</span></div>
+          <div class="game-links">
+            <a href="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" target="_blank" rel="noopener">Google Play →</a>
+            <a href="https://github.com/ChoeHanMin/time-heist" target="_blank" rel="noopener">GitHub →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play">
+        <div class="game-thumb" data-shots="images/games/web/seathunter.jpg,images/games/web/seathunter2.jpg,images/games/web/seathunter3.jpg"><img src="images/games/web/seathunter.jpg" loading="lazy" alt="자리 사냥 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top"><div><span class="game-title">자리 사냥 (Seat Hunter)</span></div></div>
+          <p class="game-desc">지하철 승객을 관찰해 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임.</p>
+          <p class="game-behind">비하인드: 관찰력 테스트하다가 정작 내가 내릴 역을 놓침.</p>
+          <div class="badges"><span class="badge play">Google Play</span></div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play">
+        <div class="game-thumb" data-shots="images/games/web/stresssmash.jpg,images/games/web/stresssmash2.jpg"><img src="images/games/web/stresssmash.jpg" loading="lazy" alt="Stress Smash 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top"><div><span class="game-title">Stress Smash</span></div></div>
+          <p class="game-desc">화면을 두드려 스트레스를 날리는 타격감 중심 캐주얼 게임.</p>
+          <p class="game-behind">비하인드: 테스트하다가 진짜로 스트레스가 풀렸음.</p>
+          <div class="badges"><span class="badge play">Google Play</span></div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play">
+        <div class="game-thumb" data-shots="images/games/web/colordebt.jpg,images/games/web/colordebt2.jpg,images/games/web/colordebt3.jpg"><img src="images/games/web/colordebt.jpg" loading="lazy" alt="Color Debt 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top"><div><span class="game-title">Color Debt</span></div></div>
+          <p class="game-desc">같은 색 얼굴을 합치고 터뜨려 빚을 늘리지 않는 캐주얼 퍼즐 게임.</p>
+          <p class="game-behind">비하인드: 빚 갚는 게임 만들다가 내 통장 잔고가 떠올랐음.</p>
+          <div class="badges"><span class="badge play">Google Play</span></div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="play">
+        <div class="game-thumb" data-shots="images/games/web/mazeescape.jpg,images/games/web/mazeescape2.jpg,images/games/web/mazeescape3.jpg"><img src="images/games/web/mazeescape.jpg" loading="lazy" alt="Maze Escape 스크린샷"></div>
+        <div class="game-body">
+          <div class="game-top"><div><span class="game-title">Maze Escape</span></div></div>
+          <p class="game-desc">열쇠를 모아 미로를 탈출하는 캐주얼 게임, 초기작 중 하나.</p>
+          <p class="game-behind">비하인드: 미로 디자인하다가 정작 나가는 길을 못 찾았음.</p>
+          <div class="badges"><span class="badge play">Google Play</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
+  <!-- INTEGRATED TIMELINE -->
+  <section id="timeline" class="reveal">
+    <div class="sec-head"><span class="tag">TIMELINE</span><h2>게임 개발 &amp; 커밋 타임라인</h2></div>
+    <p class="sec-sub">게임 개발 착수 시점과 실시간 커밋을 하나로 모아 시간순으로 정렬했습니다.</p>
+    <div id="timelineList" class="timeline-list">
+      <p class="commit-loading">불러오는 중...</p>
+    </div>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
+  <footer class="reveal">
+    <div class="footer-title">더 알아보고 싶다면</div>
+    <div class="links">
+      <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
+      <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:rokafhanmin@gmail.com">rokafhanmin@gmail.com</a>
+    </div>
+    <div class="copyright">© 2026 Choi Hanmin · Soodal Games</div>
+  </footer>
+</div>
+
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close" id="lightboxClose">✕</span>
+  <img id="lightboxImg" src="" alt="확대 이미지">
+</div>
+
+<script>
+  /* ---- SCROLL REVEAL ---- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ---- IMAGE FADE-IN ON LOAD ---- */
+  document.querySelectorAll('.game-thumb img').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) { img.classList.add('loaded'); }
+    else {
+      img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+      img.addEventListener('error', () => img.classList.add('loaded'), { once: true });
+    }
+  });
+
+  /* ---- GAME FILTER ---- */
+  const gamesContainer = document.querySelector('.games');
+  document.querySelectorAll('.game-filters button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.game-filters button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.game').forEach(card => {
+        const platforms = (card.dataset.platforms || '').split(' ');
+        const show = filter === 'all' || platforms.includes(filter);
+        card.classList.toggle('filtered-out', !show);
+      });
+      if (gamesContainer) {
+        gamesContainer.classList.remove('shuffling');
+        void gamesContainer.offsetWidth;
+        gamesContainer.classList.add('shuffling');
+      }
+    });
+  });
+
+  /* ---- GAME SCREENSHOT MINI-CAROUSEL ---- */
+  document.querySelectorAll('.game-thumb[data-shots]').forEach(thumb => {
+    const shots = thumb.dataset.shots.split(',').map(s => s.trim()).filter(Boolean);
+    if (shots.length <= 1) return;
+    const img = thumb.querySelector('img');
+    let idx = 0;
+    let carouselTimer = null;
+    thumb.addEventListener('mouseenter', () => {
+      carouselTimer = setInterval(() => { idx = (idx + 1) % shots.length; img.src = shots[idx]; }, 900);
+    });
+    thumb.addEventListener('mouseleave', () => {
+      clearInterval(carouselTimer); idx = 0; img.src = shots[0];
+    });
+  });
+
+  /* ---- GAME THUMB LIGHTBOX ---- */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  document.querySelectorAll('.game-thumb img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add('show');
+    });
+  });
+  lightbox.addEventListener('click', () => lightbox.classList.remove('show'));
+  document.getElementById('lightboxClose').addEventListener('click', (e) => {
+    e.stopPropagation(); lightbox.classList.remove('show');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') lightbox.classList.remove('show');
+  });
+
+  /* ---- INTEGRATED TIMELINE (games + live commits, merged) ---- */
+  (function(){
+    // 실제 개발 착수 시점 (한민님이 직접 제공한 날짜, 월 단위)
+    const gameTimelineEvents = [
+      { date: '2025-01', icon: '🎮', title: '미니법정 (Mini Court) 개발 시작', tag: 'Soodal Games' },
+      { date: '2025-03', icon: '🎮', title: 'Stealth Ops 개발 시작', tag: 'Soodal Games' },
+      { date: '2025-06', icon: '🎮', title: 'Time Heist 24 개발 시작', tag: 'Soodal Games' },
+      { date: '2025-09', icon: '🎮', title: 'Color Debt 개발 시작', tag: 'Soodal Games' },
+      { date: '2025-12', icon: '🎮', title: '자리 사냥 (Seat Hunter) 개발 시작', tag: 'Soodal Games' },
+      { date: '2026-04', icon: '🎮', title: 'Maze Escape 개발 시작', tag: 'Soodal Games' },
+      { date: '2026-06', icon: '🎮', title: 'Stress Smash 개발 시작', tag: 'Soodal Games' },
+    ];
+
+    function renderTimeline(events){
+      const list = document.getElementById('timelineList');
+      if (!list) return;
+      if (!events.length){
+        list.innerHTML = '<p class="commit-loading">타임라인을 불러올 수 없습니다.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      events.forEach(ev => {
+        const row = document.createElement('div');
+        row.className = 'timeline-row';
+        row.innerHTML = `
+          <span class="t-icon">${ev.icon}</span>
+          <span class="t-date">${ev.date}</span>
+          <span class="t-msg">${ev.title}</span>
+          <span class="t-tag">${ev.tag}</span>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    fetch('https://api.github.com/users/ChoeHanMin/events/public')
+      .then(r => r.json())
+      .then(events => {
+        const pushes = (Array.isArray(events) ? events : []).filter(e => e.type === 'PushEvent').slice(0, 6);
+        const commitEvents = pushes.map(ev => {
+          const commit = ev.payload.commits && ev.payload.commits[0];
+          const d = new Date(ev.created_at);
+          const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+          return {
+            date: dateStr,
+            sortKey: d.getTime(),
+            icon: '💻',
+            title: commit ? commit.message.split('\n')[0] : '커밋',
+            tag: ev.repo.name.split('/')[1]
+          };
+        });
+        const gameEvents = gameTimelineEvents.map(ev => ({ ...ev, sortKey: new Date(ev.date + '-01').getTime() }));
+        const merged = [...commitEvents, ...gameEvents].sort((a, b) => b.sortKey - a.sortKey);
+        renderTimeline(merged);
+      })
+      .catch(() => {
+        const gameEvents = gameTimelineEvents.slice().reverse();
+        renderTimeline(gameEvents);
+      });
+  })();
+</script>
+</body>
+</html>
