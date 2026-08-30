@@ -299,25 +299,15 @@
     transition:transform .25s var(--ease), box-shadow .25s var(--ease);
   }
   .mascot:hover{ transform:scale(1.06) rotate(-4deg); box-shadow:0 14px 32px -10px rgba(var(--amber-rgb),0.7); }
-  /* 말풍선은 마스코트 '아래'에 뜨도록 — 위로 띄우면 히어로 통계 텍스트를 가리는 버그가 있었음.
-     그리고 가운데 정렬(left:50%) 대신 왼쪽 정렬(left:0)로 오른쪽으로만 펼쳐지게 함 —
-     마스코트가 화면 왼쪽 가장자리에 가까울 때 가운데 정렬 + nowrap이면 말풍선 왼쪽이
-     뷰포트 밖으로 잘려서 글자가 잘리는 버그가 있었음. max-width + 줄바꿈 허용으로 방지. */
-  .mascot-bubble{
-    position:absolute; top:calc(100% + 14px); left:0; transform:translateY(-4px) scale(.92);
-    transform-origin:top left;
-    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:12px; padding:9px 14px;
-    font-family:var(--mono); font-size:11.5px; color:var(--paper); line-height:1.5;
-    white-space:normal; max-width:min(260px, calc(100vw - 64px));
-    opacity:0; pointer-events:none; transition:opacity .25s var(--ease), transform .25s var(--ease);
-    box-shadow:var(--shadow-card); z-index:5;
+  /* 말풍선을 마스코트 옆에 별도로 띄우는 방식은 화면 크기/텍스트 줄바꿈에 따라 계속
+     다른 요소를 가리는 문제가 반복됐음(위로 띄우면 통계, 아래로 띄우면 옆 캡션과 충돌).
+     그래서 새 상자를 띄우지 않고, 원래 있던 캡션 문장 자리를 그대로 재사용해서
+     클릭 시 그 자리의 문구만 바꿔치기하는 방식으로 바꿈 — 겹칠 대상 자체가 없어짐. */
+  .hero-signature-text{
+    font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
+    transition:color .2s var(--ease);
   }
-  .mascot-bubble::after{
-    content:''; position:absolute; bottom:100%; left:28px;
-    border:6px solid transparent; border-bottom-color:var(--ink-2);
-  }
-  .mascot-bubble.show{ opacity:1; transform:translateY(0) scale(1); }
-  .hero-signature-text{ font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+  .hero-signature-text.flash{ color:var(--amber); }
   @media(max-width:560px){
     .mascot{ width:110px; height:110px; border-width:3px; }
     .hero-signature-text{ font-size:11px; }
@@ -696,9 +686,8 @@
     <div class="hero-signature">
       <div class="mascot-wrap">
         <img class="mascot" id="mascotImg" src="images/otter-thumb.jpg" width="240" height="240" alt="Soodal Games 마스코트 수달" loading="lazy" decoding="async">
-        <span class="mascot-bubble" id="mascotBubble"></span>
       </div>
-      <p class="hero-signature-text">Soodal = 수달. 만든 사람도, 마스코트도 하나뿐이에요 — 눌러보세요 🦦</p>
+      <p class="hero-signature-text" id="heroSignatureText">Soodal = 수달. 만든 사람도, 마스코트도 하나뿐이에요 — 눌러보세요 🦦</p>
     </div>
 
     <div class="marquee-strip" aria-hidden="true">
@@ -1050,11 +1039,14 @@
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
 
-  /* ---- MASCOT SPEECH BUBBLE ---- */
+  /* ---- MASCOT CLICK CAPTION (교체 방식 — 별도 말풍선을 띄우지 않고
+     원래 있던 캡션 문장 자리를 그대로 재사용. 새 상자를 안 띄우니
+     화면 크기/줄바꿈에 따라 다른 텍스트를 가리는 문제 자체가 없음) ---- */
   (function(){
     const mascotImg = document.getElementById('mascotImg');
-    const mascotBubble = document.getElementById('mascotBubble');
-    if (!mascotImg || !mascotBubble) return;
+    const textEl = document.getElementById('heroSignatureText');
+    if (!mascotImg || !textEl) return;
+    const original = textEl.textContent;
     const captions = [
       '게임 7개, 전부 밤새워 만들었어요 🦦',
       '엔진 없이, 팀 없이, 혼자서요',
@@ -1063,13 +1055,16 @@
       '다음 게임도 준비 중...',
       'Soodal = 수달, 이제 아시죠?'
     ];
-    let idx = 0, bubbleTimer = null;
+    let idx = 0, revertTimer = null;
     mascotImg.addEventListener('click', () => {
-      mascotBubble.textContent = captions[idx % captions.length];
+      textEl.textContent = captions[idx % captions.length];
       idx++;
-      mascotBubble.classList.add('show');
-      clearTimeout(bubbleTimer);
-      bubbleTimer = setTimeout(() => mascotBubble.classList.remove('show'), 2200);
+      textEl.classList.add('flash');
+      clearTimeout(revertTimer);
+      revertTimer = setTimeout(() => {
+        textEl.textContent = original;
+        textEl.classList.remove('flash');
+      }, 2200);
     });
   })();
 
