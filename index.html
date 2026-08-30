@@ -423,6 +423,17 @@
   }
   .random-game-btn:hover{ background:rgba(var(--amber-rgb),0.1); border-style:solid; }
   .random-game-btn:active{ transform:scale(.96); }
+  /* 랜덤 게임 뽑을 때 한 번 튀는 컨페티 조각 (반복 애니메이션 아님, 클릭 시 1회성) */
+  .burst-piece{
+    position:fixed; z-index:70; width:6px; height:6px; border-radius:2px;
+    pointer-events:none; will-change:transform, opacity;
+    animation:burstFly .7s ease-out forwards;
+  }
+  @keyframes burstFly{
+    0%{ transform:translate(0,0) rotate(0deg); opacity:1; }
+    100%{ transform:translate(var(--bx), var(--by)) rotate(var(--br)); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .burst-piece{ display:none; } }
   @media(max-width:520px){ .random-game-btn{ margin-left:0; } }
   .game.filtered-out{ display:none; }
   .game.jump-highlight{ animation:jumpHighlight 1.4s var(--ease); }
@@ -496,6 +507,8 @@
   }
   .badge.play{border-color:rgba(var(--teal-rgb),0.4); color:var(--teal);}
   .badge.steam{border-color:rgba(var(--rose-rgb),0.4); color:var(--rose);}
+  .badge.play::before{ content:'▶ '; font-size:9px; }
+  .badge.steam::before{ content:'🖥 '; }
   /* 라이트 모드에서는 배지를 옅게 채워서 카드 위에서 더 또렷하게 보이도록 */
   html[data-theme="light"] .badge.play{ background:rgba(var(--teal-rgb),0.1); }
   html[data-theme="light"] .badge.steam{ background:rgba(var(--rose-rgb),0.1); }
@@ -1203,6 +1216,26 @@
     });
   });
 
+  /* ---- CONFETTI BURST (one-shot, no infinite loop) ---- */
+  function burstConfetti(x, y){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const colors = ['var(--amber)', 'var(--teal)', 'var(--rose)', 'var(--amber-soft)'];
+    for (let i = 0; i < 12; i++){
+      const el = document.createElement('span');
+      el.className = 'burst-piece';
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 40 + Math.random() * 60;
+      el.style.setProperty('--bx', (Math.cos(angle) * dist).toFixed(1) + 'px');
+      el.style.setProperty('--by', (Math.sin(angle) * dist).toFixed(1) + 'px');
+      el.style.setProperty('--br', Math.floor(Math.random() * 360) + 'deg');
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      el.style.background = colors[i % colors.length];
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+  }
+
   /* ---- RANDOM GAME PICKER ("🎲 아무거나 하나") ---- */
   (function(){
     const btn = document.getElementById('randomGameBtn');
@@ -1212,6 +1245,8 @@
       const pool = visible.length ? visible : allGameCards;
       if (!pool.length) return;
       const pick = pool[Math.floor(Math.random() * pool.length)];
+      const rect = btn.getBoundingClientRect();
+      burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
       pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
       pick.classList.remove('jump-highlight');
       void pick.offsetWidth;
@@ -1224,6 +1259,7 @@
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+    if (document.getElementById('lightbox')?.classList.contains('show')) return; // 라이트박스 열려있을 땐 배경 단축키 무시
     if (e.key === 't' || e.key === 'T') {
       document.getElementById('themeToggle')?.click();
     } else if (e.key === 'g' || e.key === 'G') {
