@@ -49,7 +49,7 @@
       "description": "9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션.",
       "url": "https://www.soodalgames.com/#game-stealthops",
       "image": "https://www.soodalgames.com/images/games/web/stealthops.jpg",
-      "gamePlatform": ["Android", "Steam"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
     }},
     { "@type": "ListItem", "position": 3, "item": {
       "@type": "VideoGame", "name": "Time Heist 24",
@@ -145,9 +145,17 @@
     --shadow-lift: 0 26px 60px -20px rgba(120,60,10,0.25), 0 0 0 1px rgba(var(--amber-rgb),0.3);
   }
   html[data-theme="light"] .orb{ opacity:.7; }
+  /* 파스텔 톤 배경 — 페이지 전체에 은은하게 깔리는 다색 그라디언트 (스크롤해도 고정) */
   html[data-theme="light"] body{
-    background-image:radial-gradient(circle at 15% 8%, rgba(var(--rose-rgb),0.05), transparent 40%), radial-gradient(circle at 85% 0%, rgba(var(--teal-rgb),0.06), transparent 45%);
+    background-image:
+      radial-gradient(circle at 10% 6%, rgba(var(--rose-rgb),0.12), transparent 42%),
+      radial-gradient(circle at 90% 4%, rgba(var(--teal-rgb),0.11), transparent 46%),
+      radial-gradient(circle at 50% 40%, rgba(var(--amber-rgb),0.09), transparent 55%),
+      radial-gradient(circle at 6% 72%, rgba(var(--teal-rgb),0.08), transparent 42%),
+      radial-gradient(circle at 94% 88%, rgba(var(--rose-rgb),0.09), transparent 44%);
+    background-attachment:fixed;
   }
+  @media(max-width:700px){ html[data-theme="light"] body{ background-attachment:scroll; } }
   @media (prefers-reduced-motion: reduce){ html[data-theme="light"] .orb{ opacity:.55; } }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth; overflow-x:hidden; width:100%;}
@@ -282,31 +290,36 @@
   .hero-stats .stat span{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); }
 
   /* ---------- MASCOT SIGNATURE ---------- */
-  .hero-signature{ display:flex; align-items:center; gap:20px; margin-top:36px; }
+  .hero-signature{ display:flex; align-items:center; gap:22px; margin-top:38px; flex-wrap:wrap; }
   .mascot-wrap{ position:relative; flex-shrink:0; }
   .mascot{
-    display:block; width:104px; height:104px; border-radius:50%; object-fit:cover;
-    border:3px solid var(--amber); cursor:pointer;
-    box-shadow:0 10px 26px -10px rgba(var(--amber-rgb),0.55);
+    display:block; width:148px; height:148px; border-radius:50%; object-fit:cover;
+    border:4px solid var(--amber); cursor:pointer;
+    box-shadow:0 12px 30px -10px rgba(var(--amber-rgb),0.55);
     transition:transform .25s var(--ease), box-shadow .25s var(--ease);
   }
   .mascot:hover{ transform:scale(1.06) rotate(-4deg); box-shadow:0 14px 32px -10px rgba(var(--amber-rgb),0.7); }
-  /* 말풍선은 마스코트 '아래'에 뜨도록 — 위로 띄우면 히어로 통계 텍스트를 가리는 버그가 있었음 */
+  /* 말풍선은 마스코트 '아래'에 뜨도록 — 위로 띄우면 히어로 통계 텍스트를 가리는 버그가 있었음.
+     그리고 가운데 정렬(left:50%) 대신 왼쪽 정렬(left:0)로 오른쪽으로만 펼쳐지게 함 —
+     마스코트가 화면 왼쪽 가장자리에 가까울 때 가운데 정렬 + nowrap이면 말풍선 왼쪽이
+     뷰포트 밖으로 잘려서 글자가 잘리는 버그가 있었음. max-width + 줄바꿈 허용으로 방지. */
   .mascot-bubble{
-    position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-4px) scale(.92);
-    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:12px; padding:8px 13px;
-    font-family:var(--mono); font-size:11.5px; color:var(--paper); white-space:nowrap;
+    position:absolute; top:calc(100% + 14px); left:0; transform:translateY(-4px) scale(.92);
+    transform-origin:top left;
+    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:12px; padding:9px 14px;
+    font-family:var(--mono); font-size:11.5px; color:var(--paper); line-height:1.5;
+    white-space:normal; max-width:min(260px, calc(100vw - 64px));
     opacity:0; pointer-events:none; transition:opacity .25s var(--ease), transform .25s var(--ease);
     box-shadow:var(--shadow-card); z-index:5;
   }
   .mascot-bubble::after{
-    content:''; position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+    content:''; position:absolute; bottom:100%; left:28px;
     border:6px solid transparent; border-bottom-color:var(--ink-2);
   }
-  .mascot-bubble.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+  .mascot-bubble.show{ opacity:1; transform:translateY(0) scale(1); }
   .hero-signature-text{ font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
   @media(max-width:560px){
-    .mascot{ width:76px; height:76px; }
+    .mascot{ width:110px; height:110px; border-width:3px; }
     .hero-signature-text{ font-size:11px; }
   }
 
@@ -676,7 +689,7 @@
     </div>
     <div class="hero-stats">
       <div class="stat"><b data-count="7">0</b><span>출시 게임 (Play / Steam)</span></div>
-      <div class="stat"><b data-count="2">0</b><span>Steam 빌드 (Electron)</span></div>
+      <div class="stat"><b data-count="1">0</b><span>Steam 빌드 (Electron)</span></div>
       <div class="stat"><b data-count="1">0</b><span>1인 개발 — 최한민</span></div>
     </div>
 
@@ -769,15 +782,15 @@
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play steam" id="game-stealthops">
+      <div class="game has-shot" data-platforms="play" id="game-stealthops">
         <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" decoding="async" alt="Stealth Ops 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
             <div><span class="game-title">Stealth Ops</span> <span class="game-ver">v4.3.0.0</span></div>
           </div>
-          <p class="game-desc">9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션. Electron/Steam 빌드로도 제공.</p>
+          <p class="game-desc">9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션.</p>
           <p class="game-behind">비하인드: 무기 밸런싱한다고 새벽 4시까지 잡혀있었음.</p>
-          <div class="badges"><span class="badge play">Google Play</span><span class="badge steam">Steam</span></div>
+          <div class="badges"><span class="badge play">Google Play</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" target="_blank" rel="noopener">Google Play →</a>
             <button class="game-share" type="button" data-share="game-stealthops">공유 🔗</button>
