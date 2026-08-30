@@ -223,6 +223,19 @@
   .sec-head h2{font-family:var(--serif); font-size:clamp(24px,3.4vw,30px); font-weight:700; letter-spacing:-0.01em;}
   .sec-sub{color:var(--paper-dim); font-size:14px; margin:-22px 0 36px; font-family:var(--mono); opacity:.85;}
 
+  /* ---------- NIGHT-OWL INSIGHT BADGE ---------- */
+  .night-badge{
+    display:none; align-items:center; gap:10px; margin:-26px 0 30px;
+    border:1px solid rgba(var(--amber-rgb),0.3); border-radius:999px;
+    padding:9px 16px; width:fit-content; max-width:100%;
+    background:linear-gradient(90deg, rgba(var(--amber-rgb),0.08), transparent);
+    font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
+  }
+  .night-badge.show{ display:flex; }
+  .night-badge .moon{ flex-shrink:0; font-size:14px; }
+  .night-badge b{ color:var(--amber); font-weight:700; }
+  @media(max-width:560px){ .night-badge{ font-size:11.5px; padding:8px 13px; white-space:normal; } }
+
   /* ---------- STORY / SOLO-DEV QUOTE ---------- */
   .story{
     border:1px solid var(--line-strong); border-radius:var(--r-lg);
@@ -403,6 +416,8 @@
   footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
   footer .links a:hover{ border-color:var(--amber); }
   .copyright{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); opacity:.75; }
+  .visit-count{ opacity:.7; }
+  .visit-count:not(:empty)::before{ content:'· '; }
 </style>
 </head>
 <body>
@@ -674,6 +689,7 @@
   <section id="timeline" class="reveal">
     <div class="sec-head"><span class="tag">TIMELINE</span><h2>게임 개발 &amp; 커밋 타임라인</h2></div>
     <p class="sec-sub">게임 개발 착수 시점과 실시간 커밋을 하나로 모아 시간순으로 정렬했습니다.</p>
+    <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
     <div id="timelineList" class="timeline-list">
       <p class="commit-loading">불러오는 중...</p>
     </div>
@@ -691,7 +707,7 @@
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:rokafhanmin@gmail.com">rokafhanmin@gmail.com</a>
     </div>
-    <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 최한민의 피, 땀, 눈물로 만들었습니다.</div>
+    <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 최한민의 피, 땀, 눈물로 만들었습니다. <span id="visitCount" class="visit-count"></span></div>
   </footer>
 </div>
 
@@ -744,6 +760,17 @@
     }, { passive: true });
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   })();
+
+  /* ---- VISITOR COUNTER ---- */
+  fetch('https://api.countapi.xyz/hit/soodalgames-com/visits')
+    .then(r => r.json())
+    .then(data => {
+      const el = document.getElementById('visitCount');
+      if (el && data && typeof data.value === 'number') {
+        el.textContent = `누적 방문 ${data.value.toLocaleString()}회`;
+      }
+    })
+    .catch(() => {});
 
   /* ---- IMAGE FADE-IN ON LOAD ---- */
   document.querySelectorAll('.game-thumb img').forEach(img => {
@@ -903,10 +930,27 @@
       });
     }
 
+    /* 커밋이 몇 시(KST)에 몰려있는지 계산 — "밤에 만든다"는 말을 실제 데이터로 보여주기 위함 */
+    function renderNightOwlBadge(allPushes){
+      const badge = document.getElementById('nightBadge');
+      const textEl = document.getElementById('nightBadgeText');
+      if (!badge || !textEl || !allPushes.length) return;
+      const nightCount = allPushes.filter(ev => {
+        const utcHour = new Date(ev.created_at).getUTCHours();
+        // KST = UTC+9 → 밤 10시~새벽 5시(KST)는 UTC 13시~19시
+        return utcHour >= 13 && utcHour <= 19;
+      }).length;
+      const pct = Math.round((nightCount / allPushes.length) * 100);
+      textEl.innerHTML = `최근 커밋 <b>${allPushes.length}건</b> 중 <b>${pct}%</b>가 밤 10시~새벽 5시(KST) 사이예요 — 낮엔 학교, 밤엔 게임.`;
+      badge.classList.add('show');
+    }
+
     fetch('https://api.github.com/users/ChoeHanMin/events/public')
       .then(r => r.json())
       .then(events => {
-        const pushes = (Array.isArray(events) ? events : []).filter(e => e.type === 'PushEvent').slice(0, 6);
+        const allPushes = (Array.isArray(events) ? events : []).filter(e => e.type === 'PushEvent');
+        renderNightOwlBadge(allPushes);
+        const pushes = allPushes.slice(0, 6);
         const commitEvents = pushes.map(ev => {
           const commit = ev.payload.commits && ev.payload.commits[0];
           const d = new Date(ev.created_at);
