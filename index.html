@@ -482,6 +482,13 @@
     .game-thumb{width:100%; height:190px;}
     .game.featured .game-thumb{ width:100%; height:200px; }
   }
+  /* 넓은 화면에서는 2열 그리드로 — 카드가 지나치게 가로로 길어지는 걸 방지 */
+  @media(min-width:840px){
+    .games{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .game.featured{ grid-column:1 / -1; }
+    .game:not(.featured).has-shot{ flex-direction:column; }
+    .game:not(.featured) .game-thumb{ flex:0 0 auto; width:100%; height:170px; }
+  }
   .badges{display:flex; gap:8px; flex-wrap:wrap;}
   .badge{
     font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:999px;
@@ -589,6 +596,12 @@
   .visit-count{ opacity:.7; }
   .visit-count:not(:empty)::before{ content:'· '; }
   .last-updated{ font-family:var(--mono); font-size:11px; color:var(--paper-dim); opacity:.6; margin-top:6px; }
+  .kbd-hint{ font-family:var(--mono); font-size:11px; color:var(--paper-dim); opacity:.6; margin-top:10px; }
+  .kbd-hint kbd{
+    font-family:var(--mono); font-size:10px; border:1px solid var(--line-strong);
+    border-radius:4px; padding:1px 6px; margin:0 1px; background:var(--ink-2);
+  }
+  @media(max-width:560px){ .kbd-hint{ display:none; } }
 
   /* ---------- SCROLL PROGRESS BAR ---------- */
   .scroll-progress{
@@ -922,6 +935,7 @@
     </div>
     <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 제 피, 땀 그리고 눈물로 만들었습니다. <span id="visitCount" class="visit-count"></span></div>
     <p id="lastUpdated" class="last-updated"></p>
+    <p class="kbd-hint">⌨ 단축키 — <kbd>T</kbd> 테마 전환 · <kbd>G</kbd> 게임 목록 · <kbd>R</kbd> 랜덤 게임 · <kbd>Home</kbd> 맨 위로</p>
   </footer>
 </div>
 
@@ -1204,6 +1218,23 @@
       pick.classList.add('jump-highlight');
     });
   })();
+
+  /* ---- KEYBOARD SHORTCUTS (T 테마 / G 게임 / R 랜덤 / Home 맨 위) ---- */
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+    if (e.key === 't' || e.key === 'T') {
+      document.getElementById('themeToggle')?.click();
+    } else if (e.key === 'g' || e.key === 'G') {
+      document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'r' || e.key === 'R') {
+      document.getElementById('randomGameBtn')?.click();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
 
   /* ---- GAME SCREENSHOT MINI-CAROUSEL ---- */
   document.querySelectorAll('.game-thumb[data-shots]').forEach(thumb => {
