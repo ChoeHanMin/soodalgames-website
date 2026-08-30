@@ -36,7 +36,9 @@
 <style>
   :root{
     --ink:#0A0A0D;
+    --ink-rgb:10,10,13;
     --ink-2:#151620;
+    --ink-2-rgb:21,22,32;
     --ink-3:#1C1D28;
     --paper:#EEEBE3;
     --paper-dim:#9A968D;
@@ -59,6 +61,32 @@
     --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset, 0 18px 40px -22px rgba(0,0,0,0.55);
     --shadow-lift: 0 26px 60px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(var(--amber-rgb),0.22);
   }
+  /* ---------- LIGHT MODE ---------- */
+  html[data-theme="light"]{
+    --ink:#FFF8EF;
+    --ink-rgb:255,248,239;
+    --ink-2:#FFFFFF;
+    --ink-2-rgb:255,255,255;
+    --ink-3:#FFEFDB;
+    --paper:#241A0F;
+    --paper-dim:#7C6B57;
+    --amber:#E8720F;
+    --amber-soft:#FFA542;
+    --teal:#0E9C86;
+    --rose:#E8496B;
+    --amber-rgb:232,114,15;
+    --teal-rgb:14,156,134;
+    --rose-rgb:232,73,107;
+    --line: rgba(36,26,15,0.10);
+    --line-strong: rgba(36,26,15,0.20);
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.7) inset, 0 18px 40px -24px rgba(120,60,10,0.20);
+    --shadow-lift: 0 26px 60px -20px rgba(120,60,10,0.25), 0 0 0 1px rgba(var(--amber-rgb),0.3);
+  }
+  html[data-theme="light"] .orb{ opacity:.7; }
+  html[data-theme="light"] body{
+    background-image:radial-gradient(circle at 15% 8%, rgba(var(--rose-rgb),0.05), transparent 40%), radial-gradient(circle at 85% 0%, rgba(var(--teal-rgb),0.06), transparent 45%);
+  }
+  @media (prefers-reduced-motion: reduce){ html[data-theme="light"] .orb{ opacity:.55; } }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth; overflow-x:hidden; width:100%;}
   body{
@@ -75,22 +103,57 @@
   /* ---------- TOP BAR ---------- */
   .topbar{
     position:sticky; top:0; z-index:30;
-    background:rgba(10,10,13,0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    background:rgba(var(--ink-rgb),0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
   }
   .topbar-inner{
     max-width:920px; margin:0 auto; padding:16px 28px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
   @media(max-width:560px){ .topbar-inner{padding:14px 20px;} }
   .brand{display:flex; align-items:center; gap:10px; font-family:var(--serif); font-weight:700; font-size:18px;}
   .brand .ic{font-size:20px;}
+  .topbar-right{ display:flex; align-items:center; gap:10px; }
   .backlink{
     font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
     border:1px solid var(--line); border-radius:999px; padding:7px 14px;
     transition:border-color .2s, color .2s;
   }
   .backlink:hover{ border-color:var(--amber); color:var(--amber); }
+  .theme-toggle{
+    flex-shrink:0; width:36px; height:36px; border-radius:50%;
+    background:rgba(var(--ink-2-rgb),0.6); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid var(--line-strong); font-size:15px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; line-height:1;
+    transition:transform .2s, border-color .2s;
+  }
+  .theme-toggle:hover{ transform:scale(1.08) rotate(-8deg); border-color:var(--amber); }
+
+  /* ---------- NAV DOTS ---------- */
+  .nav-dots{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:20;
+    display:flex; flex-direction:column; gap:15px;
+  }
+  @media(max-width:1100px){ .nav-dots{ display:none; } }
+  .nav-dots button{
+    position:relative; width:9px; height:9px; border-radius:50%;
+    background:var(--line-strong); border:none; padding:0; cursor:pointer;
+    transition:background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .nav-dots button:hover{ transform:scale(1.35); }
+  .nav-dots button.active{
+    background:var(--amber); transform:scale(1.35);
+    box-shadow:0 0 0 4px rgba(var(--amber-rgb),0.18);
+  }
+  .nav-dots .dot-label{
+    position:absolute; right:20px; top:50%; transform:translateY(-50%);
+    font-family:var(--mono); font-size:10.5px; color:var(--paper-dim); white-space:nowrap;
+    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:7px; padding:5px 10px;
+    opacity:0; pointer-events:none; transition:opacity .2s var(--ease);
+    box-shadow:var(--shadow-card);
+  }
+  .nav-dots button:hover .dot-label{ opacity:1; }
+  @media print{ .nav-dots{ display:none !important; } }
 
   /* ---------- HERO ---------- */
   .hero{ padding:100px 0 56px; position:relative; overflow:hidden; isolation:isolate; }
@@ -177,7 +240,7 @@
   .back-to-top{
     position:fixed; right:22px; bottom:22px; z-index:25;
     width:44px; height:44px; border-radius:50%;
-    background:rgba(21,22,32,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    background:rgba(var(--ink-2-rgb),0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
     border:1px solid var(--line-strong); color:var(--amber); font-size:18px; cursor:pointer;
     opacity:0; pointer-events:none; transform:translateY(10px);
     transition:opacity .25s var(--ease), transform .25s var(--ease), border-color .2s;
@@ -274,7 +337,7 @@
   /* ---------- GAMES (release cards) ---------- */
   .games{display:flex; flex-direction:column; gap:16px;}
   .game{
-    position:relative; isolation:isolate;
+    position:relative; isolation:isolate; scroll-margin-top:88px;
     border:1px solid var(--line); border-radius:var(--r-md); padding:24px 26px;
     background:linear-gradient(165deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 55%);
     box-shadow:var(--shadow-card);
@@ -328,9 +391,15 @@
   }
   .badge.play{border-color:rgba(var(--teal-rgb),0.4); color:var(--teal);}
   .badge.steam{border-color:rgba(var(--rose-rgb),0.4); color:var(--rose);}
-  .game-links{margin-top:14px; display:flex; gap:18px; font-family:var(--mono); font-size:12px;}
+  .game-links{margin-top:14px; display:flex; gap:18px; flex-wrap:wrap; font-family:var(--mono); font-size:12px;}
   .game-links a{color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s, opacity .2s;}
   .game-links a:hover{border-color:var(--amber);}
+  .game-share{
+    background:none; border:none; padding:0; margin:0; font:inherit;
+    color:var(--paper-dim); cursor:pointer;
+    border-bottom:1px solid transparent; transition:border-color .2s, color .2s;
+  }
+  .game-share:hover{ color:var(--amber); border-color:var(--amber); }
 
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
@@ -407,7 +476,7 @@
   }
   .lightbox.show{ display:flex; }
   .lightbox img{ max-width:min(90vw,900px); max-height:80vh; border-radius:var(--r-sm); box-shadow:var(--shadow-lift); }
-  .lightbox-close{ position:absolute; top:22px; right:28px; font-size:22px; cursor:pointer; color:var(--paper); }
+  .lightbox-close{ position:absolute; top:22px; right:28px; font-size:22px; cursor:pointer; color:#EEEBE3; }
 
   /* ---------- FOOTER ---------- */
   footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
@@ -419,15 +488,34 @@
   .visit-count{ opacity:.7; }
   .visit-count:not(:empty)::before{ content:'· '; }
 </style>
+<script>
+  /* 첫 페인트 전에 저장된 테마를 적용해서 다크→라이트 깜빡임(FOUC)을 막습니다 */
+  try {
+    if (localStorage.getItem('soodal-theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch (e) {}
+</script>
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand"><span class="ic">🎮</span> Soodal Games</div>
-    <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">← choihanmin.com</a>
+    <div class="topbar-right">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="라이트/다크 모드 전환">🌙</button>
+      <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">← choihanmin.com</a>
+    </div>
   </div>
 </div>
+
+<nav id="navDots" class="nav-dots" aria-label="섹션 바로가기">
+  <button data-target="heroTop" type="button" aria-label="홈으로 이동"><span class="dot-label">홈</span></button>
+  <button data-target="story" type="button" aria-label="스토리로 이동"><span class="dot-label">스토리</span></button>
+  <button data-target="games" type="button" aria-label="게임 목록으로 이동"><span class="dot-label">게임</span></button>
+  <button data-target="pipeline" type="button" aria-label="개발 과정으로 이동"><span class="dot-label">개발 과정</span></button>
+  <button data-target="timeline" type="button" aria-label="타임라인으로 이동"><span class="dot-label">타임라인</span></button>
+</nav>
 
 <div class="wrap">
   <section class="hero reveal in-view" id="heroTop">
@@ -516,7 +604,7 @@
     </div>
     <div class="games">
 
-      <div class="game has-shot featured" data-platforms="play steam">
+      <div class="game has-shot featured" data-platforms="play steam" id="game-minicourt">
         <span class="featured-ribbon">★ FEATURED</span>
         <div class="game-thumb" data-shots="images/games/web/minicourt.jpg,images/games/web/minicourt2.jpg,images/games/web/minicourt3.jpg,images/games/web/minicourt4.jpg"><img src="images/games/web/minicourt.jpg" loading="lazy" alt="미니법정 스크린샷"></div>
         <div class="game-body">
@@ -532,11 +620,12 @@
           <div class="game-links">
             <a href="https://store.steampowered.com/app/5113110" target="_blank" rel="noopener">Steam →</a>
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" target="_blank" rel="noopener">Google Play →</a>
+            <button class="game-share" type="button" data-share="game-minicourt">공유 🔗</button>
           </div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play steam">
+      <div class="game has-shot" data-platforms="play steam" id="game-stealthops">
         <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" alt="Stealth Ops 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
@@ -547,11 +636,12 @@
           <div class="badges"><span class="badge play">Google Play</span><span class="badge steam">Steam</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" target="_blank" rel="noopener">Google Play →</a>
+            <button class="game-share" type="button" data-share="game-stealthops">공유 🔗</button>
           </div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play">
+      <div class="game has-shot" data-platforms="play" id="game-timeheist24">
         <div class="game-thumb" data-shots="images/games/web/timeheist24.jpg,images/games/web/timeheist24_2.jpg,images/games/web/timeheist24_3.jpg"><img src="images/games/web/timeheist24.jpg" loading="lazy" alt="Time Heist 24 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
@@ -563,47 +653,52 @@
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" target="_blank" rel="noopener">Google Play →</a>
             <a href="https://github.com/ChoeHanMin/time-heist" target="_blank" rel="noopener">GitHub →</a>
+            <button class="game-share" type="button" data-share="game-timeheist24">공유 🔗</button>
           </div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play">
+      <div class="game has-shot" data-platforms="play" id="game-seathunter">
         <div class="game-thumb" data-shots="images/games/web/seathunter.jpg,images/games/web/seathunter2.jpg,images/games/web/seathunter3.jpg"><img src="images/games/web/seathunter.jpg" loading="lazy" alt="자리 사냥 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">자리 사냥 (Seat Hunter)</span></div></div>
           <p class="game-desc">지하철 승객을 관찰해 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임.</p>
           <p class="game-behind">비하인드: 관찰력 테스트하다가 정작 내가 내릴 역을 놓침.</p>
           <div class="badges"><span class="badge play">Google Play</span></div>
+          <div class="game-links"><button class="game-share" type="button" data-share="game-seathunter">공유 🔗</button></div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play">
+      <div class="game has-shot" data-platforms="play" id="game-stresssmash">
         <div class="game-thumb" data-shots="images/games/web/stresssmash.jpg,images/games/web/stresssmash2.jpg"><img src="images/games/web/stresssmash.jpg" loading="lazy" alt="Stress Smash 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Stress Smash</span></div></div>
           <p class="game-desc">화면을 두드려 스트레스를 날리는 타격감 중심 캐주얼 게임.</p>
           <p class="game-behind">비하인드: 테스트하다가 진짜로 스트레스가 풀렸음.</p>
           <div class="badges"><span class="badge play">Google Play</span></div>
+          <div class="game-links"><button class="game-share" type="button" data-share="game-stresssmash">공유 🔗</button></div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play">
+      <div class="game has-shot" data-platforms="play" id="game-colordebt">
         <div class="game-thumb" data-shots="images/games/web/colordebt.jpg,images/games/web/colordebt2.jpg,images/games/web/colordebt3.jpg"><img src="images/games/web/colordebt.jpg" loading="lazy" alt="Color Debt 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Color Debt</span></div></div>
           <p class="game-desc">같은 색 얼굴을 합치고 터뜨려 빚을 늘리지 않는 캐주얼 퍼즐 게임.</p>
           <p class="game-behind">비하인드: 빚 갚는 게임 만들다가 내 통장 잔고가 떠올랐음.</p>
           <div class="badges"><span class="badge play">Google Play</span></div>
+          <div class="game-links"><button class="game-share" type="button" data-share="game-colordebt">공유 🔗</button></div>
         </div>
       </div>
 
-      <div class="game has-shot" data-platforms="play">
+      <div class="game has-shot" data-platforms="play" id="game-mazeescape">
         <div class="game-thumb" data-shots="images/games/web/mazeescape.jpg,images/games/web/mazeescape2.jpg,images/games/web/mazeescape3.jpg"><img src="images/games/web/mazeescape.jpg" loading="lazy" alt="Maze Escape 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Maze Escape</span></div></div>
           <p class="game-desc">열쇠를 모아 미로를 탈출하는 캐주얼 게임, 초기작 중 하나.</p>
           <p class="game-behind">비하인드: 미로 디자인하다가 정작 나가는 길을 못 찾았음.</p>
           <div class="badges"><span class="badge play">Google Play</span></div>
+          <div class="game-links"><button class="game-share" type="button" data-share="game-mazeescape">공유 🔗</button></div>
         </div>
       </div>
 
@@ -719,6 +814,68 @@
 <button id="backToTop" class="back-to-top" aria-label="맨 위로">↑</button>
 
 <script>
+  /* ---- THEME TOGGLE (light/dark) ---- */
+  (function(){
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    function applyTheme(theme){
+      if (theme === 'light') { root.setAttribute('data-theme', 'light'); btn.textContent = '☀️'; }
+      else { root.removeAttribute('data-theme'); btn.textContent = '🌙'; }
+    }
+    let saved = null;
+    try { saved = localStorage.getItem('soodal-theme'); } catch (e) {}
+    applyTheme(saved === 'light' ? 'light' : 'dark');
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+      try { localStorage.setItem('soodal-theme', next); } catch (e) {}
+    });
+  })();
+
+  /* ---- NAV DOTS ---- */
+  (function(){
+    const navDots = document.querySelectorAll('#navDots button');
+    if (!navDots.length) return;
+    const navSections = Array.from(navDots).map(btn => document.getElementById(btn.dataset.target)).filter(Boolean);
+    navDots.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    const navIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const idx = navSections.indexOf(entry.target);
+        if (idx === -1) return;
+        if (entry.isIntersecting) {
+          navDots.forEach(b => b.classList.remove('active'));
+          navDots[idx].classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+    navSections.forEach(sec => navIO.observe(sec));
+  })();
+
+  /* ---- GAME SHARE (copy link to clipboard) ---- */
+  document.querySelectorAll('.game-share[data-share]').forEach(btn => {
+    const original = btn.textContent;
+    let resetTimer = null;
+    btn.addEventListener('click', () => {
+      const url = `${location.origin}${location.pathname}#${btn.dataset.share}`;
+      const showDone = () => {
+        btn.textContent = '복사됨 ✓';
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => { btn.textContent = original; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showDone).catch(showDone);
+      } else {
+        showDone();
+      }
+    });
+  });
+
   /* ---- SCROLL REVEAL ---- */
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
