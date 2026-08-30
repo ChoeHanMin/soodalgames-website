@@ -18,6 +18,7 @@
 <meta name="twitter:title" content="Soodal Games">
 <meta name="twitter:description" content="최한민(Choi Hanmin)이 만드는 1인 인디 게임 스튜디오. Google Play·Steam 게임 출시작과 개발 타임라인.">
 <meta name="twitter:image" content="https://www.soodalgames.com/images/games/web/minicourt.jpg">
+<meta name="google-site-verification" content="bb45WtwZzTvl94eE2gGoxnkHkvEP467hM-lC1KcvSo4" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -69,7 +70,6 @@
   .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
   @media(max-width:560px){ .wrap{padding:0 20px;} }
   img{max-width:100%;}
-
   /* ---------- TOP BAR ---------- */
   .topbar{
     position:sticky; top:0; z-index:30;
@@ -89,7 +89,6 @@
     transition:border-color .2s, color .2s;
   }
   .backlink:hover{ border-color:var(--amber); color:var(--amber); }
-
   /* ---------- HERO ---------- */
   .hero{ padding:88px 0 64px; position:relative; }
   @media(max-width:700px){ .hero{padding:64px 0 48px;} }
@@ -121,10 +120,8 @@
   .hero-stats{ display:flex; gap:36px; margin-top:38px; flex-wrap:wrap; }
   .hero-stats .stat b{ display:block; font-family:var(--serif); font-size:28px; color:var(--amber); }
   .hero-stats .stat span{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); }
-
   .divider{max-width:920px; margin:0 auto; padding:0 28px;}
   @media(max-width:560px){ .divider{padding:0 20px;} }
-
   /* ---------- SECTION HEADERS ---------- */
   section{padding:76px 0;}
   @media(max-width:700px){ section{padding:56px 0;} }
@@ -140,7 +137,6 @@
   }
   .sec-head h2{font-family:var(--serif); font-size:clamp(24px,3.4vw,30px); font-weight:700; letter-spacing:-0.01em;}
   .sec-sub{color:var(--paper-dim); font-size:14px; margin:-22px 0 36px; font-family:var(--mono); opacity:.85;}
-
   /* ---------- GAME FILTER ---------- */
   .game-filters{ display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
   .game-filters button{
@@ -154,7 +150,6 @@
   .game-filters button.active{ color:var(--ink); background:var(--amber); border-color:var(--amber); }
   .game-filters button:active{ transform:scale(.96); }
   .game.filtered-out{ display:none; }
-
   /* ---------- GAMES (release cards) ---------- */
   .games{display:flex; flex-direction:column; gap:16px;}
   .game{
@@ -208,7 +203,6 @@
   .game-links{margin-top:14px; display:flex; gap:18px; font-family:var(--mono); font-size:12px;}
   .game-links a{color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s, opacity .2s;}
   .game-links a:hover{border-color:var(--amber);}
-
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
   @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
@@ -221,7 +215,6 @@
   .reveal.in-view .game:nth-child(5){ animation-delay:.28s; }
   .reveal.in-view .game:nth-child(n+6){ animation-delay:.32s; }
   .games.shuffling .game:not(.filtered-out){ animation:cardSettle .4s ease both; }
-
   /* ---------- TIMELINE ---------- */
   .timeline-list{display:flex; flex-direction:column; gap:4px;}
   .commit-loading{color:var(--paper-dim); font-family:var(--mono); font-size:13px;}
@@ -239,7 +232,6 @@
     .timeline-row{ flex-wrap:wrap; margin:0 -6px; padding:11px 6px; }
     .timeline-row .t-tag{ flex-basis:100%; padding-left:27px; margin-top:-2px; }
   }
-
   /* ---------- LIGHTBOX ---------- */
   .lightbox{
     display:none; position:fixed; inset:0; z-index:60;
@@ -249,7 +241,6 @@
   .lightbox.show{ display:flex; }
   .lightbox img{ max-width:min(90vw,900px); max-height:80vh; border-radius:var(--r-sm); box-shadow:var(--shadow-lift); }
   .lightbox-close{ position:absolute; top:22px; right:28px; font-size:22px; cursor:pointer; color:var(--paper); }
-
   /* ---------- FOOTER ---------- */
   footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
   footer .footer-title{ font-family:var(--serif); font-size:18px; margin-bottom:16px; }
@@ -260,14 +251,12 @@
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand"><span class="ic">🎮</span> Soodal Games</div>
     <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">← choihanmin.com</a>
   </div>
 </div>
-
 <div class="wrap">
   <section class="hero reveal in-view">
     <span class="tag">SOODAL GAMES</span>
@@ -284,12 +273,10 @@
       <div class="stat"><b>1</b><span>운영자 — 최한민</span></div>
     </div>
   </section>
-
   <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
     <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
     <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
   </svg></div>
-
   <!-- GAMES -->
   <section id="games" class="reveal">
     <div class="sec-head"><span class="tag">RELEASES</span><h2>출시한 게임들</h2></div>
@@ -300,7 +287,6 @@
       <button data-filter="steam">Steam만</button>
     </div>
     <div class="games">
-
       <div class="game has-shot featured" data-platforms="play steam">
         <span class="featured-ribbon">★ FEATURED</span>
         <div class="game-thumb" data-shots="images/games/web/minicourt.jpg,images/games/web/minicourt2.jpg,images/games/web/minicourt3.jpg,images/games/web/minicourt4.jpg"><img src="images/games/web/minicourt.jpg" loading="lazy" alt="미니법정 스크린샷"></div>
@@ -320,7 +306,6 @@
           </div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play steam">
         <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" alt="Stealth Ops 스크린샷"></div>
         <div class="game-body">
@@ -335,7 +320,6 @@
           </div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play">
         <div class="game-thumb" data-shots="images/games/web/timeheist24.jpg,images/games/web/timeheist24_2.jpg,images/games/web/timeheist24_3.jpg"><img src="images/games/web/timeheist24.jpg" loading="lazy" alt="Time Heist 24 스크린샷"></div>
         <div class="game-body">
@@ -351,7 +335,6 @@
           </div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play">
         <div class="game-thumb" data-shots="images/games/web/seathunter.jpg,images/games/web/seathunter2.jpg,images/games/web/seathunter3.jpg"><img src="images/games/web/seathunter.jpg" loading="lazy" alt="자리 사냥 스크린샷"></div>
         <div class="game-body">
@@ -361,7 +344,6 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play">
         <div class="game-thumb" data-shots="images/games/web/stresssmash.jpg,images/games/web/stresssmash2.jpg"><img src="images/games/web/stresssmash.jpg" loading="lazy" alt="Stress Smash 스크린샷"></div>
         <div class="game-body">
@@ -371,7 +353,6 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play">
         <div class="game-thumb" data-shots="images/games/web/colordebt.jpg,images/games/web/colordebt2.jpg,images/games/web/colordebt3.jpg"><img src="images/games/web/colordebt.jpg" loading="lazy" alt="Color Debt 스크린샷"></div>
         <div class="game-body">
@@ -381,7 +362,6 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
         </div>
       </div>
-
       <div class="game has-shot" data-platforms="play">
         <div class="game-thumb" data-shots="images/games/web/mazeescape.jpg,images/games/web/mazeescape2.jpg,images/games/web/mazeescape3.jpg"><img src="images/games/web/mazeescape.jpg" loading="lazy" alt="Maze Escape 스크린샷"></div>
         <div class="game-body">
@@ -391,15 +371,12 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
         </div>
       </div>
-
     </div>
   </section>
-
   <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
     <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
     <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
   </svg></div>
-
   <!-- INTEGRATED TIMELINE -->
   <section id="timeline" class="reveal">
     <div class="sec-head"><span class="tag">TIMELINE</span><h2>게임 개발 &amp; 커밋 타임라인</h2></div>
@@ -408,12 +385,10 @@
       <p class="commit-loading">불러오는 중...</p>
     </div>
   </section>
-
   <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
     <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
     <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
   </svg></div>
-
   <footer class="reveal">
     <div class="footer-title">더 알아보고 싶다면</div>
     <div class="links">
@@ -424,12 +399,10 @@
     <div class="copyright">© 2026 Choi Hanmin · Soodal Games</div>
   </footer>
 </div>
-
 <div id="lightbox" class="lightbox">
   <span class="lightbox-close" id="lightboxClose">✕</span>
   <img id="lightboxImg" src="" alt="확대 이미지">
 </div>
-
 <script>
   /* ---- SCROLL REVEAL ---- */
   const revealEls = document.querySelectorAll('.reveal');
@@ -439,7 +412,6 @@
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
-
   /* ---- IMAGE FADE-IN ON LOAD ---- */
   document.querySelectorAll('.game-thumb img').forEach(img => {
     if (img.complete && img.naturalWidth > 0) { img.classList.add('loaded'); }
@@ -448,7 +420,6 @@
       img.addEventListener('error', () => img.classList.add('loaded'), { once: true });
     }
   });
-
   /* ---- GAME FILTER ---- */
   const gamesContainer = document.querySelector('.games');
   document.querySelectorAll('.game-filters button').forEach(btn => {
@@ -468,7 +439,6 @@
       }
     });
   });
-
   /* ---- GAME SCREENSHOT MINI-CAROUSEL ---- */
   document.querySelectorAll('.game-thumb[data-shots]').forEach(thumb => {
     const shots = thumb.dataset.shots.split(',').map(s => s.trim()).filter(Boolean);
@@ -483,7 +453,6 @@
       clearInterval(carouselTimer); idx = 0; img.src = shots[0];
     });
   });
-
   /* ---- GAME THUMB LIGHTBOX ---- */
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
@@ -500,7 +469,6 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') lightbox.classList.remove('show');
   });
-
   /* ---- INTEGRATED TIMELINE (games + live commits, merged) ---- */
   (function(){
     // 실제 개발 착수 시점 (한민님이 직접 제공한 날짜, 월 단위)
@@ -513,7 +481,6 @@
       { date: '2026-04', icon: '🎮', title: 'Maze Escape 개발 시작', tag: 'Soodal Games' },
       { date: '2026-06', icon: '🎮', title: 'Stress Smash 개발 시작', tag: 'Soodal Games' },
     ];
-
     function renderTimeline(events){
       const list = document.getElementById('timelineList');
       if (!list) return;
@@ -534,7 +501,6 @@
         list.appendChild(row);
       });
     }
-
     fetch('https://api.github.com/users/ChoeHanMin/events/public')
       .then(r => r.json())
       .then(events => {
