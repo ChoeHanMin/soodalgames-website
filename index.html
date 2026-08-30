@@ -282,30 +282,31 @@
   .hero-stats .stat span{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); }
 
   /* ---------- MASCOT SIGNATURE ---------- */
-  .hero-signature{ display:flex; align-items:center; gap:14px; margin-top:34px; }
+  .hero-signature{ display:flex; align-items:center; gap:20px; margin-top:36px; }
   .mascot-wrap{ position:relative; flex-shrink:0; }
   .mascot{
-    display:block; width:56px; height:56px; border-radius:50%; object-fit:cover;
-    border:2px solid var(--amber); cursor:pointer;
-    box-shadow:0 8px 20px -10px rgba(var(--amber-rgb),0.55);
+    display:block; width:104px; height:104px; border-radius:50%; object-fit:cover;
+    border:3px solid var(--amber); cursor:pointer;
+    box-shadow:0 10px 26px -10px rgba(var(--amber-rgb),0.55);
     transition:transform .25s var(--ease), box-shadow .25s var(--ease);
   }
-  .mascot:hover{ transform:scale(1.08) rotate(-4deg); box-shadow:0 12px 26px -10px rgba(var(--amber-rgb),0.7); }
+  .mascot:hover{ transform:scale(1.06) rotate(-4deg); box-shadow:0 14px 32px -10px rgba(var(--amber-rgb),0.7); }
+  /* 말풍선은 마스코트 '아래'에 뜨도록 — 위로 띄우면 히어로 통계 텍스트를 가리는 버그가 있었음 */
   .mascot-bubble{
-    position:absolute; bottom:calc(100% + 12px); left:50%; transform:translateX(-50%) translateY(4px) scale(.92);
+    position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-4px) scale(.92);
     background:var(--ink-2); border:1px solid var(--line-strong); border-radius:12px; padding:8px 13px;
     font-family:var(--mono); font-size:11.5px; color:var(--paper); white-space:nowrap;
     opacity:0; pointer-events:none; transition:opacity .25s var(--ease), transform .25s var(--ease);
     box-shadow:var(--shadow-card); z-index:5;
   }
   .mascot-bubble::after{
-    content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-    border:6px solid transparent; border-top-color:var(--ink-2);
+    content:''; position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-bottom-color:var(--ink-2);
   }
   .mascot-bubble.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
   .hero-signature-text{ font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
   @media(max-width:560px){
-    .mascot{ width:46px; height:46px; }
+    .mascot{ width:76px; height:76px; }
     .hero-signature-text{ font-size:11px; }
   }
 
@@ -326,7 +327,7 @@
   /* ---------- MARQUEE ---------- */
   .marquee-strip{
     overflow:hidden; border:1px solid var(--line); border-radius:999px;
-    padding:14px 0; margin:44px 0 0;
+    padding:14px 0; margin:64px 0 0;
     background:linear-gradient(90deg, rgba(var(--amber-rgb),0.07), transparent 25%, transparent 75%, rgba(var(--amber-rgb),0.07));
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -679,7 +680,7 @@
       </p>
       <p class="story-quote">
         "이 사이트에 올라온 게임 한 줄의 코드, 그림 한 장, 버그 수정 하나까지 —<br>
-        전부 최한민의 피, 땀, 눈물로 만들었습니다."
+        전부 제 피, 땀 그리고 눈물로 만들었습니다."
       </p>
       <p class="story-sign">— 최한민, Soodal Games</p>
     </div>
@@ -900,7 +901,7 @@
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:rokafhanmin@gmail.com">rokafhanmin@gmail.com</a>
     </div>
-    <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 최한민의 피, 땀, 눈물로 만들었습니다. <span id="visitCount" class="visit-count"></span></div>
+    <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 제 피, 땀 그리고 눈물로 만들었습니다. <span id="visitCount" class="visit-count"></span></div>
   </footer>
 </div>
 
