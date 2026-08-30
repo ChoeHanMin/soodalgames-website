@@ -483,11 +483,24 @@
   .game-behind{ font-family:var(--serif); font-style:italic; font-size:13px; color:var(--amber); opacity:.85; margin:-2px 0 14px; }
   .game.has-shot{display:flex; gap:22px; align-items:stretch;}
   .game-thumb{
+    position:relative;
     flex:0 0 138px; width:138px; height:138px; border-radius:var(--r-sm); overflow:hidden;
     border:1px solid var(--line); box-shadow:0 12px 26px -14px rgba(0,0,0,0.5);
   }
   .game-thumb img{width:100%; height:100%; object-fit:cover; display:block; cursor:zoom-in; opacity:0; transition:opacity .5s var(--ease);}
   .game-thumb img.loaded{opacity:1;}
+  /* 스크린샷이 여러 장인 카드는 호버 시 몇 번째 사진인지 점으로 표시 */
+  .thumb-dots{
+    position:absolute; bottom:7px; left:0; right:0; z-index:2;
+    display:flex; justify-content:center; gap:4px;
+    opacity:0; transition:opacity .2s var(--ease); pointer-events:none;
+  }
+  .game-thumb:hover .thumb-dots{ opacity:1; }
+  .thumb-dots span{
+    width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.45);
+    box-shadow:0 0 0 1px rgba(0,0,0,0.25); transition:background .2s, transform .2s;
+  }
+  .thumb-dots span.active{ background:#fff; transform:scale(1.25); }
   .game-body{flex:1; min-width:0;}
   .game.featured .game-thumb{ flex-basis:164px; width:164px; height:164px; }
   .game.featured .game-title{ font-size:20.5px; }
@@ -549,7 +562,11 @@
     display:flex; align-items:center; justify-content:center;
     font-family:var(--mono); font-size:15px; color:var(--amber); font-weight:700;
     box-shadow:0 0 0 4px var(--ink), 0 8px 20px -10px rgba(var(--amber-rgb),0.5);
-    z-index:1;
+    z-index:1; transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+  }
+  .pstep:hover .pstep-num{
+    transform:scale(1.1); background:var(--amber); color:var(--ink);
+    box-shadow:0 0 0 4px var(--ink), 0 10px 24px -8px rgba(var(--amber-rgb),0.7);
   }
   .pstep-line{ position:absolute; top:44px; bottom:-34px; width:1px; background:linear-gradient(var(--amber) 0%, var(--line) 100%); opacity:.4; }
   .pstep:last-child .pstep-line{ display:none; }
@@ -1280,18 +1297,38 @@
     }
   });
 
-  /* ---- GAME SCREENSHOT MINI-CAROUSEL ---- */
+  /* ---- GAME SCREENSHOT MINI-CAROUSEL (+ 몇 번째 사진인지 점으로 표시) ---- */
   document.querySelectorAll('.game-thumb[data-shots]').forEach(thumb => {
     const shots = thumb.dataset.shots.split(',').map(s => s.trim()).filter(Boolean);
     if (shots.length <= 1) return;
     const img = thumb.querySelector('img');
+
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'thumb-dots';
+    dotsWrap.setAttribute('aria-hidden', 'true');
+    const dots = shots.map((_, i) => {
+      const d = document.createElement('span');
+      if (i === 0) d.classList.add('active');
+      dotsWrap.appendChild(d);
+      return d;
+    });
+    thumb.appendChild(dotsWrap);
+
+    function setActive(i){
+      dots.forEach((d, di) => d.classList.toggle('active', di === i));
+    }
+
     let idx = 0;
     let carouselTimer = null;
     thumb.addEventListener('mouseenter', () => {
-      carouselTimer = setInterval(() => { idx = (idx + 1) % shots.length; img.src = shots[idx]; }, 900);
+      carouselTimer = setInterval(() => {
+        idx = (idx + 1) % shots.length;
+        img.src = shots[idx];
+        setActive(idx);
+      }, 900);
     });
     thumb.addEventListener('mouseleave', () => {
-      clearInterval(carouselTimer); idx = 0; img.src = shots[0];
+      clearInterval(carouselTimer); idx = 0; img.src = shots[0]; setActive(0);
     });
   });
 
