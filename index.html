@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" id="themeColorMeta" content="#0A0A0D">
 <title>Soodal Games — 최한민 (Choi Hanmin)</title>
 <meta name="description" content="Soodal Games — 최한민(Choi Hanmin)이 홀로 만드는 인디 게임 스튜디오. 기획부터 프로토타입, 밸런싱, 출시, 라이브 업데이트까지 — 게임 하나가 완성되는 전 과정과 Google Play·Steam 출시작, 실시간 커밋 타임라인.">
 <meta name="keywords" content="Soodal Games, 수달게임즈, 최한민, Choi Hanmin, 인디 게임, 1인 개발, 게임 개발 과정, 미니법정, Mini Court, Stealth Ops, Time Heist 24, 인디게임 개발">
@@ -28,6 +29,64 @@
   "url": "https://www.soodalgames.com/",
   "founder": { "@type": "Person", "name": "최한민", "alternateName": "Choi Hanmin", "url": "https://www.choihanmin.com/" },
   "sameAs": [ "https://github.com/ChoeHanMin", "https://www.choihanmin.com/" ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Soodal Games 출시작",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "item": {
+      "@type": "VideoGame", "name": "미니법정 (Mini Court)",
+      "description": "55개 사건, 한/영 지원, 항소심 모드와 데일리 챌린지, 경력 XP 시스템까지 갖춘 법정 시뮬레이션.",
+      "url": "https://www.soodalgames.com/#game-minicourt",
+      "image": "https://www.soodalgames.com/images/games/web/minicourt.jpg",
+      "gamePlatform": ["Android", "Steam"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 2, "item": {
+      "@type": "VideoGame", "name": "Stealth Ops",
+      "description": "9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션.",
+      "url": "https://www.soodalgames.com/#game-stealthops",
+      "image": "https://www.soodalgames.com/images/games/web/stealthops.jpg",
+      "gamePlatform": ["Android", "Steam"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 3, "item": {
+      "@type": "VideoGame", "name": "Time Heist 24",
+      "description": "시간이 곧 체력이자 행동력이자 점수가 되는 턴제 전략 게임.",
+      "url": "https://www.soodalgames.com/#game-timeheist24",
+      "image": "https://www.soodalgames.com/images/games/web/timeheist24.jpg",
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 4, "item": {
+      "@type": "VideoGame", "name": "자리 사냥 (Seat Hunter)",
+      "description": "지하철 승객을 관찰해 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임.",
+      "url": "https://www.soodalgames.com/#game-seathunter",
+      "image": "https://www.soodalgames.com/images/games/web/seathunter.jpg",
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 5, "item": {
+      "@type": "VideoGame", "name": "Stress Smash",
+      "description": "화면을 두드려 스트레스를 날리는 타격감 중심 캐주얼 게임.",
+      "url": "https://www.soodalgames.com/#game-stresssmash",
+      "image": "https://www.soodalgames.com/images/games/web/stresssmash.jpg",
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 6, "item": {
+      "@type": "VideoGame", "name": "Color Debt",
+      "description": "같은 색 얼굴을 합치고 터뜨려 빚을 늘리지 않는 캐주얼 퍼즐 게임.",
+      "url": "https://www.soodalgames.com/#game-colordebt",
+      "image": "https://www.soodalgames.com/images/games/web/colordebt.jpg",
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 7, "item": {
+      "@type": "VideoGame", "name": "Maze Escape",
+      "description": "열쇠를 모아 미로를 탈출하는 캐주얼 게임, 초기작 중 하나.",
+      "url": "https://www.soodalgames.com/#game-mazeescape",
+      "image": "https://www.soodalgames.com/images/games/web/mazeescape.jpg",
+      "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }}
+  ]
 }
 </script>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -96,6 +155,17 @@
   }
   ::selection{background:var(--amber); color:var(--ink);}
   a{color:inherit; text-decoration:none;}
+
+  /* ---------- ACCESSIBILITY: FOCUS & SKIP LINK ---------- */
+  :focus-visible{ outline:2px solid var(--amber); outline-offset:3px; border-radius:4px; }
+  :focus:not(:focus-visible){ outline:none; }
+  .skip-link{
+    position:absolute; left:14px; top:-70px; z-index:100;
+    background:var(--amber); color:var(--ink); font-family:var(--mono); font-size:13px; font-weight:600;
+    padding:10px 18px; border-radius:999px; box-shadow:var(--shadow-lift);
+    transition:top .25s var(--ease);
+  }
+  .skip-link:focus{ top:14px; outline-color:var(--ink); }
   .wrap{max-width:920px; margin:0 auto; padding:0 28px; position:relative;}
   @media(max-width:560px){ .wrap{padding:0 20px;} }
   img{max-width:100%;}
@@ -493,11 +563,15 @@
   try {
     if (localStorage.getItem('soodal-theme') === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
+      const tc = document.getElementById('themeColorMeta');
+      if (tc) tc.setAttribute('content', '#FFF8EF');
     }
   } catch (e) {}
 </script>
 </head>
 <body>
+
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 
 <div class="topbar">
   <div class="topbar-inner">
@@ -517,7 +591,7 @@
   <button data-target="timeline" type="button" aria-label="타임라인으로 이동"><span class="dot-label">타임라인</span></button>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="main">
   <section class="hero reveal in-view" id="heroTop">
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
@@ -818,10 +892,16 @@
   (function(){
     const root = document.documentElement;
     const btn = document.getElementById('themeToggle');
+    const themeColorMeta = document.getElementById('themeColorMeta');
     if (!btn) return;
     function applyTheme(theme){
-      if (theme === 'light') { root.setAttribute('data-theme', 'light'); btn.textContent = '☀️'; }
-      else { root.removeAttribute('data-theme'); btn.textContent = '🌙'; }
+      if (theme === 'light') {
+        root.setAttribute('data-theme', 'light'); btn.textContent = '☀️';
+        if (themeColorMeta) themeColorMeta.setAttribute('content', '#FFF8EF');
+      } else {
+        root.removeAttribute('data-theme'); btn.textContent = '🌙';
+        if (themeColorMeta) themeColorMeta.setAttribute('content', '#0A0A0D');
+      }
     }
     let saved = null;
     try { saved = localStorage.getItem('soodal-theme'); } catch (e) {}
