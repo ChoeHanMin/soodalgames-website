@@ -381,6 +381,13 @@
     box-shadow:var(--shadow-card);
   }
   @media(max-width:560px){ .story{ padding:30px 22px; } }
+  .story::after{
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background:linear-gradient(90deg, var(--amber), var(--rose), var(--teal));
+    opacity:.55;
+  }
+  /* 라이트 모드에서는 채도 높은 팔레트라 이 띠가 특히 화려하게 도드라짐 */
+  html[data-theme="light"] .story::after{ opacity:.85; }
   .story::before{
     content:'"'; position:absolute; top:-30px; left:20px; font-family:var(--serif);
     font-size:180px; color:rgba(var(--amber-rgb),0.1); line-height:1; pointer-events:none;
@@ -649,7 +656,7 @@
 
     <div class="hero-signature">
       <div class="mascot-wrap">
-        <img class="mascot" id="mascotImg" src="images/otter.jpg" alt="Soodal Games 마스코트 수달" loading="lazy">
+        <img class="mascot" id="mascotImg" src="images/otter-thumb.jpg" width="240" height="240" alt="Soodal Games 마스코트 수달" loading="lazy" decoding="async">
         <span class="mascot-bubble" id="mascotBubble"></span>
       </div>
       <p class="hero-signature-text">Soodal = 수달. 만든 사람도, 마스코트도 하나뿐이에요 — 눌러보세요 🦦</p>
@@ -717,7 +724,7 @@
 
       <div class="game has-shot featured" data-platforms="play steam" id="game-minicourt">
         <span class="featured-ribbon">★ FEATURED</span>
-        <div class="game-thumb" data-shots="images/games/web/minicourt.jpg,images/games/web/minicourt2.jpg,images/games/web/minicourt3.jpg,images/games/web/minicourt4.jpg"><img src="images/games/web/minicourt.jpg" loading="lazy" alt="미니법정 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/minicourt.jpg,images/games/web/minicourt2.jpg,images/games/web/minicourt3.jpg,images/games/web/minicourt4.jpg"><img src="images/games/web/minicourt.jpg" loading="lazy" decoding="async" alt="미니법정 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
             <div><span class="game-title">미니법정 (Mini Court)</span> <span class="game-ver">v2.x — bilingual</span></div>
@@ -737,7 +744,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play steam" id="game-stealthops">
-        <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" alt="Stealth Ops 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/stealthops.jpg,images/games/web/stealthops2.jpg,images/games/web/stealthops3.jpg,images/games/web/stealthops4.jpg"><img src="images/games/web/stealthops.jpg" loading="lazy" decoding="async" alt="Stealth Ops 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
             <div><span class="game-title">Stealth Ops</span> <span class="game-ver">v4.3.0.0</span></div>
@@ -753,7 +760,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play" id="game-timeheist24">
-        <div class="game-thumb" data-shots="images/games/web/timeheist24.jpg,images/games/web/timeheist24_2.jpg,images/games/web/timeheist24_3.jpg"><img src="images/games/web/timeheist24.jpg" loading="lazy" alt="Time Heist 24 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/timeheist24.jpg,images/games/web/timeheist24_2.jpg,images/games/web/timeheist24_3.jpg"><img src="images/games/web/timeheist24.jpg" loading="lazy" decoding="async" alt="Time Heist 24 스크린샷"></div>
         <div class="game-body">
           <div class="game-top">
             <div><span class="game-title">Time Heist 24</span> <span class="game-ver">GitHub: time-heist</span></div>
@@ -770,7 +777,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play" id="game-seathunter">
-        <div class="game-thumb" data-shots="images/games/web/seathunter.jpg,images/games/web/seathunter2.jpg,images/games/web/seathunter3.jpg"><img src="images/games/web/seathunter.jpg" loading="lazy" alt="자리 사냥 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/seathunter.jpg,images/games/web/seathunter2.jpg,images/games/web/seathunter3.jpg"><img src="images/games/web/seathunter.jpg" loading="lazy" decoding="async" alt="자리 사냥 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">자리 사냥 (Seat Hunter)</span></div></div>
           <p class="game-desc">지하철 승객을 관찰해 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임.</p>
@@ -781,7 +788,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play" id="game-stresssmash">
-        <div class="game-thumb" data-shots="images/games/web/stresssmash.jpg,images/games/web/stresssmash2.jpg"><img src="images/games/web/stresssmash.jpg" loading="lazy" alt="Stress Smash 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/stresssmash.jpg,images/games/web/stresssmash2.jpg"><img src="images/games/web/stresssmash.jpg" loading="lazy" decoding="async" alt="Stress Smash 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Stress Smash</span></div></div>
           <p class="game-desc">화면을 두드려 스트레스를 날리는 타격감 중심 캐주얼 게임.</p>
@@ -792,7 +799,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play" id="game-colordebt">
-        <div class="game-thumb" data-shots="images/games/web/colordebt.jpg,images/games/web/colordebt2.jpg,images/games/web/colordebt3.jpg"><img src="images/games/web/colordebt.jpg" loading="lazy" alt="Color Debt 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/colordebt.jpg,images/games/web/colordebt2.jpg,images/games/web/colordebt3.jpg"><img src="images/games/web/colordebt.jpg" loading="lazy" decoding="async" alt="Color Debt 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Color Debt</span></div></div>
           <p class="game-desc">같은 색 얼굴을 합치고 터뜨려 빚을 늘리지 않는 캐주얼 퍼즐 게임.</p>
@@ -803,7 +810,7 @@
       </div>
 
       <div class="game has-shot" data-platforms="play" id="game-mazeescape">
-        <div class="game-thumb" data-shots="images/games/web/mazeescape.jpg,images/games/web/mazeescape2.jpg,images/games/web/mazeescape3.jpg"><img src="images/games/web/mazeescape.jpg" loading="lazy" alt="Maze Escape 스크린샷"></div>
+        <div class="game-thumb" data-shots="images/games/web/mazeescape.jpg,images/games/web/mazeescape2.jpg,images/games/web/mazeescape3.jpg"><img src="images/games/web/mazeescape.jpg" loading="lazy" decoding="async" alt="Maze Escape 스크린샷"></div>
         <div class="game-body">
           <div class="game-top"><div><span class="game-title">Maze Escape</span></div></div>
           <p class="game-desc">열쇠를 모아 미로를 탈출하는 캐주얼 게임, 초기작 중 하나.</p>
