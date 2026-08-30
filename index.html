@@ -625,6 +625,15 @@
   footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; font-family:var(--mono); font-size:13px; margin-bottom:24px; }
   footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
   footer .links a:hover{ border-color:var(--amber); }
+  .email-copy-wrap{ position:relative; display:inline-block; }
+  .copy-feedback{
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px) scale(.9);
+    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:8px; padding:5px 10px;
+    font-family:var(--mono); font-size:11px; color:var(--teal); white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .2s var(--ease), transform .2s var(--ease);
+    box-shadow:var(--shadow-card); z-index:5;
+  }
+  .copy-feedback.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
   .copyright{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); opacity:.75; }
   .visit-count{ opacity:.7; }
   .visit-count:not(:empty)::before{ content:'· '; }
@@ -690,9 +699,9 @@
     <h1>최한민이 밤마다 만드는<br><span class="amber">1인 인디 게임 스튜디오</span></h1>
     <p class="lede">엔진 라이선스도, 팀도 없이 — 노트북 한 대와 밤 시간만으로 기획부터 출시까지 전부 혼자 해냅니다. Google Play와 Steam에 게임을 올리기까지의 과정을 아래에 낱낱이 적어뒀습니다.</p>
     <div class="hero-links">
-      <a class="primary" href="#games">출시한 게임들 →</a>
-      <a href="#pipeline">개발 과정 보기 →</a>
-      <a href="#timeline">커밋 타임라인 →</a>
+      <a class="primary" href="#games">🎮 출시한 게임들 →</a>
+      <a href="#pipeline">🛠️ 개발 과정 보기 →</a>
+      <a href="#timeline">💻 커밋 타임라인 →</a>
     </div>
     <div class="hero-stats">
       <div class="stat"><b data-count="7">0</b><span>출시 게임 (Play / Steam)</span></div>
@@ -963,7 +972,10 @@
     <div class="links">
       <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:rokafhanmin@gmail.com">rokafhanmin@gmail.com</a>
+      <span class="email-copy-wrap">
+        <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
+        <span class="copy-feedback" id="emailCopyFeedback">복사됨 ✓</span>
+      </span>
     </div>
     <div class="copyright">© 2026 Choi Hanmin · Soodal Games — 제 피, 땀 그리고 눈물로 만들었습니다. <span id="visitCount" class="visit-count"></span></div>
     <p id="lastUpdated" class="last-updated"></p>
@@ -1105,6 +1117,20 @@
       }
     })
     .catch(() => {});
+
+  /* ---- EMAIL COPY-TO-CLIPBOARD (mailto 링크는 그대로 살려두고, 클립보드 복사도 같이) ---- */
+  (function(){
+    const link = document.getElementById('footerEmail');
+    const feedback = document.getElementById('emailCopyFeedback');
+    if (!link || !feedback) return;
+    link.addEventListener('click', () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('rokafhanmin@gmail.com').catch(() => {});
+      }
+      feedback.classList.add('show');
+      setTimeout(() => feedback.classList.remove('show'), 1600);
+    });
+  })();
 
   /* ---- LAST UPDATED (real repo push date via GitHub API) ---- */
   fetch('https://api.github.com/repos/ChoeHanMin/soodalgames-website')
