@@ -234,7 +234,6 @@
     box-shadow:var(--shadow-card);
   }
   .nav-dots button:hover .dot-label{ opacity:1; }
-  @media print{ .nav-dots{ display:none !important; } }
 
   /* ---------- HERO ---------- */
   .hero{ padding:100px 0 56px; position:relative; overflow:hidden; isolation:isolate; }
@@ -325,7 +324,6 @@
   .back-to-top.show{ opacity:1; pointer-events:auto; transform:translateY(0); }
   .back-to-top:hover{ border-color:var(--amber); }
   @media(max-width:560px){ .back-to-top{ right:14px; bottom:14px; width:40px; height:40px; font-size:16px; } }
-  @media print{ .back-to-top{ display:none !important; } }
 
   /* ---------- MARQUEE ---------- */
   .marquee-strip{
@@ -660,6 +658,12 @@
   footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; font-family:var(--mono); font-size:13px; margin-bottom:24px; }
   footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
   footer .links a:hover{ border-color:var(--amber); }
+  .print-link{
+    background:none; border:none; padding:0; font:inherit;
+    color:var(--amber); border-bottom:1px solid transparent; cursor:pointer;
+    transition:border-color .2s;
+  }
+  .print-link:hover{ border-color:var(--amber); }
   .email-copy-wrap{ position:relative; display:inline-block; }
   .copy-feedback{
     position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px) scale(.9);
@@ -688,7 +692,22 @@
     transition:width .1s linear;
   }
   @media (prefers-reduced-motion: reduce){ .scroll-progress{ transition:none; } }
-  @media print{ .scroll-progress{ display:none !important; } }
+
+  /* ---------- PRINT ----------
+     이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
+     .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
+     그대로 인쇄돼서 본문이 통째로 비어보이는 실질적인 버그가 있었음(디자인 문제가
+     아니라 인쇄 시 콘텐츠가 안 보이는 기능 버그) — 여기서 한 번에 정리하고 고침. */
+  @media print{
+    .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
+    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link{
+      display:none !important;
+    }
+    .reveal{ opacity:1 !important; transform:none !important; }
+    body{ background:#fff !important; color:#111 !important; }
+    a{ color:#111 !important; text-decoration:underline; }
+    .game, .story, .night-badge{ box-shadow:none !important; }
+  }
 </style>
 <script>
   /* 첫 페인트 전에 저장된 테마를 적용해서 다크→라이트 깜빡임(FOUC)을 막습니다 */
@@ -1008,6 +1027,7 @@
       <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
       <a href="https://github.com/ChoeHanMin/soodalgames-website" target="_blank" rel="noopener">이 사이트 코드 보기 →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
+      <button id="printPageBtn" class="print-link" type="button">🖨️ 인쇄용으로 보기</button>
       <span class="email-copy-wrap">
         <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
         <span class="copy-feedback" id="emailCopyFeedback">복사됨 ✓</span>
@@ -1167,6 +1187,9 @@
       }
     })
     .catch(() => {});
+
+  /* ---- PRINT / SAVE AS PDF ---- */
+  document.getElementById('printPageBtn')?.addEventListener('click', () => window.print());
 
   /* ---- EMAIL COPY-TO-CLIPBOARD (mailto 링크는 그대로 살려두고, 클립보드 복사도 같이) ---- */
   (function(){
