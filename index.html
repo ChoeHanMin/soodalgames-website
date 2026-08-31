@@ -575,6 +575,11 @@
   }
   .pstep-line{ position:absolute; top:44px; bottom:-34px; width:1px; background:linear-gradient(var(--amber) 0%, var(--line) 100%); opacity:.4; }
   .pstep:last-child .pstep-line{ display:none; }
+  /* 라이트 모드에서는 단계가 진행될수록 앰버→틸→로즈로 색이 흘러가도록 (파스텔 배경과 통일감) */
+  html[data-theme="light"] .pstep-line{
+    background:linear-gradient(var(--amber) 0%, var(--teal) 50%, rgba(var(--rose-rgb),0.3) 100%);
+    opacity:.55;
+  }
   .pstep-body{ flex:1; min-width:0; padding-top:6px; }
   .pstep-title{ font-size:17px; font-weight:700; letter-spacing:-0.01em; margin-bottom:6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .pstep-title .pico{ font-size:16px; }
@@ -636,7 +641,11 @@
     padding:28px 30px; max-width:340px; width:100%; box-shadow:var(--shadow-lift);
   }
   .shortcut-modal-box h3{ font-family:var(--serif); font-size:18px; margin-bottom:18px; color:var(--paper); }
-  .shortcut-modal-close{ position:absolute; top:16px; right:18px; cursor:pointer; color:var(--paper-dim); font-size:14px; }
+  .shortcut-modal-close{
+    position:absolute; top:16px; right:18px; cursor:pointer; color:var(--paper-dim); font-size:14px;
+    background:none; border:none; font-family:inherit; padding:4px;
+  }
+  .shortcut-modal-close:hover{ color:var(--amber); }
   .shortcut-list{ list-style:none; display:flex; flex-direction:column; gap:12px; }
   .shortcut-list li{ display:flex; align-items:center; gap:14px; font-size:13.5px; color:var(--paper-dim); }
   .shortcut-list kbd{
@@ -997,6 +1006,7 @@
     <div class="footer-title">더 알아보고 싶다면</div>
     <div class="links">
       <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
+      <a href="https://github.com/ChoeHanMin/soodalgames-website" target="_blank" rel="noopener">이 사이트 코드 보기 →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
       <span class="email-copy-wrap">
         <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
@@ -1016,7 +1026,7 @@
 
 <div id="shortcutModal" class="shortcut-modal" role="dialog" aria-modal="true" aria-label="키보드 단축키">
   <div class="shortcut-modal-box">
-    <span class="shortcut-modal-close" id="shortcutModalClose">✕</span>
+    <button class="shortcut-modal-close" id="shortcutModalClose" type="button" aria-label="닫기">✕</button>
     <h3>⌨️ 키보드 단축키</h3>
     <ul class="shortcut-list">
       <li><kbd>T</kbd><span>라이트/다크 테마 전환</span></li>
@@ -1345,11 +1355,28 @@
     });
   })();
 
-  /* ---- SHORTCUT HELP MODAL ('?' 키로 열고 닫기) ---- */
+  /* ---- SHORTCUT HELP MODAL ('?' 키로 열고 닫기, 포커스 관리 포함) ---- */
   const shortcutModal = document.getElementById('shortcutModal');
-  function toggleShortcutModal(){ shortcutModal?.classList.toggle('show'); }
-  function closeShortcutModal(){ shortcutModal?.classList.remove('show'); }
-  document.getElementById('shortcutModalClose')?.addEventListener('click', closeShortcutModal);
+  const shortcutModalCloseBtn = document.getElementById('shortcutModalClose');
+  let lastFocusedBeforeModal = null;
+  function openShortcutModal(){
+    if (!shortcutModal || shortcutModal.classList.contains('show')) return;
+    lastFocusedBeforeModal = document.activeElement;
+    shortcutModal.classList.add('show');
+    shortcutModalCloseBtn?.focus();
+  }
+  function closeShortcutModal(){
+    if (!shortcutModal || !shortcutModal.classList.contains('show')) return;
+    shortcutModal.classList.remove('show');
+    if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+      lastFocusedBeforeModal.focus();
+    }
+  }
+  function toggleShortcutModal(){
+    if (shortcutModal?.classList.contains('show')) closeShortcutModal();
+    else openShortcutModal();
+  }
+  shortcutModalCloseBtn?.addEventListener('click', closeShortcutModal);
   shortcutModal?.addEventListener('click', (e) => { if (e.target === shortcutModal) closeShortcutModal(); });
 
   /* ---- KEYBOARD SHORTCUTS (T 테마 / G 게임 / R 랜덤 / Home 맨 위 / ? 도움말) ---- */
