@@ -736,6 +736,55 @@
   html[data-theme="light"] .song-credit-handle{ color:#c400a0; text-shadow:0 0 8px rgba(196,0,160,0.3); }
   @media (prefers-reduced-motion: reduce){ .song-card::before, .song-ring{ animation:none; } }
 
+  /* ---------- AI CHAT (rule-based FAQ bot) ---------- */
+  .chat-card{
+    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:var(--r-lg);
+    box-shadow:var(--shadow-card); padding:22px 22px 20px; max-width:640px;
+  }
+  .chat-header{ display:flex; align-items:center; gap:12px; padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line); }
+  .chat-avatar{
+    flex-shrink:0; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:19px; background:rgba(var(--teal-rgb),0.14); border:1px solid rgba(var(--teal-rgb),0.35);
+  }
+  .chat-name{ font-family:var(--serif); font-weight:700; font-size:15px; }
+  .chat-meta{ font-family:var(--mono); font-size:11px; color:var(--paper-dim); margin-top:2px; }
+  .chat-log{
+    display:flex; flex-direction:column; gap:10px; max-height:340px; overflow-y:auto;
+    padding-right:4px; margin-bottom:14px; scroll-behavior:smooth;
+  }
+  .chat-msg p{
+    margin:0; padding:10px 14px; border-radius:14px; font-size:13.5px; line-height:1.55;
+    max-width:88%; overflow-wrap:break-word;
+  }
+  .chat-msg.bot p{ background:var(--ink-3); border:1px solid var(--line); border-bottom-left-radius:4px; }
+  .chat-msg.user{ display:flex; justify-content:flex-end; }
+  .chat-msg.user p{
+    background:rgba(var(--amber-rgb),0.16); border:1px solid rgba(var(--amber-rgb),0.35);
+    color:var(--paper); border-bottom-right-radius:4px;
+  }
+  .chat-suggestions{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .chat-suggestions button{
+    font-family:var(--mono); font-size:11.5px; padding:6px 12px; border-radius:999px;
+    border:1px dashed rgba(var(--teal-rgb),0.5); background:transparent; color:var(--paper);
+    cursor:pointer; transition:background .2s var(--ease), border-color .2s var(--ease);
+  }
+  .chat-suggestions button:hover, .chat-suggestions button:focus-visible{
+    background:rgba(var(--teal-rgb),0.12); border-style:solid;
+  }
+  .chat-form{ display:flex; gap:8px; }
+  .chat-form input{
+    flex:1; min-width:0; padding:11px 14px; border-radius:999px; border:1px solid var(--line-strong);
+    background:var(--ink); color:var(--paper); font-family:var(--sans); font-size:13.5px;
+  }
+  .chat-form input:focus-visible{ outline:2px solid var(--amber); outline-offset:1px; }
+  .chat-form button[type="submit"]{
+    flex-shrink:0; padding:11px 18px; border-radius:999px; border:1px solid var(--amber);
+    background:var(--amber); color:var(--ink); font-weight:700; font-size:13px; cursor:pointer;
+    transition:filter .2s var(--ease);
+  }
+  .chat-form button[type="submit"]:hover{ filter:brightness(1.08); }
+  @media(max-width:480px){ .chat-card{ padding:18px 16px 16px; } .chat-msg p{ max-width:94%; } }
+
   /* ---------- PRINT ----------
      이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
      .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
@@ -743,7 +792,8 @@
      아니라 인쇄 시 콘텐츠가 안 보이는 기능 버그) — 여기서 한 번에 정리하고 고침. */
   @media print{
     .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
-    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring{
+    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring,
+    #aichat{
       display:none !important;
     }
     .reveal{ opacity:1 !important; transform:none !important; }
@@ -785,6 +835,7 @@
   <button data-target="pipeline" type="button" aria-label="개발 과정으로 이동"><span class="dot-label">개발 과정</span></button>
   <button data-target="timeline" type="button" aria-label="타임라인으로 이동"><span class="dot-label">타임라인</span></button>
   <button data-target="song" type="button" aria-label="좋아하는 노래로 이동"><span class="dot-label">좋아하는 노래</span></button>
+  <button data-target="aichat" type="button" aria-label="AI 최한민과 대화하기로 이동"><span class="dot-label">AI 챗봇</span></button>
 </nav>
 
 <div class="wrap" id="main">
@@ -1079,6 +1130,40 @@
         <p class="song-credit-line">원곡: 알라미 Alarmy</p>
         <p class="song-credit-line">IG: <span class="song-credit-handle">@alarmy_official_kr</span></p>
       </div>
+    </div>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
+  <!-- AI CHAT (rule-based FAQ bot) -->
+  <section id="aichat" class="reveal">
+    <div class="sec-head"><span class="tag">CHAT</span><h2>AI 최한민과 대화하기</h2></div>
+    <p class="sec-sub">진짜 AI는 아니고, 자주 묻는 질문에 답하도록 짠 규칙 기반 챗봇이에요. 아래 버튼을 눌러보거나 직접 물어보세요.</p>
+    <div class="chat-card">
+      <div class="chat-header">
+        <span class="chat-avatar" aria-hidden="true">🦦</span>
+        <div>
+          <div class="chat-name">최한민봇</div>
+          <div class="chat-meta">규칙 기반 FAQ 챗봇 · 무료 · 서버 없이 브라우저에서만 동작</div>
+        </div>
+      </div>
+      <div id="chatLog" class="chat-log" role="log" aria-live="polite">
+        <div class="chat-msg bot"><p>안녕하세요! 저는 최한민을 대신해서 자주 묻는 질문에 답해주는 간단한 규칙 기반 챗봇이에요. 아래 버튼을 눌러보시거나, 궁금한 걸 직접 입력해보세요 🙂</p></div>
+      </div>
+      <div id="chatSuggestions" class="chat-suggestions">
+        <button type="button" data-q="어떤 게임을 만들었어?">어떤 게임을 만들었어?</button>
+        <button type="button" data-q="혼자 만든 거야?">혼자 만든 거야?</button>
+        <button type="button" data-q="연락은 어떻게 해?">연락은 어떻게 해?</button>
+        <button type="button" data-q="좋아하는 노래 있어?">좋아하는 노래 있어?</button>
+        <button type="button" data-q="너 진짜 AI야?">너 진짜 AI야?</button>
+      </div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" type="text" maxlength="120" placeholder="질문을 입력해보세요… (예: 미니법정이 뭐야?)" aria-label="챗봇에게 질문 입력" autocomplete="off">
+        <button type="submit" aria-label="전송">보내기</button>
+      </form>
     </div>
   </section>
 
@@ -1616,6 +1701,85 @@
         const gameEvents = gameTimelineEvents.slice().reverse();
         renderTimeline(gameEvents);
       });
+  })();
+
+  // ---------- AI CHAT (rule-based FAQ bot, 서버·API 없이 브라우저에서만 동작) ----------
+  (function(){
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatLog = document.getElementById('chatLog');
+    const chatSuggestions = document.getElementById('chatSuggestions');
+    if(!chatForm || !chatLog) return;
+
+    const FAQ = [
+      { kw:['안녕','hi','hello','ㅎㅇ','반가워'], a:'안녕하세요! 게임, 개발 방식, 연락처, 좋아하는 노래 같은 걸 물어보실 수 있어요. 아래 버튼을 눌러보셔도 좋아요.' },
+      { kw:['너 ai','진짜 ai','너 누구','인공지능','챗gpt','chatgpt','gpt'], a:'저는 진짜 AI는 아니고, 미리 정해둔 질문 키워드에 답을 매칭해서 보여주는 아주 단순한 규칙 기반 챗봇이에요 😄 무료로, 서버 없이 이 브라우저 안에서만 동작해요.' },
+      { kw:['누구','정체','자기소개','뭐하는 사람'], a:'최한민은 수달게임즈(Soodal Games)를 혼자 운영하는 1인 인디 게임 개발자예요. 기획·개발·아트·사운드·QA·마케팅까지 전부 혼자 맡고 있어요.' },
+      { kw:['몇 개','몇개','개수','게임 수'], a:'지금까지 총 7개의 게임을 출시했어요. Google Play 위주고, 그중 미니법정은 Steam에도 올라가 있어요.' },
+      { kw:['미니법정','mini court','minicourt'], a:'미니법정(Mini Court)은 55개 사건, 한/영 지원, 항소심 모드, 데일리 챌린지, 경력 XP 시스템까지 갖춘 법정 시뮬레이션이에요. Electron으로 패키징해서 Steam에도 올라가 있어요.' },
+      { kw:['stealth ops','스텔스','잠입'], a:'Stealth Ops는 9종 무기, 스테이지별 미니게임 6개, 듀얼 스테이지 맵 구조를 가진 잠입 액션 게임이에요.' },
+      { kw:['time heist','타임 하이스트','타임하이스트'], a:'Time Heist 24는 시간이 곧 체력이자 행동력이자 점수가 되는 턴제 전략 게임이에요.' },
+      { kw:['자리 사냥','자리사냥','seat hunter'], a:'자리 사냥(Seat Hunter)은 지하철 승객을 관찰해서 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임이에요.' },
+      { kw:['stress smash','스트레스'], a:'Stress Smash는 화면을 두드려서 스트레스를 날리는 타격감 중심 캐주얼 게임이에요.' },
+      { kw:['color debt','컬러 뎁트','컬러뎁트'], a:'Color Debt는 같은 색 얼굴을 합치고 터뜨려서 빚을 늘리지 않는 캐주얼 퍼즐 게임이에요.' },
+      { kw:['maze escape','미로'], a:'Maze Escape는 열쇠를 모아 미로를 탈출하는 캐주얼 게임으로, 초기작 중 하나예요.' },
+      { kw:['게임','작품','뭐 만들','포트폴리오','목록','리스트'], a:'지금까지 만든 게임은 미니법정, Stealth Ops, Time Heist 24, 자리 사냥, Stress Smash, Color Debt, Maze Escape 이렇게 7개예요. 위쪽 "출시한 게임들" 섹션에서 스크린샷도 보실 수 있어요.' },
+      { kw:['스팀','steam'], a:'현재 Steam에 올라간 건 미니법정 하나예요 (Electron 빌드). 나머지는 Google Play 중심이에요.' },
+      { kw:['혼자','팀','인원','몇 명','몇명'], a:'네, 완전히 혼자예요. 팀도 없고 별도 엔진 라이선스도 없어요. 기획·개발·아트·사운드·QA·마케팅까지 전부 혼자 맡아서 만들어요.' },
+      { kw:['얼마나 걸려','개발 기간','기간','걸렸'], a:'학교 수업, 대외활동, 운동까지 병행하면서 짬 나는 시간에 기획하고, 자정이 넘으면 코드를 짜는 방식으로 만들어요.' },
+      { kw:['언어','엔진','기술','스택','어떻게 만들'], a:'단일 HTML/CSS/JS 기반 PWA로 만들고 TWA로 패키징해서 Google Play에 올려요. Steam용은 Electron으로 패키징했어요.' },
+      { kw:['연락','이메일','메일','contact'], a:'이메일로 연락하실 수 있어요: rokafhanmin@gmail.com (푸터의 이메일을 클릭하면 복사도 돼요).' },
+      { kw:['깃허브','github','소스','코드'], a:'GitHub 프로필은 github.com/ChoeHanMin 에서 확인하실 수 있어요.' },
+      { kw:['노래','음악','song','music','알라미'], a:'네! 위쪽 "최한민이 좋아하는 노래" 섹션에서 들어보실 수 있어요. 원곡은 알라미(Alarmy)의 곡이에요.' },
+      { kw:['개인 홈페이지','choihanmin','개인 사이트'], a:'개인 홈페이지는 choihanmin.com이에요. 이 사이트(수달게임즈)는 게임 개발 이야기만 따로 모아둔 곳이고요.' },
+      { kw:['고마워','감사','땡큐','thanks'], a:'천만에요! 더 궁금한 게 있으면 언제든 물어보세요 🦦' },
+    ];
+
+    function normalize(s){ return String(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+
+    function findAnswer(q){
+      const nq = normalize(q);
+      let best = null, bestScore = 0;
+      for(const item of FAQ){
+        let score = 0;
+        for(const k of item.kw){ if(nq.includes(k)) score++; }
+        if(score > bestScore){ bestScore = score; best = item; }
+      }
+      return best ? best.a : '죄송해요, 아직 그 질문엔 정해둔 답이 없어요. 이메일(rokafhanmin@gmail.com)로 물어보시면 최한민이 직접 답해드릴 거예요!';
+    }
+
+    function addMsg(text, who){
+      const row = document.createElement('div');
+      row.className = 'chat-msg ' + who;
+      const p = document.createElement('p');
+      p.textContent = text;
+      row.appendChild(p);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function ask(q){
+      if(!q || !q.trim()) return;
+      addMsg(q.trim(), 'user');
+      const answer = findAnswer(q);
+      window.setTimeout(() => addMsg(answer, 'bot'), 260);
+    }
+
+    chatForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const q = chatInput.value;
+      chatInput.value = '';
+      ask(q);
+      chatInput.focus();
+    });
+
+    if(chatSuggestions){
+      chatSuggestions.addEventListener('click', function(e){
+        const btn = e.target.closest('button[data-q]');
+        if(!btn) return;
+        ask(btn.dataset.q);
+      });
+    }
   })();
 </script>
 </body>
