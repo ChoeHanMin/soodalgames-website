@@ -694,6 +694,48 @@
   }
   @media (prefers-reduced-motion: reduce){ .scroll-progress{ transition:none; } }
 
+  /* ---------- FAVORITE SONG (NEON) ---------- */
+  .song-card{
+    position:relative; display:flex; align-items:center; gap:32px; flex-wrap:wrap;
+    padding:34px 36px; border-radius:var(--r-lg); background:var(--ink-2);
+    border:1px solid var(--line-strong); box-shadow:var(--shadow-card); overflow:hidden;
+    isolation:isolate;
+  }
+  .song-card::before{
+    content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; padding:1.5px;
+    background:linear-gradient(115deg, #ff2fd0, #33e0ff, #a259ff, #ff2fd0);
+    background-size:300% 300%;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    animation:songBorderShift 6s linear infinite;
+  }
+  .song-card::after{
+    content:''; position:absolute; inset:0; z-index:-2; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(circle at 18% 25%, rgba(255,47,208,0.22), transparent 55%),
+               radial-gradient(circle at 85% 78%, rgba(51,224,255,0.2), transparent 55%);
+    filter:blur(8px);
+  }
+  @keyframes songBorderShift{ 0%{background-position:0% 50%;} 100%{background-position:300% 50%;} }
+  .song-player-col{ position:relative; display:flex; align-items:center; flex:1 1 280px; min-width:220px; }
+  .song-ring{
+    position:absolute; left:-8px; right:-8px; top:-8px; bottom:-8px; border-radius:14px;
+    box-shadow:0 0 18px 2px rgba(255,47,208,0.35), 0 0 34px 6px rgba(51,224,255,0.22);
+    animation:songPulse 2.6s ease-in-out infinite; pointer-events:none;
+  }
+  @keyframes songPulse{ 0%,100%{opacity:.5; transform:scale(1);} 50%{opacity:1; transform:scale(1.02);} }
+  .song-audio{ position:relative; width:100%; height:44px; border-radius:999px; }
+  .song-credit{
+    flex:0 0 auto; display:flex; flex-direction:column; gap:5px; padding-left:28px;
+    border-left:1px solid var(--line-strong);
+  }
+  @media(max-width:640px){
+    .song-credit{ border-left:none; padding-left:0; border-top:1px solid var(--line-strong); padding-top:14px; width:100%; }
+  }
+  .song-credit-line{ font-family:var(--mono); font-size:13px; color:var(--paper-dim); letter-spacing:.01em; }
+  .song-credit-handle{ color:#ff2fd0; text-shadow:0 0 10px rgba(255,47,208,0.5); font-weight:700; }
+  html[data-theme="light"] .song-credit-handle{ color:#c400a0; text-shadow:0 0 8px rgba(196,0,160,0.3); }
+  @media (prefers-reduced-motion: reduce){ .song-card::before, .song-ring{ animation:none; } }
+
   /* ---------- PRINT ----------
      이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
      .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
@@ -701,7 +743,7 @@
      아니라 인쇄 시 콘텐츠가 안 보이는 기능 버그) — 여기서 한 번에 정리하고 고침. */
   @media print{
     .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
-    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link{
+    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring{
       display:none !important;
     }
     .reveal{ opacity:1 !important; transform:none !important; }
@@ -742,6 +784,7 @@
   <button data-target="games" type="button" aria-label="게임 목록으로 이동"><span class="dot-label">게임</span></button>
   <button data-target="pipeline" type="button" aria-label="개발 과정으로 이동"><span class="dot-label">개발 과정</span></button>
   <button data-target="timeline" type="button" aria-label="타임라인으로 이동"><span class="dot-label">타임라인</span></button>
+  <button data-target="song" type="button" aria-label="좋아하는 노래로 이동"><span class="dot-label">좋아하는 노래</span></button>
 </nav>
 
 <div class="wrap" id="main">
@@ -1013,6 +1056,29 @@
     <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
     <div id="timelineList" class="timeline-list">
       <p class="commit-loading">불러오는 중...</p>
+    </div>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
+  <!-- FAVORITE SONG -->
+  <section id="song" class="reveal">
+    <div class="sec-head"><span class="tag">SONG</span><h2>최한민이 좋아하는 노래</h2></div>
+    <p class="sec-sub">개발하다 지칠 때, 새벽에 커밋을 쌓아 올릴 때 반복 재생하는 노래입니다.</p>
+    <div class="song-card">
+      <div class="song-player-col">
+        <div class="song-ring" aria-hidden="true"></div>
+        <audio class="song-audio" controls preload="none" src="audio/favorite-song.mp3">
+          브라우저가 오디오 재생을 지원하지 않습니다. <a href="audio/favorite-song.mp3">파일 다운로드</a>
+        </audio>
+      </div>
+      <div class="song-credit">
+        <p class="song-credit-line">원곡: 알라미 Alarmy</p>
+        <p class="song-credit-line">IG: <span class="song-credit-handle">@alarmy_official_kr</span></p>
+      </div>
     </div>
   </section>
 
