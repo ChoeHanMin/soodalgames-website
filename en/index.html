@@ -709,6 +709,7 @@
     border:1px solid var(--line-strong); box-shadow:var(--shadow-card); overflow:hidden;
     isolation:isolate;
   }
+  .song-card + .song-card{ margin-top:20px; }
   .song-card::before{
     content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; padding:1.5px;
     background:linear-gradient(115deg, #ff2fd0, #33e0ff, #a259ff, #ff2fd0);
@@ -1133,6 +1134,19 @@
         <div class="song-ring" aria-hidden="true"></div>
         <audio class="song-audio" controls preload="none" src="/audio/favorite-song.mp3">
           Your browser does not support audio playback. <a href="/audio/favorite-song.mp3">Download the file</a>
+        </audio>
+      </div>
+      <div class="song-credit">
+        <p class="song-credit-line">원곡: 알라미 Alarmy</p>
+        <p class="song-credit-line">IG: <span class="song-credit-handle">@alarmy_official_kr</span></p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-player-col">
+        <div class="song-ring" aria-hidden="true"></div>
+        <audio class="song-audio" controls preload="none" src="/audio/favorite-song-2.mp3">
+          Your browser does not support audio playback. <a href="/audio/favorite-song-2.mp3">Download the file</a>
         </audio>
       </div>
       <div class="song-credit">
