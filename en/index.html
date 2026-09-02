@@ -710,6 +710,11 @@
     isolation:isolate;
   }
   .song-card + .song-card{ margin-top:20px; }
+  .song-title{
+    flex:0 0 100%; font-family:var(--serif); font-weight:700; font-size:17px;
+    color:var(--paper); letter-spacing:-0.01em; margin-bottom:2px;
+  }
+  .song-title .song-title-ver{ font-family:var(--mono); font-weight:400; font-size:12px; color:var(--paper-dim); margin-left:8px; }
   .song-card::before{
     content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; padding:1.5px;
     background:linear-gradient(115deg, #ff2fd0, #33e0ff, #a259ff, #ff2fd0);
@@ -1130,6 +1135,7 @@
     <div class="sec-head"><span class="tag">SONG</span><h2>Choi Hanmin's Favorite Song</h2></div>
     <p class="sec-sub">The song on repeat when development wears me out, stacking commits at dawn.</p>
     <div class="song-card">
+      <p class="song-title">야르송 <span class="song-title-ver">(최한민 ver.)</span></p>
       <div class="song-player-col">
         <div class="song-ring" aria-hidden="true"></div>
         <audio class="song-audio" controls preload="none" src="/audio/favorite-song.mp3">
@@ -1143,6 +1149,7 @@
     </div>
 
     <div class="song-card">
+      <p class="song-title">한민이가 왔다잖아 <span class="song-title-ver">(최한민 ver.)</span></p>
       <div class="song-player-col">
         <div class="song-ring" aria-hidden="true"></div>
         <audio class="song-audio" controls preload="none" src="/audio/favorite-song-2.mp3">
