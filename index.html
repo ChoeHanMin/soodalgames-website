@@ -96,9 +96,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="alternate" type="application/rss+xml" title="수달게임즈 개발 로그" href="/feed.xml">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -671,12 +669,6 @@
   footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; font-family:var(--mono); font-size:13px; margin-bottom:24px; }
   footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
   footer .links a:hover{ border-color:var(--amber); }
-  .print-link{
-    background:none; border:none; padding:0; font:inherit;
-    color:var(--amber); border-bottom:1px solid transparent; cursor:pointer;
-    transition:border-color .2s;
-  }
-  .print-link:hover{ border-color:var(--amber); }
   .email-copy-wrap{ position:relative; display:inline-block; }
   .copy-feedback{
     position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px) scale(.9);
@@ -844,22 +836,6 @@
   .feedback-status.error{ color:var(--rose); }
   .hp-field{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 
-  /* ---------- PRINT ----------
-     이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
-     .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
-     그대로 인쇄돼서 본문이 통째로 비어보이는 실질적인 버그가 있었음(디자인 문제가
-     아니라 인쇄 시 콘텐츠가 안 보이는 기능 버그) — 여기서 한 번에 정리하고 고침. */
-  @media print{
-    .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
-    .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring,
-    #aichat, #feedback, .donate-box{
-      display:none !important;
-    }
-    .reveal{ opacity:1 !important; transform:none !important; }
-    body{ background:#fff !important; color:#111 !important; }
-    a{ color:#111 !important; text-decoration:underline; }
-    .game, .story, .night-badge{ box-shadow:none !important; }
-  }
 </style>
 <script>
   /* 첫 페인트 전에 저장된 테마를 적용해서 다크→라이트 깜빡임(FOUC)을 막습니다 */
@@ -1276,8 +1252,6 @@
     <div class="links">
       <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
-      <a href="/feed.xml" target="_blank" rel="noopener">📡 RSS 구독</a>
-      <button id="printPageBtn" class="print-link" type="button">🖨️ 인쇄용으로 보기</button>
       <span class="email-copy-wrap">
         <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
         <span class="copy-feedback" id="emailCopyFeedback">복사됨 ✓</span>
@@ -1491,9 +1465,6 @@
       }
     })
     .catch(() => {});
-
-  /* ---- PRINT / SAVE AS PDF ---- */
-  document.getElementById('printPageBtn')?.addEventListener('click', () => window.print());
 
   /* ---- EMAIL COPY-TO-CLIPBOARD (mailto 링크는 그대로 살려두고, 클립보드 복사도 같이) ---- */
   (function(){
