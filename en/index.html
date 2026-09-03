@@ -98,6 +98,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="Soodal Games Dev Log" href="/en/feed.xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
@@ -589,6 +590,25 @@
     .pstep-line{ top:34px; bottom:-26px; }
   }
 
+  /* ---------- COMMIT HEATMAP ---------- */
+  .heatmap-wrap{ margin:0 0 28px; }
+  .heatmap-caption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); margin-bottom:10px; }
+  .heatmap-caption a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
+  .heatmap-caption a:hover{ border-color:var(--amber); }
+  .heatmap-grid{
+    display:grid; grid-template-rows:repeat(7, 11px); grid-auto-flow:column; grid-auto-columns:11px;
+    gap:3px; overflow-x:auto; padding-bottom:4px; width:fit-content; max-width:100%;
+  }
+  .heatmap-cell{ width:11px; height:11px; border-radius:2px; background:var(--line-strong); }
+  .heatmap-cell[data-level="1"]{ background:rgba(var(--amber-rgb),0.35); }
+  .heatmap-cell[data-level="2"]{ background:rgba(var(--amber-rgb),0.55); }
+  .heatmap-cell[data-level="3"]{ background:rgba(var(--amber-rgb),0.78); }
+  .heatmap-cell[data-level="4"]{ background:var(--amber); }
+  @media(max-width:560px){
+    .heatmap-grid{ grid-template-rows:repeat(7, 9px); grid-auto-columns:9px; gap:2px; }
+    .heatmap-cell{ width:9px; height:9px; }
+  }
+
   /* ---------- TIMELINE ---------- */
   .timeline-list{display:flex; flex-direction:column; gap:0; position:relative;}
   .timeline-list::before{
@@ -650,6 +670,20 @@
     border:1px solid var(--line-strong); border-radius:5px; padding:3px 7px; background:var(--ink);
     color:var(--amber); box-shadow:0 2px 0 rgba(0,0,0,0.2);
   }
+
+  /* ---------- QR INSTALL MODAL (기존 shortcut-modal 오버레이 패턴 재사용) ---------- */
+  .qr-modal-box{ text-align:center; max-width:280px; }
+  .qr-modal-box img{
+    display:block; width:200px; height:200px; margin:6px auto 14px;
+    border-radius:var(--r-sm); background:#fff; padding:10px; box-shadow:var(--shadow-card);
+  }
+  .qr-modal-label{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); line-height:1.5; }
+  .qr-trigger{
+    display:inline-flex; align-items:center; gap:4px; font-family:var(--mono); font-size:12px;
+    color:var(--paper-dim); background:none; border:none; padding:0; cursor:pointer;
+    border-bottom:1px solid transparent; transition:border-color .2s, color .2s;
+  }
+  .qr-trigger:hover{ color:var(--amber); border-color:var(--amber); }
 
   /* ---------- FOOTER ---------- */
   footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
@@ -808,6 +842,28 @@
   .chat-form button[type="submit"]:hover{ filter:brightness(1.08); transform:translateY(-1px); }
   @media(max-width:480px){ .chat-card{ padding:18px 16px 16px; } .chat-msg p{ max-width:94%; } }
 
+  /* ---------- FEEDBACK FORM ---------- */
+  .feedback-form{ display:flex; flex-direction:column; gap:12px; max-width:480px; }
+  .feedback-form input, .feedback-form textarea{
+    font-family:var(--sans); font-size:14px; color:var(--paper); background:var(--ink-2);
+    border:1px solid var(--line-strong); border-radius:var(--r-sm); padding:12px 14px;
+    resize:vertical; transition:border-color .2s;
+  }
+  .feedback-form input::placeholder, .feedback-form textarea::placeholder{ color:var(--paper-dim); opacity:.75; }
+  .feedback-form input:focus-visible, .feedback-form textarea:focus-visible{ outline:2px solid var(--amber); outline-offset:1px; }
+  .feedback-form button[type="submit"]{
+    align-self:flex-start; font-family:var(--mono); font-weight:700; font-size:13px;
+    padding:11px 22px; border-radius:999px; border:1px solid var(--amber);
+    background:var(--amber); color:var(--ink); cursor:pointer;
+    transition:filter .2s var(--ease), transform .2s var(--ease), opacity .2s;
+  }
+  .feedback-form button[type="submit"]:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .feedback-form button[type="submit"]:disabled{ opacity:.6; cursor:default; transform:none; }
+  .feedback-status{ font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); min-height:1.4em; }
+  .feedback-status.success{ color:var(--teal); }
+  .feedback-status.error{ color:var(--rose); }
+  .hp-field{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
   /* ---------- PRINT ----------
      이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
      .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
@@ -816,7 +872,7 @@
   @media print{
     .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
     .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring,
-    #aichat, .donate-box{
+    #aichat, #feedback, .donate-box{
       display:none !important;
     }
     .reveal{ opacity:1 !important; transform:none !important; }
@@ -860,6 +916,7 @@
   <button data-target="timeline" type="button" aria-label="Go to timeline"><span class="dot-label">Timeline</span></button>
   <button data-target="song" type="button" aria-label="Go to favorite song"><span class="dot-label">Song</span></button>
   <button data-target="aichat" type="button" aria-label="Go to AI chat"><span class="dot-label">AI Chat</span></button>
+  <button data-target="feedback" type="button" aria-label="Go to feedback"><span class="dot-label">Feedback</span></button>
 </nav>
 
 <div class="wrap" id="main">
@@ -880,6 +937,7 @@
       <div class="stat"><b data-count="7">0</b><span>Games Released (Play / Steam)</span></div>
       <div class="stat"><b data-count="1">0</b><span>Steam Build (Electron)</span></div>
       <div class="stat"><b data-count="1">0</b><span>Solo Developer — Choi Hanmin</span></div>
+      <div class="stat"><b id="devDaysStat" data-count="0">0</b><span>Days of Game Dev</span></div>
     </div>
 
     <div class="hero-signature">
@@ -965,6 +1023,7 @@
           <div class="game-links">
             <a href="https://store.steampowered.com/app/5113110" target="_blank" rel="noopener">Steam →</a>
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" data-qr-label="Mini Court · Google Play">📱 Install via QR</button>
             <button class="game-share" type="button" data-share="game-minicourt">Share 🔗</button>
           </div>
         </div>
@@ -981,6 +1040,7 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" data-qr-label="Stealth Ops · Google Play">📱 Install via QR</button>
             <button class="game-share" type="button" data-share="game-stealthops">Share 🔗</button>
           </div>
         </div>
@@ -997,6 +1057,7 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" data-qr-label="Time Heist 24 · Google Play">📱 Install via QR</button>
             <button class="game-share" type="button" data-share="game-timeheist24">Share 🔗</button>
           </div>
         </div>
@@ -1129,6 +1190,10 @@
     <div class="sec-head"><span class="tag">TIMELINE</span><h2>Game Dev &amp; Commit Timeline</h2></div>
     <p class="sec-sub">Game dev kickoff dates and live commits, merged and sorted chronologically.</p>
     <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
+    <div id="commitHeatmap" class="heatmap-wrap">
+      <p class="heatmap-caption">Commit activity, last 12 months <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">See on GitHub →</a></p>
+      <div id="heatmapGrid" class="heatmap-grid" role="img" aria-label="GitHub commit heatmap, last 12 months"></div>
+    </div>
     <div id="timelineList" class="timeline-list">
       <p class="commit-loading">Loading...</p>
     </div>
@@ -1211,11 +1276,31 @@
     <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
   </svg></div>
 
+  <!-- FEEDBACK / BUG REPORT -->
+  <section id="feedback" class="reveal">
+    <div class="sec-head"><span class="tag">FEEDBACK</span><h2>Report a Bug / Send Feedback</h2></div>
+    <p class="sec-sub">Write down a bug you found, or anything else on your mind — it goes straight to Choi Hanmin's inbox. Name and email are optional.</p>
+    <form id="feedbackForm" class="feedback-form">
+      <input type="text" name="name" placeholder="Name (optional)" autocomplete="name">
+      <input type="email" name="email" placeholder="Email for a reply (optional)" autocomplete="email">
+      <textarea name="message" required placeholder="e.g. Audio in the Song section acts up on mobile Safari / an idea for a new game, etc." rows="4"></textarea>
+      <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" id="feedbackSubmitBtn">Send</button>
+      <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
   <footer class="reveal">
     <div class="footer-title">Want to know more?</div>
     <div class="links">
       <a href="https://www.choihanmin.com/" rel="noopener">Choi Hanmin's personal site →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
+      <a href="/en/feed.xml" target="_blank" rel="noopener">📡 RSS feed</a>
       <button id="printPageBtn" class="print-link" type="button">🖨️ Printable version</button>
       <span class="email-copy-wrap">
         <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
@@ -1257,9 +1342,28 @@
   </div>
 </div>
 
+<div id="qrModal" class="shortcut-modal" role="dialog" aria-modal="true" aria-label="Install QR code">
+  <div class="shortcut-modal-box qr-modal-box">
+    <button class="shortcut-modal-close" id="qrModalClose" type="button" aria-label="Close">✕</button>
+    <h3 id="qrModalTitle">📱 Install via QR code</h3>
+    <img id="qrModalImg" src="" alt="" width="200" height="200">
+    <p id="qrModalLabel" class="qr-modal-label"></p>
+  </div>
+</div>
+
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
+  /* ---- DEV DAYS COUNTER (real date math from the first game's dev start date) ---- */
+  (function(){
+    const el = document.getElementById('devDaysStat');
+    if (!el) return;
+    const start = new Date('2025-01-01T00:00:00+09:00');
+    const now = new Date();
+    const days = Math.max(1, Math.floor((now - start) / 86400000));
+    el.dataset.count = String(days);
+  })();
+
   /* ---- SONG AUDIO SAFETY NET ----
      버그 제보: 모바일에서 노래 섹션의 오디오가 사용자가 재생 버튼을 누르지
      않았는데도 자동으로 재생되고, 탭/창을 닫아도 노래가 끝날 때까지 계속
@@ -1624,12 +1728,42 @@
   shortcutModalCloseBtn?.addEventListener('click', closeShortcutModal);
   shortcutModal?.addEventListener('click', (e) => { if (e.target === shortcutModal) closeShortcutModal(); });
 
+  /* ---- QR INSTALL MODAL (reuses the same proven shortcutModal overlay/focus pattern) ---- */
+  const qrModal = document.getElementById('qrModal');
+  const qrModalCloseBtn = document.getElementById('qrModalClose');
+  const qrModalImg = document.getElementById('qrModalImg');
+  const qrModalLabel = document.getElementById('qrModalLabel');
+  let lastFocusedBeforeQrModal = null;
+  function openQrModal(url, label){
+    if (!qrModal) return;
+    lastFocusedBeforeQrModal = document.activeElement;
+    const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(url)}`;
+    if (qrModalImg) { qrModalImg.src = qrSrc; qrModalImg.alt = `${label} QR code`; }
+    if (qrModalLabel) qrModalLabel.textContent = label;
+    qrModal.classList.add('show');
+    qrModalCloseBtn?.focus();
+  }
+  function closeQrModal(){
+    if (!qrModal || !qrModal.classList.contains('show')) return;
+    qrModal.classList.remove('show');
+    if (lastFocusedBeforeQrModal && typeof lastFocusedBeforeQrModal.focus === 'function') {
+      lastFocusedBeforeQrModal.focus();
+    }
+  }
+  qrModalCloseBtn?.addEventListener('click', closeQrModal);
+  qrModal?.addEventListener('click', (e) => { if (e.target === qrModal) closeQrModal(); });
+  document.querySelectorAll('.qr-trigger[data-qr-url]').forEach(btn => {
+    btn.addEventListener('click', () => openQrModal(btn.dataset.qrUrl, btn.dataset.qrLabel || ''));
+  });
+
   /* ---- KEYBOARD SHORTCUTS (T 테마 / G 게임 / R 랜덤 / Home 맨 위 / ? 도움말) ---- */
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
     if (document.getElementById('lightbox')?.classList.contains('show')) return; // 라이트박스 열려있을 땐 배경 단축키 무시
+    if (e.key === 'Escape' && qrModal?.classList.contains('show')) { closeQrModal(); return; }
+    if (qrModal?.classList.contains('show')) return; // QR 모달 열려있을 땐 다른 단축키 무시
     if (e.key === 'Escape' && shortcutModal?.classList.contains('show')) { closeShortcutModal(); return; }
     if (shortcutModal?.classList.contains('show') && e.key !== '?') return; // 도움말 열려있을 땐 다른 단축키 무시
     if (e.key === 't' || e.key === 'T') {
@@ -1697,6 +1831,40 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') lightbox.classList.remove('show');
   });
+
+  /* ---- COMMIT HEATMAP (real public GitHub data via a free community API;
+     fails silently and hides itself if the API is unreachable) ---- */
+  (function(){
+    const grid = document.getElementById('heatmapGrid');
+    if (!grid) return;
+    function render(contributions){
+      if (!contributions || !contributions.length) throw new Error('empty');
+      grid.innerHTML = '';
+      const first = new Date(contributions[0].date + 'T00:00:00Z');
+      const firstDow = first.getUTCDay();
+      for (let i = 0; i < firstDow; i++){
+        const pad = document.createElement('span');
+        pad.className = 'heatmap-cell';
+        pad.style.visibility = 'hidden';
+        grid.appendChild(pad);
+      }
+      contributions.forEach(d => {
+        const cell = document.createElement('span');
+        cell.className = 'heatmap-cell';
+        const level = typeof d.level === 'number' ? d.level : (d.count > 0 ? 1 : 0);
+        cell.dataset.level = Math.min(4, level);
+        cell.title = `${d.date} · ${d.count} commit(s)`;
+        grid.appendChild(cell);
+      });
+    }
+    fetch('https://github-contributions-api.jogruber.de/v4/ChoeHanMin?y=last')
+      .then(r => r.json())
+      .then(data => render(data.contributions))
+      .catch(() => {
+        const wrap = document.getElementById('commitHeatmap');
+        if (wrap) wrap.style.display = 'none';
+      });
+  })();
 
   /* ---- INTEGRATED TIMELINE (games + live commits, merged) ---- */
   (function(){
@@ -1852,6 +2020,60 @@
         ask(btn.dataset.q);
       });
     }
+  })();
+
+  /* ---- FEEDBACK / BUG REPORT FORM ----
+     No backend — uses formsubmit.co (free, no signup) to actually deliver
+     email. Note: the very first submission triggers a one-time activation
+     email to rokafhanmin@gmail.com that must be clicked before delivery
+     works reliably after that. */
+  (function(){
+    const form = document.getElementById('feedbackForm');
+    const statusEl = document.getElementById('feedbackStatus');
+    const submitBtn = document.getElementById('feedbackSubmitBtn');
+    if (!form || !statusEl || !submitBtn) return;
+    const originalBtnText = submitBtn.textContent;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const message = form.message.value.trim();
+      statusEl.classList.remove('success', 'error');
+      if (!message){
+        statusEl.textContent = 'Please write a message.';
+        statusEl.classList.add('error');
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      statusEl.textContent = '';
+
+      fetch('https://formsubmit.co/ajax/rokafhanmin@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.value.trim() || '(anonymous)',
+          email: form.email.value.trim() || '(not provided)',
+          message: message,
+          _subject: 'Soodal Games feedback / bug report',
+          _honey: form._honey.value,
+          _captcha: 'false'
+        })
+      })
+        .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
+        .then(() => {
+          statusEl.textContent = "Sent! I'll take a look and get back to you 🙏";
+          statusEl.classList.add('success');
+          form.reset();
+        })
+        .catch(() => {
+          statusEl.textContent = 'Something went wrong. Feel free to email rokafhanmin@gmail.com directly instead.';
+          statusEl.classList.add('error');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        });
+    });
   })();
 </script>
 </body>

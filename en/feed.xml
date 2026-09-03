@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Soodal Games — Dev Log</title>
+  <link>https://www.soodalgames.com/en/</link>
+  <atom:link href="https://www.soodalgames.com/en/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>A record of when each game started development at Soodal Games, a solo indie studio run by Choi Hanmin. See the live commit timeline on the site itself.</description>
+  <language>en</language>
+  <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0900</lastBuildDate>
+
+  <item>
+    <title>Started developing: Stress Smash</title>
+    <link>https://www.soodalgames.com/en/#game-stresssmash</link>
+    <guid isPermaLink="false">soodalgames-dev-stresssmash-2026-06</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 +0900</pubDate>
+    <description>A hit-focused casual game — tap the screen to smash your stress away.</description>
+  </item>
+  <item>
+    <title>Started developing: Maze Escape</title>
+    <link>https://www.soodalgames.com/en/#game-mazeescape</link>
+    <guid isPermaLink="false">soodalgames-dev-mazeescape-2026-04</guid>
+    <pubDate>Wed, 01 Apr 2026 00:00:00 +0900</pubDate>
+    <description>A casual maze-escape game where you collect keys to find the way out — one of the earliest titles.</description>
+  </item>
+  <item>
+    <title>Started developing: Seat Hunter</title>
+    <link>https://www.soodalgames.com/en/#game-seathunter</link>
+    <guid isPermaLink="false">soodalgames-dev-seathunter-2025-12</guid>
+    <pubDate>Mon, 01 Dec 2025 00:00:00 +0900</pubDate>
+    <description>A casual observation game — watch subway passengers and guess who's about to get off.</description>
+  </item>
+  <item>
+    <title>Started developing: Color Debt</title>
+    <link>https://www.soodalgames.com/en/#game-colordebt</link>
+    <guid isPermaLink="false">soodalgames-dev-colordebt-2025-09</guid>
+    <pubDate>Mon, 01 Sep 2025 00:00:00 +0900</pubDate>
+    <description>A casual puzzle game — merge and pop same-colored faces before your debt grows.</description>
+  </item>
+  <item>
+    <title>Started developing: Time Heist 24</title>
+    <link>https://www.soodalgames.com/en/#game-timeheist24</link>
+    <guid isPermaLink="false">soodalgames-dev-timeheist24-2025-06</guid>
+    <pubDate>Sun, 01 Jun 2025 00:00:00 +0900</pubDate>
+    <description>A turn-based strategy game where time itself is your health, your action points, and your score.</description>
+  </item>
+  <item>
+    <title>Started developing: Stealth Ops</title>
+    <link>https://www.soodalgames.com/en/#game-stealthops</link>
+    <guid isPermaLink="false">soodalgames-dev-stealthops-2025-03</guid>
+    <pubDate>Sat, 01 Mar 2025 00:00:00 +0900</pubDate>
+    <description>A stealth action game with 9 weapon types, 6 mini-games per stage, and a dual-stage map structure.</description>
+  </item>
+  <item>
+    <title>Started developing: Mini Court</title>
+    <link>https://www.soodalgames.com/en/#game-minicourt</link>
+    <guid isPermaLink="false">soodalgames-dev-minicourt-2025-01</guid>
+    <pubDate>Wed, 01 Jan 2025 00:00:00 +0900</pubDate>
+    <description>A courtroom simulation with 55 cases, Korean/English support, an appeals mode, daily challenges, and a career XP system. Packaged with Electron and also released on Steam.</description>
+  </item>
+</channel>
+</rss>

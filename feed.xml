@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>수달게임즈 (Soodal Games) 개발 로그</title>
+  <link>https://www.soodalgames.com/</link>
+  <atom:link href="https://www.soodalgames.com/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>최한민이 혼자 만드는 인디 게임 스튜디오, 수달게임즈의 게임별 개발 착수 기록입니다. 실시간 커밋 타임라인은 사이트에서 직접 확인하세요.</description>
+  <language>ko</language>
+  <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0900</lastBuildDate>
+
+  <item>
+    <title>게임 개발 시작: Stress Smash</title>
+    <link>https://www.soodalgames.com/#game-stresssmash</link>
+    <guid isPermaLink="false">soodalgames-dev-stresssmash-2026-06</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 +0900</pubDate>
+    <description>화면을 두드려 스트레스를 날리는 타격감 중심 캐주얼 게임.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: Maze Escape</title>
+    <link>https://www.soodalgames.com/#game-mazeescape</link>
+    <guid isPermaLink="false">soodalgames-dev-mazeescape-2026-04</guid>
+    <pubDate>Wed, 01 Apr 2026 00:00:00 +0900</pubDate>
+    <description>열쇠를 모아 미로를 탈출하는 캐주얼 게임, 초기작 중 하나.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: 자리 사냥 (Seat Hunter)</title>
+    <link>https://www.soodalgames.com/#game-seathunter</link>
+    <guid isPermaLink="false">soodalgames-dev-seathunter-2025-12</guid>
+    <pubDate>Mon, 01 Dec 2025 00:00:00 +0900</pubDate>
+    <description>지하철 승객을 관찰해 곧 내릴 사람을 맞히는 관찰력 캐주얼 게임.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: Color Debt</title>
+    <link>https://www.soodalgames.com/#game-colordebt</link>
+    <guid isPermaLink="false">soodalgames-dev-colordebt-2025-09</guid>
+    <pubDate>Mon, 01 Sep 2025 00:00:00 +0900</pubDate>
+    <description>같은 색 얼굴을 합치고 터뜨려 빚을 늘리지 않는 캐주얼 퍼즐 게임.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: Time Heist 24</title>
+    <link>https://www.soodalgames.com/#game-timeheist24</link>
+    <guid isPermaLink="false">soodalgames-dev-timeheist24-2025-06</guid>
+    <pubDate>Sun, 01 Jun 2025 00:00:00 +0900</pubDate>
+    <description>시간이 곧 체력이자 행동력이자 점수가 되는 턴제 전략 게임.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: Stealth Ops</title>
+    <link>https://www.soodalgames.com/#game-stealthops</link>
+    <guid isPermaLink="false">soodalgames-dev-stealthops-2025-03</guid>
+    <pubDate>Sat, 01 Mar 2025 00:00:00 +0900</pubDate>
+    <description>9종 무기, 스테이지별 6개 미니게임, 듀얼 스테이지 맵 구조의 잠입 액션.</description>
+  </item>
+  <item>
+    <title>게임 개발 시작: 미니법정 (Mini Court)</title>
+    <link>https://www.soodalgames.com/#game-minicourt</link>
+    <guid isPermaLink="false">soodalgames-dev-minicourt-2025-01</guid>
+    <pubDate>Wed, 01 Jan 2025 00:00:00 +0900</pubDate>
+    <description>55개 사건, 한/영 지원, 항소심 모드와 데일리 챌린지, 경력 XP 시스템까지 갖춘 법정 시뮬레이션. Electron으로 패키징해 Steam에도 올렸습니다.</description>
+  </item>
+</channel>
+</rss>

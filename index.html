@@ -97,6 +97,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="수달게임즈 개발 로그" href="/feed.xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
@@ -588,6 +589,25 @@
     .pstep-line{ top:34px; bottom:-26px; }
   }
 
+  /* ---------- COMMIT HEATMAP ---------- */
+  .heatmap-wrap{ margin:0 0 28px; }
+  .heatmap-caption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); margin-bottom:10px; }
+  .heatmap-caption a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
+  .heatmap-caption a:hover{ border-color:var(--amber); }
+  .heatmap-grid{
+    display:grid; grid-template-rows:repeat(7, 11px); grid-auto-flow:column; grid-auto-columns:11px;
+    gap:3px; overflow-x:auto; padding-bottom:4px; width:fit-content; max-width:100%;
+  }
+  .heatmap-cell{ width:11px; height:11px; border-radius:2px; background:var(--line-strong); }
+  .heatmap-cell[data-level="1"]{ background:rgba(var(--amber-rgb),0.35); }
+  .heatmap-cell[data-level="2"]{ background:rgba(var(--amber-rgb),0.55); }
+  .heatmap-cell[data-level="3"]{ background:rgba(var(--amber-rgb),0.78); }
+  .heatmap-cell[data-level="4"]{ background:var(--amber); }
+  @media(max-width:560px){
+    .heatmap-grid{ grid-template-rows:repeat(7, 9px); grid-auto-columns:9px; gap:2px; }
+    .heatmap-cell{ width:9px; height:9px; }
+  }
+
   /* ---------- TIMELINE ---------- */
   .timeline-list{display:flex; flex-direction:column; gap:0; position:relative;}
   .timeline-list::before{
@@ -649,6 +669,20 @@
     border:1px solid var(--line-strong); border-radius:5px; padding:3px 7px; background:var(--ink);
     color:var(--amber); box-shadow:0 2px 0 rgba(0,0,0,0.2);
   }
+
+  /* ---------- QR INSTALL MODAL (기존 shortcut-modal 오버레이 패턴 재사용) ---------- */
+  .qr-modal-box{ text-align:center; max-width:280px; }
+  .qr-modal-box img{
+    display:block; width:200px; height:200px; margin:6px auto 14px;
+    border-radius:var(--r-sm); background:#fff; padding:10px; box-shadow:var(--shadow-card);
+  }
+  .qr-modal-label{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); line-height:1.5; }
+  .qr-trigger{
+    display:inline-flex; align-items:center; gap:4px; font-family:var(--mono); font-size:12px;
+    color:var(--paper-dim); background:none; border:none; padding:0; cursor:pointer;
+    border-bottom:1px solid transparent; transition:border-color .2s, color .2s;
+  }
+  .qr-trigger:hover{ color:var(--amber); border-color:var(--amber); }
 
   /* ---------- FOOTER ---------- */
   footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
@@ -807,6 +841,28 @@
   .chat-form button[type="submit"]:hover{ filter:brightness(1.08); transform:translateY(-1px); }
   @media(max-width:480px){ .chat-card{ padding:18px 16px 16px; } .chat-msg p{ max-width:94%; } }
 
+  /* ---------- FEEDBACK FORM ---------- */
+  .feedback-form{ display:flex; flex-direction:column; gap:12px; max-width:480px; }
+  .feedback-form input, .feedback-form textarea{
+    font-family:var(--sans); font-size:14px; color:var(--paper); background:var(--ink-2);
+    border:1px solid var(--line-strong); border-radius:var(--r-sm); padding:12px 14px;
+    resize:vertical; transition:border-color .2s;
+  }
+  .feedback-form input::placeholder, .feedback-form textarea::placeholder{ color:var(--paper-dim); opacity:.75; }
+  .feedback-form input:focus-visible, .feedback-form textarea:focus-visible{ outline:2px solid var(--amber); outline-offset:1px; }
+  .feedback-form button[type="submit"]{
+    align-self:flex-start; font-family:var(--mono); font-weight:700; font-size:13px;
+    padding:11px 22px; border-radius:999px; border:1px solid var(--amber);
+    background:var(--amber); color:var(--ink); cursor:pointer;
+    transition:filter .2s var(--ease), transform .2s var(--ease), opacity .2s;
+  }
+  .feedback-form button[type="submit"]:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .feedback-form button[type="submit"]:disabled{ opacity:.6; cursor:default; transform:none; }
+  .feedback-status{ font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); min-height:1.4em; }
+  .feedback-status.success{ color:var(--teal); }
+  .feedback-status.error{ color:var(--rose); }
+  .hp-field{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
   /* ---------- PRINT ----------
      이전엔 인쇄 규칙이 여기저기 흩어져 있었고, 무엇보다 스크롤 애니메이션용
      .reveal 요소가 화면을 한 번도 안 스크롤한 상태로 인쇄하면 opacity:0인 채로
@@ -815,7 +871,7 @@
   @media print{
     .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
     .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring,
-    #aichat, .donate-box{
+    #aichat, #feedback, .donate-box{
       display:none !important;
     }
     .reveal{ opacity:1 !important; transform:none !important; }
@@ -859,6 +915,7 @@
   <button data-target="timeline" type="button" aria-label="타임라인으로 이동"><span class="dot-label">타임라인</span></button>
   <button data-target="song" type="button" aria-label="좋아하는 노래로 이동"><span class="dot-label">좋아하는 노래</span></button>
   <button data-target="aichat" type="button" aria-label="AI Soodal과 대화하기로 이동"><span class="dot-label">AI 챗봇</span></button>
+  <button data-target="feedback" type="button" aria-label="피드백 보내기로 이동"><span class="dot-label">피드백</span></button>
 </nav>
 
 <div class="wrap" id="main">
@@ -879,6 +936,7 @@
       <div class="stat"><b data-count="7">0</b><span>출시 게임 (Play / Steam)</span></div>
       <div class="stat"><b data-count="1">0</b><span>Steam 빌드 (Electron)</span></div>
       <div class="stat"><b data-count="1">0</b><span>1인 개발 — 최한민</span></div>
+      <div class="stat"><b id="devDaysStat" data-count="0">0</b><span>게임 개발 N일째</span></div>
     </div>
 
     <div class="hero-signature">
@@ -964,6 +1022,7 @@
           <div class="game-links">
             <a href="https://store.steampowered.com/app/5113110" target="_blank" rel="noopener">Steam →</a>
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" data-qr-label="미니법정 · Google Play">📱 QR로 설치</button>
             <button class="game-share" type="button" data-share="game-minicourt">공유 🔗</button>
           </div>
         </div>
@@ -980,6 +1039,7 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.stealthops" data-qr-label="Stealth Ops · Google Play">📱 QR로 설치</button>
             <button class="game-share" type="button" data-share="game-stealthops">공유 🔗</button>
           </div>
         </div>
@@ -996,6 +1056,7 @@
           <div class="badges"><span class="badge play">Google Play</span></div>
           <div class="game-links">
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" target="_blank" rel="noopener">Google Play →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.timeheist24" data-qr-label="Time Heist 24 · Google Play">📱 QR로 설치</button>
             <button class="game-share" type="button" data-share="game-timeheist24">공유 🔗</button>
           </div>
         </div>
@@ -1128,6 +1189,10 @@
     <div class="sec-head"><span class="tag">TIMELINE</span><h2>게임 개발 &amp; 커밋 타임라인</h2></div>
     <p class="sec-sub">게임 개발 착수 시점과 실시간 커밋을 하나로 모아 시간순으로 정렬했습니다.</p>
     <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
+    <div id="commitHeatmap" class="heatmap-wrap">
+      <p class="heatmap-caption">최근 1년 커밋 활동 <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub에서 보기 →</a></p>
+      <div id="heatmapGrid" class="heatmap-grid" role="img" aria-label="최근 1년 GitHub 커밋 히트맵"></div>
+    </div>
     <div id="timelineList" class="timeline-list">
       <p class="commit-loading">불러오는 중...</p>
     </div>
@@ -1210,11 +1275,31 @@
     <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
   </svg></div>
 
+  <!-- FEEDBACK / BUG REPORT -->
+  <section id="feedback" class="reveal">
+    <div class="sec-head"><span class="tag">FEEDBACK</span><h2>버그 제보 · 피드백 보내기</h2></div>
+    <p class="sec-sub">발견한 버그나 하고 싶은 말을 적어주시면 최한민님 이메일로 바로 전달돼요. 이름·이메일은 안 적으셔도 됩니다.</p>
+    <form id="feedbackForm" class="feedback-form">
+      <input type="text" name="name" placeholder="이름 (선택)" autocomplete="name">
+      <input type="email" name="email" placeholder="답장 받을 이메일 (선택)" autocomplete="email">
+      <textarea name="message" required placeholder="예: 모바일 사파리에서 노래 섹션 오디오가 이상해요 / 이런 게임 만들어주세요 등" rows="4"></textarea>
+      <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" id="feedbackSubmitBtn">보내기</button>
+      <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div class="divider"><svg viewBox="0 0 300 16" preserveAspectRatio="none" style="width:100%;height:16px;display:block;">
+    <path d="M0,8 Q75,0 150,8 T300,8" fill="none" style="stroke:var(--line)" stroke-width="1"/>
+    <circle cx="150" cy="8" r="3" style="fill:var(--amber)"/>
+  </svg></div>
+
   <footer class="reveal">
     <div class="footer-title">더 알아보고 싶다면</div>
     <div class="links">
       <a href="https://www.choihanmin.com/" rel="noopener">최한민 개인 홈페이지 →</a>
       <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
+      <a href="/feed.xml" target="_blank" rel="noopener">📡 RSS 구독</a>
       <button id="printPageBtn" class="print-link" type="button">🖨️ 인쇄용으로 보기</button>
       <span class="email-copy-wrap">
         <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
@@ -1256,9 +1341,30 @@
   </div>
 </div>
 
+<div id="qrModal" class="shortcut-modal" role="dialog" aria-modal="true" aria-label="설치 QR 코드">
+  <div class="shortcut-modal-box qr-modal-box">
+    <button class="shortcut-modal-close" id="qrModalClose" type="button" aria-label="닫기">✕</button>
+    <h3 id="qrModalTitle">📱 QR로 설치하기</h3>
+    <img id="qrModalImg" src="" alt="" width="200" height="200">
+    <p id="qrModalLabel" class="qr-modal-label"></p>
+  </div>
+</div>
+
 <button id="backToTop" class="back-to-top" aria-label="맨 위로">↑</button>
 
 <script>
+  /* ---- DEV DAYS COUNTER (첫 게임 개발 착수일부터 오늘까지, 실제 날짜 계산) ----
+     타임라인에 있는 실제 개발 착수일(미니법정, 2025-01)을 기준으로 삼아
+     매번 로드 시점 기준으로 정확히 계산 — 가짜 숫자가 아니라 순수 날짜 연산. */
+  (function(){
+    const el = document.getElementById('devDaysStat');
+    if (!el) return;
+    const start = new Date('2025-01-01T00:00:00+09:00');
+    const now = new Date();
+    const days = Math.max(1, Math.floor((now - start) / 86400000));
+    el.dataset.count = String(days);
+  })();
+
   /* ---- SONG AUDIO SAFETY NET ----
      버그 제보: 모바일에서 노래 섹션의 오디오가 사용자가 재생 버튼을 누르지
      않았는데도 자동으로 재생되고, 탭/창을 닫아도 노래가 끝날 때까지 계속
@@ -1623,12 +1729,43 @@
   shortcutModalCloseBtn?.addEventListener('click', closeShortcutModal);
   shortcutModal?.addEventListener('click', (e) => { if (e.target === shortcutModal) closeShortcutModal(); });
 
+  /* ---- QR INSTALL MODAL (게임 스토어 링크를 QR 코드로 보여줌, shortcutModal과 동일한
+     포커스 관리 패턴 재사용 — 새 오버레이 방식을 발명하지 않고 이미 검증된 걸 그대로 씀) ---- */
+  const qrModal = document.getElementById('qrModal');
+  const qrModalCloseBtn = document.getElementById('qrModalClose');
+  const qrModalImg = document.getElementById('qrModalImg');
+  const qrModalLabel = document.getElementById('qrModalLabel');
+  let lastFocusedBeforeQrModal = null;
+  function openQrModal(url, label){
+    if (!qrModal) return;
+    lastFocusedBeforeQrModal = document.activeElement;
+    const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(url)}`;
+    if (qrModalImg) { qrModalImg.src = qrSrc; qrModalImg.alt = `${label} QR 코드`; }
+    if (qrModalLabel) qrModalLabel.textContent = label;
+    qrModal.classList.add('show');
+    qrModalCloseBtn?.focus();
+  }
+  function closeQrModal(){
+    if (!qrModal || !qrModal.classList.contains('show')) return;
+    qrModal.classList.remove('show');
+    if (lastFocusedBeforeQrModal && typeof lastFocusedBeforeQrModal.focus === 'function') {
+      lastFocusedBeforeQrModal.focus();
+    }
+  }
+  qrModalCloseBtn?.addEventListener('click', closeQrModal);
+  qrModal?.addEventListener('click', (e) => { if (e.target === qrModal) closeQrModal(); });
+  document.querySelectorAll('.qr-trigger[data-qr-url]').forEach(btn => {
+    btn.addEventListener('click', () => openQrModal(btn.dataset.qrUrl, btn.dataset.qrLabel || ''));
+  });
+
   /* ---- KEYBOARD SHORTCUTS (T 테마 / G 게임 / R 랜덤 / Home 맨 위 / ? 도움말) ---- */
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
     if (document.getElementById('lightbox')?.classList.contains('show')) return; // 라이트박스 열려있을 땐 배경 단축키 무시
+    if (e.key === 'Escape' && qrModal?.classList.contains('show')) { closeQrModal(); return; }
+    if (qrModal?.classList.contains('show')) return; // QR 모달 열려있을 땐 다른 단축키 무시
     if (e.key === 'Escape' && shortcutModal?.classList.contains('show')) { closeShortcutModal(); return; }
     if (shortcutModal?.classList.contains('show') && e.key !== '?') return; // 도움말 열려있을 땐 다른 단축키 무시
     if (e.key === 't' || e.key === 'T') {
@@ -1696,6 +1833,40 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') lightbox.classList.remove('show');
   });
+
+  /* ---- COMMIT HEATMAP (GitHub 공개 커밋 데이터를 실제로 가져와서 렌더링,
+     비공식 무료 커뮤니티 API 사용 — 실패해도 조용히 숨김 처리) ---- */
+  (function(){
+    const grid = document.getElementById('heatmapGrid');
+    if (!grid) return;
+    function render(contributions){
+      if (!contributions || !contributions.length) throw new Error('empty');
+      grid.innerHTML = '';
+      const first = new Date(contributions[0].date + 'T00:00:00Z');
+      const firstDow = first.getUTCDay(); // 0=일요일
+      for (let i = 0; i < firstDow; i++){
+        const pad = document.createElement('span');
+        pad.className = 'heatmap-cell';
+        pad.style.visibility = 'hidden';
+        grid.appendChild(pad);
+      }
+      contributions.forEach(d => {
+        const cell = document.createElement('span');
+        cell.className = 'heatmap-cell';
+        const level = typeof d.level === 'number' ? d.level : (d.count > 0 ? 1 : 0);
+        cell.dataset.level = Math.min(4, level);
+        cell.title = `${d.date} · 커밋 ${d.count}건`;
+        grid.appendChild(cell);
+      });
+    }
+    fetch('https://github-contributions-api.jogruber.de/v4/ChoeHanMin?y=last')
+      .then(r => r.json())
+      .then(data => render(data.contributions))
+      .catch(() => {
+        const wrap = document.getElementById('commitHeatmap');
+        if (wrap) wrap.style.display = 'none';
+      });
+  })();
 
   /* ---- INTEGRATED TIMELINE (games + live commits, merged) ---- */
   (function(){
@@ -1851,6 +2022,59 @@
         ask(btn.dataset.q);
       });
     }
+  })();
+
+  /* ---- FEEDBACK / BUG REPORT FORM ----
+     백엔드 없이 formsubmit.co(무료, 회원가입 불필요)로 실제 이메일 전송.
+     주의: 이 서비스는 처음 한 번은 rokafhanmin@gmail.com으로 활성화 확인
+     메일이 가고, 그걸 클릭해야 그 다음부터 정상적으로 전달됨. */
+  (function(){
+    const form = document.getElementById('feedbackForm');
+    const statusEl = document.getElementById('feedbackStatus');
+    const submitBtn = document.getElementById('feedbackSubmitBtn');
+    if (!form || !statusEl || !submitBtn) return;
+    const originalBtnText = submitBtn.textContent;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const message = form.message.value.trim();
+      statusEl.classList.remove('success', 'error');
+      if (!message){
+        statusEl.textContent = '내용을 입력해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = '보내는 중…';
+      statusEl.textContent = '';
+
+      fetch('https://formsubmit.co/ajax/rokafhanmin@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.value.trim() || '(익명)',
+          email: form.email.value.trim() || '(미입력)',
+          message: message,
+          _subject: '수달게임즈 피드백/버그 제보',
+          _honey: form._honey.value,
+          _captcha: 'false'
+        })
+      })
+        .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
+        .then(() => {
+          statusEl.textContent = '전달됐어요! 확인하고 답장드릴게요 🙏';
+          statusEl.classList.add('success');
+          form.reset();
+        })
+        .catch(() => {
+          statusEl.textContent = '전송에 실패했어요. rokafhanmin@gmail.com으로 직접 메일 주셔도 돼요.';
+          statusEl.classList.add('error');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        });
+    });
   })();
 </script>
 </body>
