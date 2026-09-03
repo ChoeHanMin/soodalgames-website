@@ -693,6 +693,25 @@
   }
   @media(max-width:560px){ .kbd-hint{ display:none; } }
 
+  /* ---------- DONATE BOX ---------- */
+  .donate-box{
+    margin:32px auto 0; max-width:420px; padding:24px 26px; border-radius:var(--r-lg);
+    background:var(--ink-2); border:1px solid var(--line-strong); box-shadow:var(--shadow-card);
+  }
+  .donate-title{ font-family:var(--serif); font-weight:700; font-size:16px; margin-bottom:6px; }
+  .donate-sub{ font-family:var(--mono); font-size:11.5px; color:var(--paper-dim); margin-bottom:16px; line-height:1.6; }
+  .donate-amounts{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .donate-amt{
+    font-family:var(--mono); font-weight:700; font-size:13px; padding:10px 18px; border-radius:999px;
+    border:1px solid rgba(var(--rose-rgb),0.45); color:var(--rose);
+    transition:background .2s var(--ease), transform .15s, color .2s, border-color .2s;
+  }
+  .donate-amt:hover{ background:var(--rose); color:var(--ink); border-color:var(--rose); }
+  .donate-amt:active{ transform:scale(.96); }
+  html[data-theme="light"] .donate-amt{ background:rgba(var(--rose-rgb),0.08); }
+  html[data-theme="light"] .donate-amt:hover{ background:var(--rose); color:#fff; }
+  @media(max-width:480px){ .donate-box{ padding:20px 16px; } }
+
   /* ---------- SCROLL PROGRESS BAR ---------- */
   .scroll-progress{
     position:fixed; top:0; left:0; height:3px; width:0%; z-index:40;
@@ -807,7 +826,7 @@
   @media print{
     .topbar, .nav-dots, .back-to-top, .scroll-progress, .shortcut-modal, .lightbox,
     .orb, .hero-spotlight, .marquee-strip, .skip-link, .kbd-hint, .print-link, .song-ring,
-    #aichat{
+    #aichat, .donate-box{
       display:none !important;
     }
     .reveal{ opacity:1 !important; transform:none !important; }
@@ -1216,6 +1235,16 @@
     <div class="copyright">© 2026 Choi Hanmin · Soodal Games — made with my own blood, sweat, and tears. <span id="visitCount" class="visit-count"></span></div>
     <p id="lastUpdated" class="last-updated"></p>
     <p class="kbd-hint">⌨ Shortcuts — <kbd>T</kbd> theme · <kbd>G</kbd> games · <kbd>R</kbd> random game · <kbd>Home</kbd> top · <kbd>?</kbd> help</p>
+
+    <div class="donate-box">
+      <p class="donate-title">🥺 Donate to poor Choi Hanmin</p>
+      <p class="donate-sub">Links to KakaoPay (a Korean payment app) — pick your amount in the app and send it over.</p>
+      <div class="donate-amounts">
+        <a class="donate-amt" href="https://qr.kakaopay.com/FeEPoIAOb" target="_blank" rel="noopener">₩1,000</a>
+        <a class="donate-amt" href="https://qr.kakaopay.com/FeEPoIAOb" target="_blank" rel="noopener">₩5,000</a>
+        <a class="donate-amt" href="https://qr.kakaopay.com/FeEPoIAOb" target="_blank" rel="noopener">₩10,000</a>
+      </div>
+    </div>
   </footer>
 </div>
 
