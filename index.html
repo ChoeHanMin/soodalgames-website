@@ -125,7 +125,8 @@
     --r-md:16px;
     --r-lg:22px;
     --ease: cubic-bezier(.16,1,.3,1);
-    --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset, 0 18px 40px -22px rgba(0,0,0,0.55);
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.04) inset, 0 22px 50px -26px rgba(0,0,0,0.62);
+    --shadow-hover: 0 1px 0 rgba(255,255,255,0.05) inset, 0 32px 64px -22px rgba(0,0,0,0.68), 0 0 0 1px rgba(var(--amber-rgb),0.14);
     --shadow-lift: 0 26px 60px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(var(--amber-rgb),0.22);
   }
   /* 스크롤바·폼 컨트롤 같은 브라우저 기본 UI도 테마에 맞춰지도록 */
@@ -149,22 +150,20 @@
     --rose-rgb:232,73,107;
     --line: rgba(36,26,15,0.10);
     --line-strong: rgba(36,26,15,0.20);
-    --shadow-card: 0 1px 0 rgba(255,255,255,0.7) inset, 0 18px 40px -24px rgba(120,60,10,0.20);
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.8) inset, 0 22px 50px -28px rgba(80,50,20,0.18);
+    --shadow-hover: 0 1px 0 rgba(255,255,255,0.85) inset, 0 32px 64px -24px rgba(80,50,20,0.22), 0 0 0 1px rgba(var(--amber-rgb),0.16);
     --shadow-lift: 0 26px 60px -20px rgba(120,60,10,0.25), 0 0 0 1px rgba(var(--amber-rgb),0.3);
   }
-  html[data-theme="light"] .orb{ opacity:.7; }
-  /* 파스텔 톤 배경 — 페이지 전체에 은은하게 깔리는 다색 그라디언트 (스크롤해도 고정) */
+  html[data-theme="light"] .orb{ opacity:.5; }
+  /* 은은한 투톤 배경 — 다색 컨페티 대신 절제된 대각선 워시로, 차분하고 고급스러운 인상을 유지 */
   html[data-theme="light"] body{
     background-image:
-      radial-gradient(circle at 10% 6%, rgba(var(--rose-rgb),0.12), transparent 42%),
-      radial-gradient(circle at 90% 4%, rgba(var(--teal-rgb),0.11), transparent 46%),
-      radial-gradient(circle at 50% 40%, rgba(var(--amber-rgb),0.09), transparent 55%),
-      radial-gradient(circle at 6% 72%, rgba(var(--teal-rgb),0.08), transparent 42%),
-      radial-gradient(circle at 94% 88%, rgba(var(--rose-rgb),0.09), transparent 44%);
+      radial-gradient(circle at 8% 4%, rgba(var(--amber-rgb),0.07), transparent 48%),
+      radial-gradient(circle at 92% 96%, rgba(var(--rose-rgb),0.06), transparent 50%);
     background-attachment:fixed;
   }
   @media(max-width:700px){ html[data-theme="light"] body{ background-attachment:scroll; } }
-  @media (prefers-reduced-motion: reduce){ html[data-theme="light"] .orb{ opacity:.55; } }
+  @media (prefers-reduced-motion: reduce){ html[data-theme="light"] .orb{ opacity:.4; } }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth; overflow-x:hidden; width:100%;}
   body{
@@ -244,9 +243,9 @@
   .nav-dots button:hover .dot-label{ opacity:1; }
 
   /* ---------- HERO ---------- */
-  .hero{ padding:100px 0 56px; position:relative; overflow:hidden; isolation:isolate; }
-  @media(max-width:700px){ .hero{padding:72px 0 40px;} }
-  .orb{ position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:-2; opacity:.55; }
+  .hero{ padding:112px 0 64px; position:relative; overflow:hidden; isolation:isolate; }
+  @media(max-width:700px){ .hero{padding:76px 0 48px;} }
+  .orb{ position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:-2; opacity:.4; }
   .orb1{ width:340px; height:340px; top:-140px; right:-80px; background:radial-gradient(circle, rgba(var(--amber-rgb),0.55), transparent 70%); animation:orbFloat 16s ease-in-out infinite; }
   .orb2{ width:280px; height:280px; bottom:-120px; left:-90px; background:radial-gradient(circle, rgba(var(--teal-rgb),0.4), transparent 70%); animation:orbFloat 20s ease-in-out infinite reverse; }
   .orb3{ width:220px; height:220px; top:40%; left:55%; background:radial-gradient(circle, rgba(var(--rose-rgb),0.32), transparent 70%); animation:orbFloat 24s ease-in-out infinite; }
@@ -269,8 +268,8 @@
     box-shadow:0 0 8px 1px rgba(var(--amber-rgb),0.6);
   }
   .hero h1{
-    font-family:var(--serif); font-weight:700; letter-spacing:-0.01em;
-    font-size:clamp(34px,6vw,54px); line-height:1.15; margin-bottom:18px;
+    font-family:var(--serif); font-weight:700; letter-spacing:-0.02em;
+    font-size:clamp(36px,6.4vw,60px); line-height:1.1; margin-bottom:20px;
   }
   .hero h1 .amber{
     background:linear-gradient(100deg, var(--amber) 25%, var(--amber-soft) 45%, var(--amber) 65%);
@@ -284,11 +283,11 @@
   .hero-links{ display:flex; gap:14px; flex-wrap:wrap; }
   .hero-links a{
     font-family:var(--mono); font-size:13px; padding:10px 20px; border-radius:999px;
-    border:1px solid var(--line-strong); transition:transform .15s, border-color .2s, background .2s, color .2s;
+    border:1px solid var(--line-strong); transition:transform .25s var(--ease), border-color .2s, background .2s, color .2s, box-shadow .25s var(--ease);
   }
   .hero-links a.primary{ background:var(--amber); color:var(--ink); border-color:var(--amber); box-shadow:0 12px 26px -12px rgba(var(--amber-rgb),0.55); }
-  .hero-links a.primary:hover{ filter:brightness(1.08); }
-  .hero-links a:not(.primary):hover{ border-color:var(--amber); color:var(--amber); }
+  .hero-links a.primary:hover{ filter:brightness(1.08); transform:translateY(-2px); box-shadow:0 18px 34px -14px rgba(var(--amber-rgb),0.65); }
+  .hero-links a:not(.primary):hover{ border-color:var(--amber); color:var(--amber); transform:translateY(-2px); }
   .hero-links a:active{ transform:scale(.97); }
   .hero-stats{ display:flex; gap:36px; margin-top:40px; flex-wrap:wrap; }
   .hero-stats .stat b{
@@ -341,9 +340,9 @@
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
-  /* 라이트 모드에서는 페이지 배경의 파스텔 톤(로즈/틸)과 어울리게 살짝 더 다채롭게 */
+  /* 라이트 모드도 다크 모드와 동일하게 앰버 단일 톤으로 절제 — 여러 색을 한 번에 섞지 않음 */
   html[data-theme="light"] .marquee-strip{
-    background:linear-gradient(90deg, rgba(var(--rose-rgb),0.08), rgba(var(--amber-rgb),0.08) 40%, rgba(var(--teal-rgb),0.08) 70%, rgba(var(--rose-rgb),0.08));
+    background:linear-gradient(90deg, rgba(var(--amber-rgb),0.08), transparent 25%, transparent 75%, rgba(var(--amber-rgb),0.08));
     border-color:var(--line-strong);
   }
   .marquee-track{
@@ -359,9 +358,9 @@
   @media(max-width:560px){ .divider{padding:0 20px;} }
 
   /* ---------- SECTION HEADERS ---------- */
-  section{padding:76px 0;}
-  @media(max-width:700px){ section{padding:56px 0;} }
-  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:36px;}
+  section{padding:96px 0;}
+  @media(max-width:700px){ section{padding:64px 0;} }
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:38px;}
   .sec-head .tag{
     font-family:var(--mono); font-size:11px; color:var(--amber);
     letter-spacing:0.14em; font-weight:600; position:relative; padding-left:16px;
@@ -371,8 +370,8 @@
     width:9px; height:1px; background:var(--amber);
     box-shadow:0 0 8px 1px rgba(var(--amber-rgb),0.6);
   }
-  .sec-head h2{font-family:var(--serif); font-size:clamp(24px,3.4vw,30px); font-weight:700; letter-spacing:-0.01em;}
-  .sec-sub{color:var(--paper-dim); font-size:14px; margin:-22px 0 36px; font-family:var(--mono); opacity:.85;}
+  .sec-head h2{font-family:var(--serif); font-size:clamp(26px,3.8vw,34px); font-weight:700; letter-spacing:-0.02em;}
+  .sec-sub{color:var(--paper-dim); font-size:14px; margin:-24px 0 38px; font-family:var(--mono); opacity:.85;}
 
   /* ---------- NIGHT-OWL INSIGHT BADGE ---------- */
   .night-badge{
@@ -396,12 +395,11 @@
   }
   @media(max-width:560px){ .story{ padding:30px 22px; } }
   .story::after{
-    content:''; position:absolute; top:0; left:0; right:0; height:4px;
-    background:linear-gradient(90deg, var(--amber), var(--rose), var(--teal));
-    opacity:.55;
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--amber), var(--amber-soft));
+    opacity:.5;
   }
-  /* 라이트 모드에서는 채도 높은 팔레트라 이 띠가 특히 화려하게 도드라짐 */
-  html[data-theme="light"] .story::after{ opacity:.85; }
+  html[data-theme="light"] .story::after{ opacity:.7; }
   .story::before{
     content:'"'; position:absolute; top:-30px; left:20px; font-family:var(--serif);
     font-size:180px; color:rgba(var(--amber-rgb),0.1); line-height:1; pointer-events:none;
@@ -424,7 +422,7 @@
     padding:7px 16px; cursor:pointer;
     transition:color .2s, border-color .2s, background .2s, transform .15s;
   }
-  .game-filters button:hover{ border-color:var(--line-strong); color:var(--paper); }
+  .game-filters button:hover{ border-color:var(--line-strong); color:var(--paper); transform:translateY(-1px); }
   .game-filters button.active{ color:var(--ink); background:var(--amber); border-color:var(--amber); }
   .game-filters button:active{ transform:scale(.96); }
   .game-filters .filter-count{ opacity:.65; font-size:10px; }
@@ -464,7 +462,7 @@
     border:1px solid var(--line); border-radius:var(--r-md); padding:24px 26px;
     background:linear-gradient(165deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 55%);
     box-shadow:var(--shadow-card);
-    transition:border-color .3s var(--ease), box-shadow .35s var(--ease), transform .1s, opacity .3s;
+    transition:border-color .3s var(--ease), box-shadow .35s var(--ease), transform .3s var(--ease), opacity .3s;
   }
   .game::before{
     content:''; position:absolute; inset:0; border-radius:inherit;
@@ -473,7 +471,8 @@
   }
   .game.spotlit::before{ opacity:1; }
   @media(hover:none){ .game::before{ display:none; } }
-  .game:hover{ border-color:rgba(var(--amber-rgb),0.45); }
+  .game:hover{ border-color:rgba(var(--amber-rgb),0.45); transform:translateY(-4px); box-shadow:var(--shadow-hover); }
+  @media (prefers-reduced-motion: reduce){ .game:hover{ transform:none; } }
   .game.featured{
     border-color:rgba(var(--amber-rgb),0.35);
     background:linear-gradient(165deg, rgba(var(--amber-rgb),0.07), rgba(255,255,255,0) 60%);
@@ -581,11 +580,7 @@
   }
   .pstep-line{ position:absolute; top:44px; bottom:-34px; width:1px; background:linear-gradient(var(--amber) 0%, var(--line) 100%); opacity:.4; }
   .pstep:last-child .pstep-line{ display:none; }
-  /* 라이트 모드에서는 단계가 진행될수록 앰버→틸→로즈로 색이 흘러가도록 (파스텔 배경과 통일감) */
-  html[data-theme="light"] .pstep-line{
-    background:linear-gradient(var(--amber) 0%, var(--teal) 50%, rgba(var(--rose-rgb),0.3) 100%);
-    opacity:.55;
-  }
+  html[data-theme="light"] .pstep-line{ opacity:.5; }
   .pstep-body{ flex:1; min-width:0; padding-top:6px; }
   .pstep-title{ font-size:17px; font-weight:700; letter-spacing:-0.01em; margin-bottom:6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .pstep-title .pico{ font-size:16px; }
@@ -705,7 +700,7 @@
     border:1px solid rgba(var(--rose-rgb),0.45); color:var(--rose);
     transition:background .2s var(--ease), transform .15s, color .2s, border-color .2s;
   }
-  .donate-amt:hover{ background:var(--rose); color:var(--ink); border-color:var(--rose); }
+  .donate-amt:hover{ background:var(--rose); color:var(--ink); border-color:var(--rose); transform:translateY(-1px); }
   .donate-amt:active{ transform:scale(.96); }
   html[data-theme="light"] .donate-amt{ background:rgba(var(--rose-rgb),0.08); }
   html[data-theme="light"] .donate-amt:hover{ background:var(--rose); color:#fff; }
@@ -812,9 +807,9 @@
   .chat-form button[type="submit"]{
     flex-shrink:0; padding:11px 18px; border-radius:999px; border:1px solid var(--amber);
     background:var(--amber); color:var(--ink); font-weight:700; font-size:13px; cursor:pointer;
-    transition:filter .2s var(--ease);
+    transition:filter .2s var(--ease), transform .2s var(--ease);
   }
-  .chat-form button[type="submit"]:hover{ filter:brightness(1.08); }
+  .chat-form button[type="submit"]:hover{ filter:brightness(1.08); transform:translateY(-1px); }
   @media(max-width:480px){ .chat-card{ padding:18px 16px 16px; } .chat-msg p{ max-width:94%; } }
 
   /* ---------- PRINT ----------
