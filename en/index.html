@@ -1241,6 +1241,29 @@
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
+  /* ---- SONG AUDIO SAFETY NET ----
+     버그 제보: 모바일에서 노래 섹션의 오디오가 사용자가 재생 버튼을 누르지
+     않았는데도 자동으로 재생되고, 탭/창을 닫아도 노래가 끝날 때까지 계속
+     재생된다는 신고가 있었음. .song-audio는 controls + preload="none"만
+     쓰고 autoplay 속성도, JS에서 .play()를 호출하는 코드도 전혀 없어서
+     표준을 따르는 브라우저에서는 자동재생될 수 없지만, 일부 인앱 브라우저
+     (카카오톡/인스타그램 등)가 화면에 들어오는 미디어를 자체적으로 재생시키는
+     경우가 있어 근본 원인과 무관하게 확실히 막히도록 방어 코드를 추가함:
+     1) 스크립트 실행 직후 혹시 이미 재생 중이면 즉시 정지(로드 시점에 정상
+        재생 중일 수 없으므로 안전)
+     2) 탭이 백그라운드로 가거나 페이지를 벗어나면(pagehide/visibilitychange)
+        무조건 정지 — 사용자가 창을 닫아도 재생이 이어지는 문제를 해결 */
+  (function(){
+    const songAudios = document.querySelectorAll('.song-audio');
+    if (!songAudios.length) return;
+    function pauseAllSongs(){
+      songAudios.forEach(a => { if (!a.paused) a.pause(); });
+    }
+    pauseAllSongs();
+    document.addEventListener('visibilitychange', () => { if (document.hidden) pauseAllSongs(); });
+    window.addEventListener('pagehide', pauseAllSongs);
+  })();
+
   /* ---- THEME TOGGLE (light/dark) ---- */
   (function(){
     const root = document.documentElement;
