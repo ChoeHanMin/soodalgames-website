@@ -406,6 +406,11 @@
     border-left:3px solid var(--amber); padding-left:20px; margin:26px 0 16px; max-width:660px;
   }
   .story-sign{ position:relative; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); text-align:right; max-width:660px; }
+  .story-photo{
+    position:relative; display:block; width:220px; height:auto; border-radius:var(--r-md);
+    box-shadow:var(--shadow-card); border:1px solid var(--line-strong); margin:0 0 26px; object-fit:cover;
+  }
+  @media(max-width:560px){ .story-photo{ width:170px; } }
 
   /* ---------- GAME FILTER ---------- */
   .game-filters{ display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
@@ -588,6 +593,15 @@
   }
 
   /* ---------- TIMELINE ---------- */
+  .timeline-toggle{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:13px; font-weight:600;
+    color:var(--amber); background:transparent; border:1px solid rgba(var(--amber-rgb),0.4); border-radius:999px;
+    padding:9px 18px; cursor:pointer; transition:background .2s var(--ease), border-color .2s, transform .2s var(--ease);
+  }
+  .timeline-toggle:hover{ background:rgba(var(--amber-rgb),0.1); border-color:var(--amber); transform:translateY(-1px); }
+  .timeline-toggle-icon{ display:inline-block; transition:transform .25s var(--ease); font-size:10px; }
+  .timeline-toggle[aria-expanded="true"] .timeline-toggle-icon{ transform:rotate(90deg); }
+  .timeline-collapse{ margin-top:22px; }
   .timeline-list{display:flex; flex-direction:column; gap:0; position:relative;}
   .timeline-list::before{
     content:''; position:absolute; left:15px; top:6px; bottom:6px; width:1px;
@@ -860,7 +874,7 @@
     <div class="topbar-right">
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="라이트/다크 모드 전환">🌙</button>
       <a class="backlink" href="/en/" aria-label="Switch to English version">EN</a>
-      <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">← choihanmin.com</a>
+      <a class="backlink" href="https://www.choihanmin.com/" rel="noopener">choihanmin.com</a>
     </div>
   </div>
 </div>
@@ -939,6 +953,7 @@
         자정이 넘으면 코드를 짜고, 새벽엔 어제 만든 버그를 고칩니다. 기획자·개발자·아티스트·사운드 디렉터·QA·마케터 —
         게임 하나를 완성하는 데 필요한 모든 역할을 <b>혼자서 전부</b> 맡습니다.
       </p>
+      <img class="story-photo" src="images/hanmin-desk.jpg" alt="게임을 개발 중인 최한민" loading="lazy" decoding="async" width="220" height="293">
       <p class="story-quote">
         "이 사이트에 올라온 게임 한 줄의 코드, 그림 한 장, 버그 수정 하나까지 —<br>
         전부 제 피, 땀 그리고 눈물로 만들었습니다."
@@ -1146,9 +1161,14 @@
   <section id="timeline" class="reveal">
     <div class="sec-head"><span class="tag">TIMELINE</span><h2>게임 개발 &amp; 커밋 타임라인</h2></div>
     <p class="sec-sub">게임 개발 착수 시점과 실시간 커밋을 하나로 모아 시간순으로 정렬했습니다.</p>
-    <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
-    <div id="timelineList" class="timeline-list">
-      <p class="commit-loading">불러오는 중...</p>
+    <button id="timelineToggle" class="timeline-toggle" type="button" aria-expanded="false" aria-controls="timelineCollapse">
+      <span class="timeline-toggle-icon">▶</span> <span class="timeline-toggle-label">타임라인 펼쳐보기</span>
+    </button>
+    <div id="timelineCollapse" class="timeline-collapse" hidden>
+      <p id="nightBadge" class="night-badge"><span class="moon">🌙</span><span id="nightBadgeText"></span></p>
+      <div id="timelineList" class="timeline-list">
+        <p class="commit-loading">불러오는 중...</p>
+      </div>
     </div>
   </section>
 
@@ -1783,6 +1803,20 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') lightbox.classList.remove('show');
   });
+
+  /* ---- TIMELINE TOGGLE (평소엔 접혀 있다가 버튼을 눌러야 펼쳐짐) ---- */
+  (function(){
+    const btn = document.getElementById('timelineToggle');
+    const panel = document.getElementById('timelineCollapse');
+    const label = btn?.querySelector('.timeline-toggle-label');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+      if (label) label.textContent = expanded ? '타임라인 펼쳐보기' : '타임라인 접기';
+    });
+  })();
 
   /* ---- INTEGRATED TIMELINE (games + live commits, merged) ---- */
   (function(){
