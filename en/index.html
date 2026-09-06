@@ -352,6 +352,19 @@
   @keyframes marqueeScroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
   @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
 
+  /* ---------- SCROLL CUE (히어로 하단, 스크롤하면 조용히 사라짐) ---------- */
+  .scroll-cue{
+    display:flex; flex-direction:column; align-items:center; gap:2px; margin:32px 0 0;
+    color:var(--paper-dim); font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em;
+    opacity:.7; transition:opacity .4s var(--ease);
+    animation:scrollCueIn 1.2s var(--ease) .6s both;
+  }
+  .scroll-cue.hide{ opacity:0; pointer-events:none; }
+  .scroll-cue-arrow{ font-size:14px; }
+  @keyframes scrollCueIn{ 0%{opacity:0; transform:translateY(-6px);} 100%{opacity:.7; transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){ .scroll-cue{ animation:none; } }
+  @media(max-width:560px){ .scroll-cue{ display:none; } }
+
   .divider{max-width:1040px; margin:0 auto; padding:0 28px;}
   @media(max-width:560px){ .divider{padding:0 20px;} }
 
@@ -684,10 +697,25 @@
   /* ---------- FOOTER ---------- */
   footer{ padding:64px 0 48px; border-top:1px solid var(--line); text-align:center; }
   footer .footer-title{ font-family:var(--serif); font-size:18px; margin-bottom:16px; }
-  footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; font-family:var(--mono); font-size:13px; margin-bottom:24px; }
-  footer .links a{ color:var(--amber); border-bottom:1px solid transparent; transition:border-color .2s; }
-  footer .links a:hover{ border-color:var(--amber); }
-  .discord-link:hover{ color:#5865F2; border-color:#5865F2; }
+  .links-icons{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; align-items:center; }
+  .link-icon{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--line-strong);
+    background:var(--ink-2); font-size:18px; line-height:1;
+    transition:border-color .2s, transform .2s var(--ease), background .2s var(--ease);
+  }
+  .link-icon:hover, .link-icon:focus-visible{
+    border-color:var(--amber); background:rgba(var(--amber-rgb),0.1); transform:translateY(-2px);
+  }
+  .link-icon-tip{
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+    font-family:var(--mono); font-size:10.5px; color:var(--paper-dim); white-space:nowrap;
+    background:var(--ink-2); border:1px solid var(--line-strong); border-radius:7px; padding:5px 10px;
+    opacity:0; pointer-events:none; transition:opacity .2s var(--ease);
+    box-shadow:var(--shadow-card);
+  }
+  .link-icon:hover .link-icon-tip, .link-icon:focus-visible .link-icon-tip{ opacity:1; }
+  .discord-link:hover, .discord-link:focus-visible{ border-color:#5865F2; background:rgba(88,101,242,0.12); }
   .email-copy-wrap{ position:relative; display:inline-block; }
   .copy-feedback{
     position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px) scale(.9);
@@ -857,9 +885,15 @@
 
 </style>
 <script>
-  /* 첫 페인트 전에 저장된 테마를 적용해서 다크→라이트 깜빡임(FOUC)을 막습니다 */
+  /* Apply the theme before first paint to avoid a flash (FOUC).
+     If a saved preference exists use it; otherwise, follow the visitor's
+     OS/browser light or dark setting instead of defaulting to dark. */
   try {
-    if (localStorage.getItem('soodal-theme') === 'light') {
+    const saved = localStorage.getItem('soodal-theme');
+    const wantsLight = saved
+      ? saved === 'light'
+      : window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    if (wantsLight) {
       document.documentElement.setAttribute('data-theme', 'light');
       const tc = document.getElementById('themeColorMeta');
       if (tc) tc.setAttribute('content', '#FFF8EF');
@@ -939,6 +973,11 @@
         <span>Color Debt</span><span class="sep">•</span>
         <span>Maze Escape</span><span class="sep">•</span>
       </div>
+    </div>
+
+    <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+      <span>SCROLL</span>
+      <span class="scroll-cue-arrow">↓</span>
     </div>
   </section>
 
@@ -1274,13 +1313,23 @@
 
   <footer class="reveal">
     <div class="footer-title">Want to know more?</div>
-    <div class="links">
-      <a href="https://www.choihanmin.com/" rel="noopener">Choi Hanmin's personal site →</a>
-      <a href="https://github.com/ChoeHanMin" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://discord.gg/RX9E9hNTt" target="_blank" rel="noopener" class="discord-link">💬 Join Discord</a>
-      <a href="https://open.kakao.com/me/soodalgames" target="_blank" rel="noopener">💛 KakaoTalk Profile</a>
+    <div class="links-icons">
+      <a class="link-icon" href="https://www.choihanmin.com/" rel="noopener" aria-label="Choi Hanmin's personal site">
+        <span aria-hidden="true">🏠</span><span class="link-icon-tip">Personal site</span>
+      </a>
+      <a class="link-icon" href="https://github.com/ChoeHanMin" target="_blank" rel="noopener" aria-label="GitHub">
+        <span aria-hidden="true">🐙</span><span class="link-icon-tip">GitHub</span>
+      </a>
+      <a class="link-icon discord-link" href="https://discord.gg/RX9E9hNTt" target="_blank" rel="noopener" aria-label="Join Discord">
+        <span aria-hidden="true">💬</span><span class="link-icon-tip">Discord</span>
+      </a>
+      <a class="link-icon" href="https://open.kakao.com/me/soodalgames" target="_blank" rel="noopener" aria-label="KakaoTalk Profile">
+        <span aria-hidden="true">💛</span><span class="link-icon-tip">KakaoTalk</span>
+      </a>
       <span class="email-copy-wrap">
-        <a href="mailto:rokafhanmin@gmail.com" id="footerEmail">rokafhanmin@gmail.com</a>
+        <a class="link-icon" href="mailto:rokafhanmin@gmail.com" id="footerEmail" title="rokafhanmin@gmail.com — click to copy" aria-label="Email rokafhanmin@gmail.com, click to copy">
+          <span aria-hidden="true">✉️</span>
+        </a>
         <span class="copy-feedback" id="emailCopyFeedback">Copied ✓</span>
       </span>
     </div>
@@ -1381,7 +1430,10 @@
     }
     let saved = null;
     try { saved = localStorage.getItem('soodal-theme'); } catch (e) {}
-    applyTheme(saved === 'light' ? 'light' : 'dark');
+    const initial = saved
+      ? saved
+      : ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark');
+    applyTheme(initial);
     btn.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       applyTheme(next);
@@ -1478,6 +1530,15 @@
       btn.classList.toggle('show', window.scrollY > 600);
     }, { passive: true });
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  })();
+
+  /* ---- SCROLL CUE (fades out once the visitor starts scrolling) ---- */
+  (function(){
+    const cue = document.getElementById('scrollCue');
+    if (!cue) return;
+    window.addEventListener('scroll', () => {
+      cue.classList.toggle('hide', window.scrollY > 100);
+    }, { passive: true });
   })();
 
   /* ---- VISITOR COUNTER ---- */
