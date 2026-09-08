@@ -1613,23 +1613,43 @@
     });
   })();
 
-  /* ---- BACK TO TOP ---- */
+  /* ---- SCROLL-DRIVEN UI (맨 위로 버튼 표시/링 게이지 + 스크롤 큐 숨김 + 진행률 바)
+     예전엔 스크롤 이벤트마다 리스너 3개가 따로따로 레이아웃을 읽고 썼는데,
+     하나의 스크롤 리스너 + requestAnimationFrame으로 묶어서 프레임당 한 번만
+     읽고 쓰도록 통합함 — 동작·디자인은 그대로, 스크롤 시 버벅임만 줄임. */
   (function(){
-    const btn = document.getElementById('backToTop');
-    if (!btn) return;
-    window.addEventListener('scroll', () => {
-      btn.classList.toggle('show', window.scrollY > 600);
-    }, { passive: true });
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  })();
-
-  /* ---- SCROLL CUE (스크롤을 시작하면 조용히 사라짐) ---- */
-  (function(){
+    const backToTopBtn = document.getElementById('backToTop');
     const cue = document.getElementById('scrollCue');
-    if (!cue) return;
-    window.addEventListener('scroll', () => {
-      cue.classList.toggle('hide', window.scrollY > 100);
-    }, { passive: true });
+    const bar = document.getElementById('scrollProgress');
+    const ring = document.getElementById('backToTopRing');
+    let ringCirc = 0;
+    if (ring) {
+      ringCirc = 2 * Math.PI * ring.r.baseVal.value;
+      ring.style.strokeDasharray = String(ringCirc);
+      ring.style.strokeDashoffset = String(ringCirc);
+    }
+    if (!backToTopBtn && !cue && !bar && !ring) return;
+
+    let scheduled = false;
+    function update(){
+      scheduled = false;
+      const h = document.documentElement;
+      const scrollY = window.scrollY;
+      const scrollable = h.scrollHeight - h.clientHeight;
+      const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+      if (backToTopBtn) backToTopBtn.classList.toggle('show', scrollY > 600);
+      if (cue) cue.classList.toggle('hide', scrollY > 100);
+      if (bar) bar.style.width = pct + '%';
+      if (ring) ring.style.strokeDashoffset = String(ringCirc * (1 - pct / 100));
+    }
+    function onScroll(){
+      if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+
+    backToTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   })();
 
   /* ---- VISITOR COUNTER ---- */
@@ -1668,29 +1688,6 @@
       el.textContent = `이 사이트 최종 업데이트: ${dateStr} (계속 업데이트 중)`;
     })
     .catch(() => {});
-
-  /* ---- SCROLL PROGRESS BAR (+ 맨 위로 버튼의 링 게이지, 같은 값을 두 곳에 반영) ---- */
-  (function(){
-    const bar = document.getElementById('scrollProgress');
-    const ring = document.getElementById('backToTopRing');
-    let ringCirc = 0;
-    if (ring) {
-      ringCirc = 2 * Math.PI * ring.r.baseVal.value;
-      ring.style.strokeDasharray = String(ringCirc);
-      ring.style.strokeDashoffset = String(ringCirc);
-    }
-    if (!bar && !ring) return;
-    function updateProgress(){
-      const h = document.documentElement;
-      const scrollable = h.scrollHeight - h.clientHeight;
-      const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
-      if (bar) bar.style.width = pct + '%';
-      if (ring) ring.style.strokeDashoffset = String(ringCirc * (1 - pct / 100));
-    }
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress, { passive: true });
-    updateProgress();
-  })();
 
   /* ---- IMAGE FADE-IN ON LOAD ---- */
   document.querySelectorAll('.game-thumb img').forEach(img => {
