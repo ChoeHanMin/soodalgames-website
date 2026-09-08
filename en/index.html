@@ -701,11 +701,12 @@
   .link-icon{
     position:relative; display:flex; align-items:center; justify-content:center;
     width:42px; height:42px; border-radius:50%; border:1px solid var(--line-strong);
-    background:var(--ink-2); font-size:18px; line-height:1;
-    transition:border-color .2s, transform .2s var(--ease), background .2s var(--ease);
+    background:var(--ink-2); font-family:var(--serif); font-size:16px; font-weight:600;
+    line-height:1; color:var(--ink); letter-spacing:0;
+    transition:border-color .2s, transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
   }
   .link-icon:hover, .link-icon:focus-visible{
-    border-color:var(--amber); background:rgba(var(--amber-rgb),0.1); transform:translateY(-2px);
+    border-color:var(--amber); background:rgba(var(--amber-rgb),0.1); color:var(--amber); transform:translateY(-2px);
   }
   .link-icon-tip{
     position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
@@ -1315,20 +1316,20 @@
     <div class="footer-title">Want to know more?</div>
     <div class="links-icons">
       <a class="link-icon" href="https://www.choihanmin.com/" rel="noopener" aria-label="Choi Hanmin's personal site">
-        <span aria-hidden="true">🏠</span><span class="link-icon-tip">Personal site</span>
+        <span aria-hidden="true">H</span><span class="link-icon-tip">Personal site</span>
       </a>
       <a class="link-icon" href="https://github.com/ChoeHanMin" target="_blank" rel="noopener" aria-label="GitHub">
-        <span aria-hidden="true">🐙</span><span class="link-icon-tip">GitHub</span>
+        <span aria-hidden="true">G</span><span class="link-icon-tip">GitHub</span>
       </a>
       <a class="link-icon discord-link" href="https://discord.gg/RX9E9hNTt" target="_blank" rel="noopener" aria-label="Join Discord">
-        <span aria-hidden="true">💬</span><span class="link-icon-tip">Discord</span>
+        <span aria-hidden="true">D</span><span class="link-icon-tip">Discord</span>
       </a>
       <a class="link-icon" href="https://open.kakao.com/me/soodalgames" target="_blank" rel="noopener" aria-label="KakaoTalk Profile">
-        <span aria-hidden="true">💛</span><span class="link-icon-tip">KakaoTalk</span>
+        <span aria-hidden="true">K</span><span class="link-icon-tip">KakaoTalk</span>
       </a>
       <span class="email-copy-wrap">
         <a class="link-icon" href="mailto:rokafhanmin@gmail.com" id="footerEmail" title="rokafhanmin@gmail.com — click to copy" aria-label="Email rokafhanmin@gmail.com, click to copy">
-          <span aria-hidden="true">✉️</span>
+          <span aria-hidden="true">E</span>
         </a>
         <span class="copy-feedback" id="emailCopyFeedback">Copied ✓</span>
       </span>
