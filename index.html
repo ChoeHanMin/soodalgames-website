@@ -323,10 +323,21 @@
     background:rgba(var(--ink-2-rgb),0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
     border:1px solid var(--line-strong); color:var(--amber); font-size:18px; cursor:pointer;
     opacity:0; pointer-events:none; transform:translateY(10px);
+    display:flex; align-items:center; justify-content:center;
     transition:opacity .25s var(--ease), transform .25s var(--ease), border-color .2s;
   }
   .back-to-top.show{ opacity:1; pointer-events:auto; transform:translateY(0); }
   .back-to-top:hover{ border-color:var(--amber); }
+  /* 스크롤 진행률을 버튼 테두리 링으로도 보여줌 — 상단 바와 같은 값, 다른 자리에서 한 번 더 확인 가능 */
+  .back-to-top-ring{ position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); pointer-events:none; }
+  .back-to-top-ring circle{ fill:none; stroke-width:2; }
+  .back-to-top-ring .ring-track{ stroke:var(--line-strong); }
+  .back-to-top-ring .ring-fill{
+    stroke:var(--amber); stroke-linecap:round;
+    transition:stroke-dashoffset .1s linear;
+  }
+  .back-to-top-arrow{ position:relative; z-index:1; line-height:1; }
+  @media (prefers-reduced-motion: reduce){ .back-to-top-ring .ring-fill{ transition:none; } }
   @media(max-width:560px){ .back-to-top{ right:14px; bottom:14px; width:40px; height:40px; font-size:16px; } }
 
   /* ---------- MARQUEE ---------- */
@@ -493,13 +504,37 @@
     background:linear-gradient(165deg, rgba(var(--amber-rgb),0.07), rgba(255,255,255,0) 60%);
     padding-top:30px;
   }
+  /* 대표작 카드에만 아주 살짝 3D 기울임 효과 — 마우스 위치를 --tiltx/--tilty로 이미
+     계산해 넘겨받아 적용, 다른 카드는 기존 translateY 호버만 유지해 과하지 않게 */
+  @media(hover:hover) and (pointer:fine){
+    .game.featured:hover{
+      transform:perspective(1000px) rotateX(var(--tiltx,0deg)) rotateY(var(--tilty,0deg)) translateY(-4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .game.featured:hover{ transform:none; }
+  }
   .featured-ribbon{
-    position:absolute; top:14px; right:18px;
+    position:absolute; top:14px; right:18px; overflow:hidden;
     font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:0.08em;
     color:var(--ink); background:linear-gradient(100deg, var(--amber), var(--amber-soft));
     padding:5px 12px; border-radius:999px;
     box-shadow:0 8px 18px -8px rgba(var(--amber-rgb),0.6);
   }
+  /* 뱃지 위로 은은한 광택이 한 번씩 스치듯 지나감 — 반복되지만 아주 옅고 짧아서
+     화면 전체가 아니라 작은 배지 하나에만 국한된 디테일 */
+  .featured-ribbon::after{
+    content:''; position:absolute; top:0; left:-60%; width:45%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,0.65), transparent);
+    transform:skewX(-20deg);
+    animation:ribbonShine 4.2s ease-in-out infinite;
+  }
+  @keyframes ribbonShine{
+    0%{ left:-60%; }
+    28%{ left:130%; }
+    100%{ left:130%; }
+  }
+  @media (prefers-reduced-motion: reduce){ .featured-ribbon::after{ display:none; } }
   @media(max-width:520px){ .featured-ribbon{ top:10px; right:12px; font-size:9.5px; padding:4px 9px; } }
   .game-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
   .game-title{font-size:18.5px; font-weight:700; letter-spacing:-0.01em;}
@@ -810,7 +845,27 @@
   .song-credit-line{ font-family:var(--mono); font-size:13px; color:var(--paper-dim); letter-spacing:.01em; }
   .song-credit-handle{ color:#ff2fd0; text-shadow:0 0 10px rgba(255,47,208,0.5); font-weight:700; }
   html[data-theme="light"] .song-credit-handle{ color:#c400a0; text-shadow:0 0 8px rgba(196,0,160,0.3); }
-  @media (prefers-reduced-motion: reduce){ .song-card::before, .song-ring{ animation:none; } }
+  /* 실제로 그 카드의 오디오가 재생 중일 때만 나타나는 이퀄라이저 표시 —
+     가짜 애니메이션이 아니라 audio 요소의 play/pause 이벤트에 그대로 연동됨 */
+  .song-eq-row{
+    display:flex; align-items:center; gap:8px; margin-top:6px;
+    opacity:0; transform:translateY(-2px);
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .song-card.playing .song-eq-row{ opacity:1; transform:translateY(0); }
+  .song-eq{ display:flex; align-items:flex-end; gap:3px; height:14px; }
+  .song-eq span{
+    width:3px; border-radius:2px; height:30%;
+    background:linear-gradient(180deg, #33e0ff, #ff2fd0);
+    animation:eqBounce 1s ease-in-out infinite;
+  }
+  .song-eq span:nth-child(1){ animation-delay:0s; }
+  .song-eq span:nth-child(2){ animation-delay:.15s; }
+  .song-eq span:nth-child(3){ animation-delay:.3s; }
+  .song-eq span:nth-child(4){ animation-delay:.45s; }
+  @keyframes eqBounce{ 0%,100%{ height:30%; } 50%{ height:100%; } }
+  .song-eq-text{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--paper-dim); }
+  @media (prefers-reduced-motion: reduce){ .song-card::before, .song-ring{ animation:none; } .song-eq span{ animation:none; height:60%; } }
 
   /* ---------- AI CHAT (rule-based FAQ bot) ---------- */
   .chat-card{
@@ -1236,6 +1291,10 @@
       <div class="song-credit">
         <p class="song-credit-line">원곡: 알라미 Alarmy</p>
         <p class="song-credit-line">IG: <span class="song-credit-handle">@alarmy_official_kr</span></p>
+        <p class="song-eq-row" aria-hidden="true">
+          <span class="song-eq"><span></span><span></span><span></span><span></span></span>
+          <span class="song-eq-text">NOW PLAYING</span>
+        </p>
       </div>
     </div>
 
@@ -1250,6 +1309,10 @@
       <div class="song-credit">
         <p class="song-credit-line">원곡: 알라미 Alarmy</p>
         <p class="song-credit-line">IG: <span class="song-credit-handle">@alarmy_official_kr</span></p>
+        <p class="song-eq-row" aria-hidden="true">
+          <span class="song-eq"><span></span><span></span><span></span><span></span></span>
+          <span class="song-eq-text">NOW PLAYING</span>
+        </p>
       </div>
     </div>
   </section>
@@ -1378,7 +1441,13 @@
   </div>
 </div>
 
-<button id="backToTop" class="back-to-top" aria-label="맨 위로">↑</button>
+<button id="backToTop" class="back-to-top" aria-label="맨 위로">
+  <svg class="back-to-top-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+    <circle class="ring-track" cx="22" cy="22" r="19"></circle>
+    <circle class="ring-fill" id="backToTopRing" cx="22" cy="22" r="19"></circle>
+  </svg>
+  <span class="back-to-top-arrow" aria-hidden="true">↑</span>
+</button>
 
 <script>
   /* ---- DEV DAYS COUNTER (첫 게임 개발 착수일부터 오늘까지, 실제 날짜 계산) ----
@@ -1414,6 +1483,25 @@
     pauseAllSongs();
     document.addEventListener('visibilitychange', () => { if (document.hidden) pauseAllSongs(); });
     window.addEventListener('pagehide', pauseAllSongs);
+  })();
+
+  /* ---- SONG EQ + 한 번에 한 곡만 재생 ----
+     이퀄라이저 표시는 연출용 가짜 애니메이션이 아니라 실제 audio 요소의
+     play/pause/ended 이벤트에 그대로 연동됨. 겸사겸사 한 곡을 재생하면
+     다른 곡은 자동으로 멈추도록 해서 두 노래가 동시에 겹쳐 나오는 걸 방지함. */
+  (function(){
+    const cards = Array.from(document.querySelectorAll('.song-card'));
+    if (!cards.length) return;
+    const audios = cards.map(c => c.querySelector('.song-audio')).filter(Boolean);
+    audios.forEach(audio => {
+      const card = audio.closest('.song-card');
+      audio.addEventListener('play', () => {
+        audios.forEach(other => { if (other !== audio && !other.paused) other.pause(); });
+        card?.classList.add('playing');
+      });
+      audio.addEventListener('pause', () => card?.classList.remove('playing'));
+      audio.addEventListener('ended', () => card?.classList.remove('playing'));
+    });
   })();
 
   /* ---- THEME TOGGLE (light/dark) ---- */
@@ -1581,15 +1669,23 @@
     })
     .catch(() => {});
 
-  /* ---- SCROLL PROGRESS BAR ---- */
+  /* ---- SCROLL PROGRESS BAR (+ 맨 위로 버튼의 링 게이지, 같은 값을 두 곳에 반영) ---- */
   (function(){
     const bar = document.getElementById('scrollProgress');
-    if (!bar) return;
+    const ring = document.getElementById('backToTopRing');
+    let ringCirc = 0;
+    if (ring) {
+      ringCirc = 2 * Math.PI * ring.r.baseVal.value;
+      ring.style.strokeDasharray = String(ringCirc);
+      ring.style.strokeDashoffset = String(ringCirc);
+    }
+    if (!bar && !ring) return;
     function updateProgress(){
       const h = document.documentElement;
       const scrollable = h.scrollHeight - h.clientHeight;
       const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
-      bar.style.width = pct + '%';
+      if (bar) bar.style.width = pct + '%';
+      if (ring) ring.style.strokeDashoffset = String(ringCirc * (1 - pct / 100));
     }
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress, { passive: true });
@@ -1646,9 +1742,10 @@
   }, { threshold: 0.5 });
   statEls.forEach(el => statIO.observe(el));
 
-  /* ---- GAME CARD SPOTLIGHT / GLOW ---- */
+  /* ---- GAME CARD SPOTLIGHT / GLOW (+ FEATURED 카드만 아주 살짝 3D 기울임) ---- */
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.querySelectorAll('.game').forEach(card => {
+      const isFeatured = card.classList.contains('featured');
       let rect = null, scheduled = false, lastX = 0, lastY = 0;
       function update(){
         scheduled = false;
@@ -1657,6 +1754,10 @@
         const my = ((lastY - rect.top) / rect.height) * 100;
         card.style.setProperty('--mx', mx.toFixed(1) + '%');
         card.style.setProperty('--my', my.toFixed(1) + '%');
+        if (isFeatured) {
+          card.style.setProperty('--tiltx', (((my - 50) / 50) * -4).toFixed(2) + 'deg');
+          card.style.setProperty('--tilty', (((mx - 50) / 50) * 4).toFixed(2) + 'deg');
+        }
       }
       card.addEventListener('mouseenter', () => { rect = card.getBoundingClientRect(); card.classList.add('spotlit'); });
       card.addEventListener('mousemove', (e) => {
@@ -1664,7 +1765,10 @@
         lastX = e.clientX; lastY = e.clientY;
         if (!scheduled){ scheduled = true; requestAnimationFrame(update); }
       }, { passive: true });
-      card.addEventListener('mouseleave', () => { rect = null; card.classList.remove('spotlit'); });
+      card.addEventListener('mouseleave', () => {
+        rect = null; card.classList.remove('spotlit');
+        if (isFeatured) { card.style.setProperty('--tiltx', '0deg'); card.style.setProperty('--tilty', '0deg'); }
+      });
     });
   }
 
