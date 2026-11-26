@@ -89,6 +89,14 @@
       "url": "https://www.soodalgames.com/#game-mazeescape",
       "image": "https://www.soodalgames.com/images/games/web/mazeescape.jpg",
       "gamePlatform": ["Android"], "publisher": { "@type": "Organization", "name": "Soodal Games" }
+    }},
+    { "@type": "ListItem", "position": 8, "item": {
+      "@type": "VideoGame", "name": "Patch Squad",
+      "description": "망가져가는 '게임' 세계를 고치는 패치 분대 탑다운 슈팅. 2026년 12월 17일 Steam 출시 예정.",
+      "url": "https://www.soodalgames.com/#game-patchsquad",
+      "image": "https://www.soodalgames.com/images/games/web/patchsquad.jpg",
+      "gamePlatform": ["Windows", "Steam"], "datePublished": "2026-12-17",
+      "publisher": { "@type": "Organization", "name": "Soodal Games" }
     }}
   ]
 }
@@ -536,6 +544,18 @@
   }
   @media (prefers-reduced-motion: reduce){ .featured-ribbon::after{ display:none; } }
   @media(max-width:520px){ .featured-ribbon{ top:10px; right:12px; font-size:9.5px; padding:4px 9px; } }
+  /* 아직 출시 전(Steam 심사 중)인 게임을 위한 별도 리본 — 이미 출시한 대표작의
+     금색 FEATURED 리본과 혼동되지 않도록 색을 다르게 가져감. 테마와 무관하게
+     흰 글자 대비가 보장되도록 --teal 토큰 대신 고정 색상을 씀(라이트 모드에서
+     --teal 값이 밝아지는 것과 상관없이 항상 읽히게 하기 위함). */
+  .coming-soon-ribbon{
+    position:absolute; top:14px; right:18px;
+    font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:0.08em;
+    color:#fff; background:linear-gradient(100deg, #0a6f5f, #0c8060);
+    padding:5px 12px; border-radius:999px;
+    box-shadow:0 8px 18px -8px rgba(10,111,95,0.6);
+  }
+  @media(max-width:520px){ .coming-soon-ribbon{ top:10px; right:12px; font-size:9.5px; padding:4px 9px; } }
   .game-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
   .game-title{font-size:18.5px; font-weight:700; letter-spacing:-0.01em;}
   .game-ver{font-family:var(--mono); font-size:12px; color:var(--teal);}
@@ -1096,6 +1116,27 @@
             <a href="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" target="_blank" rel="noopener">Google Play →</a>
             <button class="qr-trigger" type="button" data-qr-url="https://play.google.com/store/apps/details?id=com.choehanmin.minicourt" data-qr-label="미니법정 · Google Play">📱 QR로 설치</button>
             <button class="game-share" type="button" data-share="game-minicourt">공유 🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="game has-shot" data-platforms="steam" id="game-patchsquad">
+        <span class="coming-soon-ribbon">🆕 출시 예정 · 12.17</span>
+        <div class="game-thumb"><img src="images/games/web/patchsquad.jpg" loading="lazy" decoding="async" alt="Patch Squad 캡슐 아트"></div>
+        <div class="game-body">
+          <div class="game-top">
+            <div><span class="game-title">Patch Squad</span></div>
+          </div>
+          <p class="game-desc">당신이 플레이하던 세상이, 지금 무너지고 있다. 텍스처는 사라지고 건물은 복붙되고 중력은 미쳐 돌아가는 와중 — 세상의 심장 '메인 루프'가 버그에 감염돼 폭주 직전이다. 디버거·리팩터·프로파일러 3인조가 총 대신 '패치 건'을 들고 뛰어드는 탑다운 슈팅. 스테이지 5개, 안정성 0%가 되면 전부 CRASH.</p>
+          <p class="game-behind">비하인드: 캐릭터는 최한민이 Pixilart로 직접 그리다가 도저히 못 해먹겠어서 결국 ChatGPT로 만들었음.</p>
+          <div class="badges">
+            <span class="badge steam">Steam · 2026.12.17 출시 예정</span>
+            <span class="badge">⏳ 스토어 심사 중</span>
+          </div>
+          <div class="game-links">
+            <a href="https://store.steampowered.com/app/5732530/Patch_Squad/" target="_blank" rel="noopener">Steam 위시리스트 →</a>
+            <button class="qr-trigger" type="button" data-qr-url="https://store.steampowered.com/app/5732530/Patch_Squad/" data-qr-label="Patch Squad · Steam 위시리스트">📱 QR로 열기</button>
+            <button class="game-share" type="button" data-share="game-patchsquad">공유 🔗</button>
           </div>
         </div>
       </div>
@@ -2009,6 +2050,8 @@
       { date: '2025-12', icon: '🎮', title: '자리 사냥 (Seat Hunter) 개발 시작', tag: 'Soodal Games' },
       { date: '2026-04', icon: '🎮', title: 'Maze Escape 개발 시작', tag: 'Soodal Games' },
       { date: '2026-06', icon: '🎮', title: 'Stress Smash 개발 시작', tag: 'Soodal Games' },
+      { date: '2025-01', icon: '🐞', title: 'Patch Squad 개발 착수 (이후 보류)', tag: 'Soodal Games' },
+      { date: '2026-11', icon: '🕹️', title: 'Patch Squad Steam 스토어 페이지 등록 — 심사 중', tag: 'Soodal Games' },
     ];
 
     function renderTimeline(events){
