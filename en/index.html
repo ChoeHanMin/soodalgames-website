@@ -557,9 +557,11 @@
     box-shadow:0 8px 18px -8px rgba(10,111,95,0.6);
   }
   @media(max-width:520px){ .coming-soon-ribbon{ top:10px; right:12px; font-size:9.5px; padding:4px 9px; } }
-  /* FEATURED 리본과 마찬가지로, 리본이 썸네일 이미지 위에 겹쳐 가려지지 않도록
-     카드 상단 여백을 띄워줌 (.game.featured와 동일한 값) */
-  .game.coming-soon{ padding-top:30px; }
+  /* FEATURED 리본(.game.featured, padding-top:30px)보다 이 리본이 실제로는
+     썸네일과 더 가까워 보여서(리본 하단과 썸네일 상단이 거의 붙어있었음)
+     여백을 더 넉넉하게 띄움. 모바일에서는 리본이 작아지는 만큼 여백도 줄임 */
+  .game.coming-soon{ padding-top:52px; }
+  @media(max-width:520px){ .game.coming-soon{ padding-top:44px; } }
   .game-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
   .game-title{font-size:18.5px; font-weight:700; letter-spacing:-0.01em;}
   .game-ver{font-family:var(--mono); font-size:12px; color:var(--teal);}
