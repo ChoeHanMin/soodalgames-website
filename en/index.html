@@ -511,8 +511,9 @@
   .game.featured{
     border-color:rgba(var(--amber-rgb),0.35);
     background:linear-gradient(165deg, rgba(var(--amber-rgb),0.07), rgba(255,255,255,0) 60%);
-    padding-top:30px;
+    padding-top:52px;
   }
+  @media(max-width:520px){ .game.featured{ padding-top:44px; } }
   /* 대표작 카드에만 아주 살짝 3D 기울임 효과 — 마우스 위치를 --tiltx/--tilty로 이미
      계산해 넘겨받아 적용, 다른 카드는 기존 translateY 호버만 유지해 과하지 않게 */
   @media(hover:hover) and (pointer:fine){
